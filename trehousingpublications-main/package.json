@@ -1,0 +1,13 @@
+{
+  "name": "trehousingpublications-main",
+  "version": "1.0.0",
+  "description": "**Established:** 19th March 2024   **Type:** Indian Private Limited Company",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+    
+  }, 
+  "author": "",
+  "license": "ISC"
+}

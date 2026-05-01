@@ -1,0 +1,114 @@
+.footer {
+  background: linear-gradient(135deg, #003b95 0%, #001a4d 100%);
+  color: #ffffff;
+  padding: 60px 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.footer-inner {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.modern-logo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-bottom: 20px;
+  border: 2px solid #ffe600;
+}
+
+.contact-info p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 10px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.social-icons a {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+}
+
+.footer-links-grid {
+  flex: 3;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 30px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background: #ffe600;
+}
+
+.link-column ul {
+  list-style: none;
+  padding: 0;
+}
+
+.link-column ul li a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-bottom {
+  background: #001a4d;
+  padding: 20px 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bottom-inner {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom-item {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 13px;
+  margin-right: 20px;
+}
+
+@media (max-width: 768px) {
+  .footer-inner { flex-direction: column; text-align: center; }
+  .section-title::after { left: 50%; transform: translateX(-50%); }
+  .link-column ul li a { justify-content: center; }
+}

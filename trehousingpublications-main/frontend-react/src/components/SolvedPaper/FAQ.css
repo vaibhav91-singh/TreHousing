@@ -1,0 +1,128 @@
+.faq-main {
+  padding: 80px 5vw;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--bg);
+}
+
+.faq-title h1 {
+  font-weight: 800;
+  font-size: 36px;
+  color: var(--text-h);
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.accordion {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.accordion-item {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.accordion-item:hover {
+  border-color: var(--accent-border);
+  box-shadow: 0 4px 20px rgba(170, 59, 255, 0.08);
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+.accordion-header:hover {
+  background: var(--accent-bg);
+}
+
+.accordion-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.arrow-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all 0.3s ease;
+}
+
+.accordion-item:has(.accordion-content.active) .arrow-icon {
+  background: var(--accent);
+  transform: rotate(180deg);
+}
+
+.arrow {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border: solid var(--text);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -4px;
+  transition: all 0.3s ease;
+}
+
+.accordion-item:has(.accordion-content.active) .arrow {
+  border-color: white;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0 24px;
+  opacity: 0;
+}
+
+.accordion-content.active {
+  max-height: 500px;
+  padding: 0 24px 24px;
+  opacity: 1;
+}
+
+.accordion-content p {
+  margin: 0;
+  font-weight: 400;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .faq-main {
+    padding: 60px 20px;
+  }
+
+  .faq-title h1 {
+    font-size: 28px;
+  }
+
+  .accordion-header {
+    padding: 20px;
+  }
+
+  .accordion-header h2 {
+    font-size: 16px;
+  }
+}

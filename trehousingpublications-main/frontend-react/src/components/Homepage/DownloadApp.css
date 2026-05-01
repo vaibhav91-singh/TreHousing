@@ -1,0 +1,44 @@
+.cont-downloadBox {
+  background-color: #052A63;
+  color: #fff;
+  display: flex;
+}
+
+.first-box { width: 55%; }
+
+.main-text {
+  padding: 50px;
+  max-width: 600px;
+  font-family: 'Inter', sans-serif;
+  font-size: 42px;
+  font-weight: 500;
+  line-height: 50.83px;
+  text-align: left;
+  margin-left: 24px;
+}
+
+.store-buttons {
+  display: flex;
+  flex-direction: row;
+  padding-left: 72px;
+  gap: 20px;
+}
+
+.imageStore {
+  height: auto;
+  width: 150px;
+  max-width: 45%;
+}
+
+.second-box .mobile-view {
+  height: auto;
+  width: 100%;
+  max-width: 350px;
+}
+
+@media (max-width: 768px) {
+  .cont-downloadBox { display: block; text-align: center; }
+  .first-box { width: 100%; }
+  .main-text { max-width: 100%; padding: 30px; font-size: 35px; }
+  .store-buttons { padding-left: 0; justify-content: center; }
+}

@@ -1,0 +1,101 @@
+.exam-section-card {
+  margin: 20px auto;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.exam-title {
+  color: #1a4a9e;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.button-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  background: #f1f3f5;
+  padding: 30px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border: 2px solid white;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.nav-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.syllabus-btn { background: linear-gradient(135deg, #2d9233 0%, #1e6b22 100%); }
+.pyqs-btn { background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%); }
+.mocktest-btn { background: linear-gradient(135deg, #188ca5 0%, #0d5a6a 100%); }
+
+.icon {
+  font-size: 1.4rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.footer-text {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 15px;
+}
+
+.nav-btn ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  list-style: none;
+  padding: 10px;
+  z-index: 100;
+}
+
+.nav-btn:hover ul {
+  display: block;
+}
+
+.nav-btn ul li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
+}
+
+.nav-btn ul li a:hover {
+  color: #1a4a9e;
+}
+
+@media (max-width: 600px) {
+  .button-container {
+    grid-template-columns: 1fr;
+    padding: 15px;
+  }
+}

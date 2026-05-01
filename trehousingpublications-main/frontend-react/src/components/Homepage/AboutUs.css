@@ -1,0 +1,141 @@
+.about-us-wrapper {
+  background-color: #fdf5f5; 
+  overflow: hidden;
+  position: relative;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.6) 0%, transparent 40%);
+}
+
+.about-us-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#e0d5d5 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.4;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.heading, .parent {
+  position: relative;
+  z-index: 1;
+}
+
+.about-title {
+  color: #002b5c;
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.accent-bar {
+  width: 30px;
+  height: 6px;
+  background: #c5a059; 
+  transform: skewX(-20deg);
+  display: inline-block;
+}
+
+.about-description {
+  color: #4a4a4a;
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+.how-it-works-btn {
+  padding: 14px 45px;
+  font-weight: 700;
+  font-size: 16px;
+  background: linear-gradient(to right, #003b95, #0152cc);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 4px 15px rgba(1, 82, 204, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.how-it-works-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(1, 82, 204, 0.4);
+}
+
+.modern-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.floating-ui-container {
+  position: relative;
+  padding: 40px;
+}
+
+.ui-overlay-glass {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 24px;
+  padding: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+.featured-student-img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 18px;
+  display: block;
+}
+
+.edu-background-pattern {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%;
+  height: 130%;
+  border: 1px solid rgba(197, 160, 89, 0.1);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.edu-icon {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  z-index: 3;
+  color: #0152cc;
+  font-size: 1.1rem;
+}
+
+.icon-1 { top: 5%; right: 5%; }
+.icon-2 { bottom: 15%; left: -5%; }
+.icon-3 { top: 45%; left: -25px; }
+
+@media (max-width: 991px) {
+  .modern-image-container {
+    min-width: 100%;
+    margin-top: 40px;
+  }
+  .about-title {
+    justify-content: center;
+  }
+}

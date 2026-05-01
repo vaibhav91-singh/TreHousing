@@ -1,0 +1,109 @@
+.main-container{
+    background-color: #DFE4E8;
+}
+.head-title{
+    background-color: #DFE4E8;
+    font-size: 35px;
+    font-weight: bold;
+    margin-top: 25px;
+    margin-bottom: 0px;
+}
+/* Card designing */
+.cards-portion {
+    background-color: #DFE4E8;
+    display: flex;
+    padding: 1vh 2vw 3vh;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.cardDesign {
+    margin-top: 30px;
+    padding: 10px;
+    z-index: inherit;
+    border-radius: 5px;
+    background: linear-gradient(180deg, #DFCCFB 20%, #FFFFFF 35.5%, #FFFFFF 100%);
+    width: 240px;
+}
+
+.cardDesign img {
+    width: 53px;
+    height: auto;
+    margin-top: 5px;
+    background-color: #fff;
+    border-radius: 100%;
+    padding: 3px;
+}
+
+.cardDesign .views {
+    float: right;
+    background-color: #FFFFFF;
+    padding: 5px;
+    margin-top: 2px;
+    height: 13px;
+    font-size: 12px;
+    display: flex;
+    border-radius: 20px;
+    box-sizing: content-box;
+}
+
+.views #user {
+    color: #86A1AE;
+}
+
+.cardDesign #heading {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.cardDesign p {
+    margin: 10px;
+    font-size: 12px;
+}
+
+.cardDesign #free {
+    color: #25CD71;
+
+}
+
+.cardDesign #lang {
+    color: #0AD0F4;
+}
+
+.cardDesign #lang span {
+    color: #000;
+}
+
+.cardDesign ul {
+    padding-left: 20px;
+    line-height: 18px;
+    margin: 5px 0px;
+    font-size: 12px;
+}
+
+.cardDesign .btn-view {
+    width: 150px;
+    height: 33px;
+    background: #0AD0FA;
+    border: none;
+    border-radius: 5px;
+    margin: 10px 22px;
+    color: #fff;
+}
+
+@media screen and (max-width: 426px) {
+    
+    .cards-portion{
+        justify-content: space-around;
+    }
+}
+@media screen and (max-width: 376px) {
+
+    .cards-portion{
+        justify-content: space-around;
+    }
+    .categories{
+        padding: 1vh 2vw;
+    }
+}

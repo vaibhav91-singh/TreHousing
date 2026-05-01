@@ -1,0 +1,135 @@
+.box {
+  padding: 3vh 3vw;
+  font-family: "Inter", sans-serif;
+}
+
+.table-head {
+  margin-bottom: -4px;
+  font-size: 1.5rem;
+  font-weight: bolder;
+  color: #ef5446;
+  text-align: center;
+}
+
+.horiz-line {
+  width: 60vw;
+  border-color: #ef5446;
+  margin-bottom: 15px;
+}
+
+/* Scrollable table wrapper for small screens */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Table Styles */
+.table-data {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 400px;
+}
+
+.table-data .imp-link th,
+.table-data .imp-link td {
+  color: #fff;
+  background-color: #d6574b;
+  font-weight: 700;
+  padding: 5px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.table-data .rowData td {
+  background: #e1f8ff;
+  font-size: 1.2rem;
+  font-weight: 550;
+  padding: 1.3vw;
+  color: #ef5446;
+  text-align: center;
+}
+
+td,
+th {
+  border: 1px solid black;
+}
+
+table tr:first-child th {
+  border-top: none;
+}
+
+table tr:last-child td {
+  border-bottom: none;
+}
+
+table tr td:first-child,
+table tr th:first-child {
+  border-left: none;
+}
+
+table tr td:last-child,
+table tr th:last-child {
+  border-right: none;
+}
+
+/* Spinner Styles */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #ef5446;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .box {
+    padding: 1vh 4vw;
+  }
+
+  .table-head {
+    font-size: 1.2rem;
+  }
+
+  .table-data .imp-link th,
+  .table-data .imp-link td,
+  .table-data .rowData td {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-head {
+    font-size: 1rem;
+  }
+
+  .table-data .imp-link th,
+  .table-data .imp-link td,
+  .table-data .rowData td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .table-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+}
