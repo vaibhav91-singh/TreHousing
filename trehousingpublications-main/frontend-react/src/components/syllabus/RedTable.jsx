@@ -19,7 +19,7 @@ export default function RedTable() {
 
     try {
       const res = await fetch(
-        `https://cms.trehousingpublication.com/api/v1/?course_id=${courseId}&subject_id=${subjectId}`
+        `/api/v1/?course_id=${courseId}&subject_id=${subjectId}`
       );
       const data = await res.json();
       setExamPatterns(data?.course?.subjects?.[0]?.exam_patterns || []);

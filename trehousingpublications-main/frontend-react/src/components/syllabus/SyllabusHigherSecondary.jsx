@@ -18,7 +18,7 @@ export default function SyllabusHigherSecondary() {
       const subjectId = urlParams.get('subject_id') || 1;
 
       const res = await axios.get(
-        `https://cms.trehousingpublication.com/api/v1/?course_id=${courseId}&subject_id=${subjectId}`
+        `/api/v1/?course_id=${courseId}&subject_id=${subjectId}`
       );
       const subjects = res.data?.course?.subjects;
       if (subjects && subjects.length > 0) {

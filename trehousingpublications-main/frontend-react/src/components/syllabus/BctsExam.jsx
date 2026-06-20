@@ -53,7 +53,7 @@ export default function BctsExam() {
       const subjectId = urlParams.get('subject_id') || 1;
       
       const res = await fetch(
-        `https://cms.trehousingpublication.com/api/v1/?course_id=${courseId}&subject_id=${subjectId}`
+        `/api/v1/?course_id=${courseId}&subject_id=${subjectId}`
       );
       const data = await res.json();
 
@@ -70,7 +70,7 @@ export default function BctsExam() {
 
   const getFullUrl = (path) => {
     if (!path) return "";
-    return path.startsWith("http") ? path : `https://cms.trehousingpublication.com${path}`;
+    return path.startsWith("http") ? path : `${path}`;
   };
 
   const toggleSyllabusDropdown = (index) => {
@@ -93,7 +93,7 @@ export default function BctsExam() {
     if (subItem.courseId && subItem.subjectId) {
       try {
         const response = await axios.get(
-          `https://cms.trehousingpublication.com/api/v1/?course_id=${subItem.courseId}&subject_id=${subItem.subjectId}`
+          `/api/v1/?course_id=${subItem.courseId}&subject_id=${subItem.subjectId}`
         );
         if (response.data && response.data.course && response.data.course.subjects?.length > 0) {
           window.location.search = `?course_id=${subItem.courseId}&subject_id=${subItem.subjectId}`;

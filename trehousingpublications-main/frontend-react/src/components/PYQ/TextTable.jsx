@@ -13,7 +13,7 @@ export default function TextTable() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://cms.trehousingpublication.com/api/v1/?course_id=1&subject_id=1");
+      const response = await axios.get("/api/v1/?course_id=1&subject_id=1");
       if (response.data?.course?.subjects?.[0]) {
         const subject = response.data.course.subjects[0];
         setExamPatterns(subject.exam_patterns || []);

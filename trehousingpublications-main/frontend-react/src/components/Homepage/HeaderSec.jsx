@@ -27,7 +27,7 @@ export default function HeaderSec() {
 
   const fetchSyllabusData = async () => {
     try {
-      const response = await fetch("https://cms.trehousingpublication.com/api/v1/");
+      const response = await fetch("/api/v1/");
       const apiData = await response.json();
       return apiData.map((item) => ({
         name: item.title,
@@ -45,7 +45,7 @@ export default function HeaderSec() {
 
   const fetchPyqpData = async () => {
     try {
-      const response = await fetch("https://cms.trehousingpublication.com/api/v2/?course_id=1");
+      const response = await fetch("/api/v2/?course_id=1");
       const apiData = await response.json();
       const formatted = [];
       for (const category in apiData) {

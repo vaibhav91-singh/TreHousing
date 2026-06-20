@@ -1,0 +1,31 @@
+trehousingpublications-main
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "TREBACKEND-main/TREBACKEND-main/trebackend/index.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "trehousingpublications-main/frontend-react/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "TREBACKEND-main/TREBACKEND-main/trebackend/index.py"
+    },
+    {
+      "src": "/media/(.*)",
+      "dest": "TREBACKEND-main/TREBACKEND-main/trebackend/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "trehousingpublications-main/frontend-react/$1"
+    }
+  ]
+}

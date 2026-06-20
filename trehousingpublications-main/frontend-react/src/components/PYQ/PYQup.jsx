@@ -19,7 +19,7 @@ export default function PYQup() {
 
   const fetchData = async () => {
     try {
-      const baseUrl = 'https://cms.trehousingpublication.com/api/v2/?course_id=1&subject_id=1';
+      const baseUrl = '/api/v2/?course_id=1&subject_id=1';
       const [page, papers, sidebar, notify, tests, posts] = await Promise.all([
         axios.get(`${baseUrl}/pyq-page`),
         axios.get(`${baseUrl}/question-papers`),

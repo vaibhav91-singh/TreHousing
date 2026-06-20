@@ -13,7 +13,7 @@ export default function BiharSyllabusComponent() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://cms.trehousingpublication.com/api/v2/?course_id=1&subject_id=1');
+      const response = await axios.get('/api/v2/?course_id=1&subject_id=1');
       if (response.data) {
         setTitle(response.data.title || 'Bihar Computer Science Teacher Syllabus');
         setSyllabusTopics(response.data.topics || []);

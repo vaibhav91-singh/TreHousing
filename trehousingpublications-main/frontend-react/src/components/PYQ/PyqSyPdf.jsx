@@ -24,7 +24,7 @@ export default function PyqSyPdf() {
 
     setIsLoading(true);
     try {
-      const url = `https://cms.trehousingpublication.com/api/v2/?course_id=${courseId}&sub_courses=${subCourseId}`;
+      const url = `/api/v2/?course_id=${courseId}&sub_courses=${subCourseId}`;
       const response = await axios.get(url);
       setPdfData(response.data);
     } catch (error) {
@@ -37,7 +37,7 @@ export default function PyqSyPdf() {
 
   const getPdfUrl = (fileName, subjectId) => {
     const urlParams = new URLSearchParams(location.search);
-    return `https://cms.trehousingpublication.com/api/v2/?course_id=${urlParams.get('course_id')}&sub_courses=${urlParams.get('sub_courses')}&subject_id=${subjectId}&file=${encodeURIComponent(fileName)}`;
+    return `/api/v2/?course_id=${urlParams.get('course_id')}&sub_courses=${urlParams.get('sub_courses')}&subject_id=${subjectId}&file=${encodeURIComponent(fileName)}`;
   };
 
   const nonIdCategories = (item) => {
