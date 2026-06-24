@@ -1,128 +1,179 @@
+/* ==========================================================================
+   FAQ SYSTEM - TRIPLE TONE LIQUID GLASS LAYOUT
+   ========================================================================== */
+
 .faq-main {
-  padding: 80px 5vw;
-  max-width: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: var(--bg);
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 3vw;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    position: relative;
+    z-index: 10;
+}
+
+/* 1. FAQ Title Configuration */
+.faq-title {
+    text-align: center;
+    margin-bottom: 45px;
 }
 
 .faq-title h1 {
-  font-weight: 800;
-  font-size: 36px;
-  color: var(--text-h);
-  margin-bottom: 40px;
-  text-align: center;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: -0.5px;
 }
 
+.faq-title h1 span {
+    color: #FFDE42; /* Your Premium Yellow Focus */
+    text-shadow: 0 0 15px rgba(255, 222, 66, 0.3);
+}
+
+.title-underline {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #53CBF3, #5478FF); /* Nude Blue to Royal Blue blend */
+    margin: 12px auto 0 auto;
+    border-radius: 4px;
+}
+
+/* 2. Accordion Architecture */
 .accordion {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
 }
 
 .accordion-item {
-  margin-bottom: 16px;
-  border-radius: 12px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(21, 32, 54, 0.5) 0%, rgba(11, 16, 28, 0.8) 100%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 16px;
+    overflow: hidden;
+    
+    /* Subtle Nude Blue Inner Outline */
+    border: 1px solid rgba(83, 203, 243, 0.1) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35),
+                inset 0 1px 1px rgba(255, 255, 255, 0.03) !important;
+                
+    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
+/* Hover State: Glows in Light Blue Rim */
 .accordion-item:hover {
-  border-color: var(--accent-border);
-  box-shadow: 0 4px 20px rgba(170, 59, 255, 0.08);
+    border-color: rgba(83, 203, 243, 0.3) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(84, 120, 255, 0.15), 
+                inset 0 1px 2px rgba(255, 255, 255, 0.05) !important;
 }
 
+/* Expanded State Accentuation: Highlighting in Golden Yellow Border */
+.expanded-item {
+    border-color: rgba(255, 222, 66, 0.35) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5),
+                0 5px 20px rgba(255, 222, 66, 0.05) !important;
+}
+
+/* 3. Header Action Controller */
 .accordion-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px;
-  cursor: pointer;
-  background: transparent;
-  transition: background 0.3s ease;
-}
-
-.accordion-header:hover {
-  background: var(--accent-bg);
+    padding: 22px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    gap: 20px;
 }
 
 .accordion-header h2 {
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-h);
-  margin: 0;
-  line-height: 1.5;
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    font-weight: 600;
+    color: #e2e8f0;
+    margin: 0;
+    line-height: 1.5;
+    transition: color 0.2s ease;
 }
 
-.arrow-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--border);
-  transition: all 0.3s ease;
+.accordion-item:hover .accordion-header h2 {
+    color: #ffffff;
 }
 
-.accordion-item:has(.accordion-content.active) .arrow-icon {
-  background: var(--accent);
-  transform: rotate(180deg);
+.expanded-item .accordion-header h2 {
+    color: #FFDE42; /* Highlight question when opened */
 }
 
-.arrow {
-  display: block;
-  width: 8px;
-  height: 8px;
-  border: solid var(--text);
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-  margin-top: -4px;
-  transition: all 0.3s ease;
+/* 3D Modern Circle Chevron Trigger Instead of Pure CSS Arrow */
+.arrow-icon-wrapper {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(83, 203, 243, 0.08);
+    border: 1px solid rgba(83, 203, 243, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
 }
 
-.accordion-item:has(.accordion-content.active) .arrow {
-  border-color: white;
+.arrow-chevron {
+    color: #53CBF3; /* Light Nude Blue Chevron */
+    font-size: 14px;
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.expanded-item .arrow-icon-wrapper {
+    background: #FFDE42;
+    border-color: #FFDE42;
+}
+
+.expanded-item .arrow-chevron {
+    color: #0b0f19; /* Dark contrast inside yellow icon circle */
+}
+
+.rotate-chevron {
+    transform: rotate(-180deg);
+}
+
+/* 4. Smooth Smooth Content Expansion Panel */
 .accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0 24px;
-  opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    /* Hardware accelerated transition mechanics */
+    transition: max-height 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .accordion-content.active {
-  max-height: 500px;
-  padding: 0 24px 24px;
-  opacity: 1;
+    max-height: 300px; /* High boundary layout cap for expansion scope */
 }
 
-.accordion-content p {
-  margin: 0;
-  font-weight: 400;
-  color: var(--text);
-  font-size: 16px;
-  line-height: 1.6;
+.content-inner {
+    padding: 0 28px 24px 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
 }
 
-@media (max-width: 768px) {
-  .faq-main {
-    padding: 60px 20px;
-  }
+.content-inner p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #94a3b8;
+    margin: 15px 0 0 0;
+    letter-spacing: 0.1px;
+}
 
-  .faq-title h1 {
-    font-size: 28px;
-  }
+/* ==========================================================================
+   RESPONSIVE LAYOUT CONSTRAINTS
+   ========================================================================== */
 
-  .accordion-header {
-    padding: 20px;
-  }
-
-  .accordion-header h2 {
-    font-size: 16px;
-  }
-}
+@media screen and (max-width: 768px) {
+    .faq-main {
+        margin: 40px auto;
+    }
+    .accordion-header {
+        padding: 18px 20px;
+    }
+    .content-inner {
+        padding: 0 20px 20px 20px;
+    }
+}

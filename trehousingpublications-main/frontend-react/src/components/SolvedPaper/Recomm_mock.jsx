@@ -14,29 +14,34 @@ export default function Recomm_mock() {
   ];
 
   return (
-    <>
-      <p className="heading">Recommended Courses for you</p>
-      <div className="cards-container">
+    <div className="recomm-mock-section-wrapper">
+      
+      {/* 1. Recommended Courses Section */}
+      <p className="recomm-mock-heading">Recommended Courses For You</p>
+      <div className="recomm-mock-cards-container">
         {Recomm_cards.map((card, index) => (
-          <div key={index} className="card">
-            <h2>{card.title}</h2>
-            <a href={card.link} target="_blank" rel="noopener noreferrer">
-              <button>View Details</button>
+          <div key={index} className="recomm-mock-card course-card-variant">
+            <h2 className="recomm-mock-title">{card.title}</h2>
+            <a href={card.link} target="_blank" rel="noopener noreferrer" className="recomm-mock-btn-link">
+              <button className="recomm-mock-btn yellow-3d-btn">View Details</button>
             </a>
           </div>
         ))}
       </div>
-      <p className="heading">Free Mock Tests</p>
-      <div className="cards-container">
+      
+      {/* 2. Free Mock Tests Section */}
+      <p className="recomm-mock-heading">Free Mock Tests</p>
+      <div className="recomm-mock-cards-container">
         {Mock_cards.map((card, index) => (
-          <div key={index} className="card">
-            <h2>{card.title}</h2>
-            <a href={card.link} target="_blank" rel="noopener noreferrer">
-              <button>Start Attempting Free</button>
+          <div key={index} className="recomm-mock-card mock-card-variant">
+            <h2 className="recomm-mock-title">{card.title}</h2>
+            <a href={card.link} target="_blank" rel="noopener noreferrer" className="recomm-mock-btn-link">
+              <button className="recomm-mock-btn blue-3d-btn">Start Attempting Free</button>
             </a>
           </div>
         ))}
       </div>
-    </>
+
+    </div>
   );
 }

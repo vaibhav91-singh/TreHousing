@@ -2,7 +2,7 @@ import React from 'react';
 import './TestSeriesHeroSection.css';
 import testImg from '../../assets/testimg.png';
 
-export default function TestSeriesHeroSection() {
+export default function TestSeriesHeroSection({ onSearchChange, searchValue }) {
   return (
     <div className="hero-section">
       <div className="container">
@@ -21,9 +21,14 @@ export default function TestSeriesHeroSection() {
       </div>
 
       <div className="search-bar">
-        <input type="text" placeholder="Search for your Exam" />
+        <input 
+          type="text" 
+          placeholder="Search for your Exam" 
+          value={searchValue}
+          onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
+        />
         <span className="search-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#86A1AE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"/>
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>

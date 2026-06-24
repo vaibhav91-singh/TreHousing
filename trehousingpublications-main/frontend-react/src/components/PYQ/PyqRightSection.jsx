@@ -17,9 +17,6 @@ export default function MyComponent() {
     </div>
 
 
-
-
-
     <div className="sidebar">
 
 
@@ -27,7 +24,7 @@ export default function MyComponent() {
       <ul className="news-list">
         <li v-htmlFor="news in notification1" key={news.id} className="dropdown">
           <div className="dropdown-btn" onClick={(e) => { toggleDropdown(news.id)(e); }}>
-            <span className={ rotate: openDropdown === news.id }> > </span>{ news.title }
+            <span className={ rotate: openDropdown === news.id }> { news.title }</span>
           </div>
           <ul data-v-if="{openDropdown === news.id}" className="dropdown-content">
             <li v-htmlFor="link in news.links" key={link.id}>

@@ -107,3 +107,56 @@ class Syllabus(models.Model):
     
     class Meta:
         verbose_name_plural = "Syllabus"
+    
+# ==========================================================================
+# RE-ENGINEERED: ORIGINAL QUIZ SYSTEM INTEGRATION
+# ==========================================================================
+
+class Quiz(models.Model):
+    subject = models.ForeignKey(
+        'Subject', 
+        on_delete=models.CASCADE, 
+        related_name='quizzes',
+        null=True, 
+        blank=True
+    )
+    title = models.CharField(max_length=200) 
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        if self.subject:
+            return f"[{self.subject.title}] {self.title}"
+        return self.title
+
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
+    text = models.CharField(max_length=500) 
+
+    def __str__(self):
+        return f"{self.quiz.title} - {self.text[:50]}..."
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
+    text = models.CharField(max_length=200) 
+    is_correct = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
+
+# ==========================================================================
+# NEW FEATURE: CLOUD-LINKED SOLVED PAPERS ARCHITECTURE
+# ==========================================================================
+
+class SolvedPaper(models.Model):
+    # Subject ke sath mapping taaki filtering asaan ho
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="solved_papers")
+    title = models.CharField(max_length=255) # Jaise: "AKTU 2024 AI-DS Operating System Solved Paper"
+    year = models.IntegerField() # Jaise: 2024
+    paper_link = models.URLField(max_length=1000) # AWS S3 bucket ya Google Drive ka public link
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.title} ({self.year})"
+        
+    class Meta:
+        verbose_name_plural = "Solved Papers"

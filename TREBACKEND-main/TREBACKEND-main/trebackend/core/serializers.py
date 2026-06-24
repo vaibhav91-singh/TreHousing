@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, Subject, Exam_Pattern, Subject_Content, Syllabus
+from .models import Course, Subject, Exam_Pattern, Subject_Content, Syllabus, Quiz, Question, Choice, SolvedPaper, PYQ
 
 class SyllabusSerializer(serializers.ModelSerializer):
     filename = serializers.ReadOnlyField()
@@ -51,3 +51,41 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id', 'title', 'description', 'banner', 'subjects']
+
+
+# ==========================================================================
+# QUIZ, QUESTION, AND CHOICE SERIALIZERS
+# ==========================================================================
+class ChoiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Choice
+        # React frontend ko text aur correctness state dono chahiye score calculate karne ke liye
+        fields = ['id', 'text', 'is_correct']
+
+class QuestionSerializer(serializers.ModelSerializer):
+    # Ek question ki multiple choices (options) hongi, isliye many=True
+    choices = ChoiceSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Question
+        fields = ['id', 'text', 'choices']
+
+class QuizSerializer(serializers.ModelSerializer):
+    # Ek quiz ke andar multiple questions honge, isliye nested routing integration
+    questions = QuestionSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Quiz
+        fields = ['id', 'title', 'description', 'subject', 'questions']
+
+
+# ==========================================================================
+# NEW FEATURE: CLOUD-LINKED SOLVED PAPERS SERIALIZER
+# ==========================================================================
+class SolvedPaperSerializer(serializers.ModelSerializer):
+    # Isse string field me subject ka title (naam) direct pass ho jayega frontend tabs ke liye
+    subject_title = serializers.CharField(source='subject.title', read_only=True)
+
+    class Meta:
+        model = SolvedPaper
+        fields = ['id', 'subject', 'subject_title', 'title', 'year', 'paper_link', 'created_at']

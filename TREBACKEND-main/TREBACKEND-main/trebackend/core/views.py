@@ -3,6 +3,13 @@ from rest_framework.response import Response
 from .models import Course, Subject, Syllabus, PYQ, Sub_Courses
 from django.http import FileResponse, JsonResponse, Http404
 from django.conf import settings
+# For Quiz
+from .models import Quiz, Question, Choice
+from .serializers import QuizSerializer
+# For Solved Paper
+from rest_framework import status
+from .models import SolvedPaper
+from .serializers import SolvedPaperSerializer
 import os
 
 
@@ -175,3 +182,49 @@ def pyq_api(request):
             return JsonResponse({"error": "Invalid course, sub-course, subject, or file name"}, status=404)
 
     return JsonResponse({"error": "Invalid query parameters"}, status=400)
+
+    # ==========================================================================
+# NEW: QUIZ AND MOCK TEST API ENDPOINT
+# ==========================================================================
+
+@api_view(['GET'])
+def quiz_api(request):
+    quiz_id = request.GET.get('quiz_id')
+    subject_id = request.GET.get('subject_id')
+
+    # ✅ Case 1: Agar specific quiz_id mangi hai, toh questions aur options ke sath return karein
+    if quiz_id:
+        try:
+            quiz = Quiz.objects.prefetch_related('questions__choices').get(id=quiz_id)
+            serializer = QuizSerializer(quiz)
+            return Response(serializer.data)
+        except Quiz.DoesNotExist:
+            return Response({"error": "Quiz not found"}, status=404)
+
+    # ✅ Case 2: Agar subject_id pass ki hai, toh sirf us subject ke tests filter karein
+    if subject_id:
+        quizzes = Quiz.objects.filter(subject_id=subject_id).prefetch_related('questions__choices')
+        serializer = QuizSerializer(quizzes, many=True)
+        return Response(serializer.data)
+
+    # ✅ Case 3: Agar koi parameter nahi hai, toh saare available quizzes return karein
+    quizzes = Quiz.objects.prefetch_related('questions__choices').all()
+    serializer = QuizSerializer(quizzes, many=True)
+    return Response(serializer.data)
+
+    # ==========================================================================
+# NEW: Solved Papers API ENDPOINT
+# ==========================================================================
+
+
+
+
+@api_view(['GET'])
+def get_solved_papers(request):
+    """Sare solved papers fetch karne ke liye API endpoint"""
+    try:
+        papers = SolvedPaper.objects.all().order_by('-created_at')
+        serializer = SolvedPaperSerializer(papers, many=True)
+        return Response({"success": True, "data": serializer.data}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"success": False, "error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

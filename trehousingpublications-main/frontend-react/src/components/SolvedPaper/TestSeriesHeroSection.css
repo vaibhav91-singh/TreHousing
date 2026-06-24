@@ -1,181 +1,200 @@
+/* ==========================================================================
+   HERO SECTION - PREMIUM 3D BRAND IDENTITY
+   ========================================================================== */
+
 .hero-section {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 60px 5vw;
-  background: linear-gradient(135deg, var(--bg) 0%, var(--accent-bg) 100%);
-  position: relative;
-  overflow: hidden;
+    position: relative;
+    /* Soft top yellow to subtle background fluid tint */
+    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 60%, #eff6ff 100%);
+    padding: 60px 4vw 90px 4vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid #e2e8f0;
 }
 
+/* Background elements mapping for a modern portal feel */
 .hero-section::before {
-  content: "";
-  position: absolute;
-  top: -100px;
-  right: -100px;
-  width: 300px;
-  height: 300px;
-  background: var(--accent);
-  filter: blur(150px);
-  opacity: 0.1;
-  z-index: 0;
+    content: '';
+    position: absolute;
+    top: -10%;
+    right: -5%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(254, 240, 138, 0.4) 0%, rgba(255,255,255,0) 70%);
+    pointer-events: none;
 }
 
 .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 40px;
+    z-index: 2;
 }
 
 .content {
-  flex: 1;
-  max-width: 600px;
+    flex: 1;
+    max-width: 650px;
 }
 
 .heading {
-  font-size: 48px;
-  font-weight: 800;
-  color: var(--text-h);
-  line-height: 1.2;
-  margin-bottom: 24px;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+    margin: 0 0 20px 0;
+    letter-spacing: -1px;
 }
 
 .subheading {
-  font-size: 24px;
-  color: var(--text);
-  margin-bottom: 32px;
-  font-weight: 500;
-  line-height: 1.4;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    color: #475569;
+    line-height: 1.6;
+    margin: 0 0 15px 0;
+    font-weight: 500;
 }
 
+/* Branding Highlight using the Signature Golden Yellow */
 .highlight {
-  color: var(--accent);
-  font-weight: 700;
+    background: linear-gradient(120deg, #fef08a 0%, #fde047 100%);
+    padding: 2px 8px;
+    border-radius: 6px;
+    color: #1e293b;
+    font-weight: 700;
+    display: inline-block;
+    margin-top: 5px;
+    box-shadow: 2px 4px 10px rgba(234, 179, 8, 0.15);
 }
 
 .exam-count {
-  font-size: 18px;
-  color: var(--text);
-  font-weight: 500;
-  margin-bottom: 40px;
-  opacity: 0.8;
+    font-size: 0.95rem;
+    color: #0ea5e9; /* Electric Blue Accent */
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.2px;
 }
 
-.search-bar {
-  position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin-top: 20px;
-  background: var(--bg);
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.search-bar:focus-within {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 30px rgba(170, 59, 255, 0.1);
-}
-
-.search-bar input {
-  width: 100%;
-  padding: 18px 60px 18px 24px;
-  outline: none;
-  font-size: 18px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  color: var(--text-h);
-  background: transparent;
-  transition: border-color 0.3s ease;
-}
-
-.search-bar input:focus {
-  border-color: var(--accent);
-}
-
-.search-icon {
-  position: absolute;
-  right: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  cursor: pointer;
-}
-
+/* Illustration Vector Holder */
 .illustration {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .illustration img {
-  max-width: 100%;
-  height: auto;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1));
-  animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
-}
-
-/* ===================== RESPONSIVENESS ===================== */
-
-@media (max-width: 1024px) {
-  .heading {
-    font-size: 36px;
-  }
-  .subheading {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-section {
-    padding: 40px 20px;
-  }
-  
-  .container {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .content {
     max-width: 100%;
-    order: 2;
-  }
-
-  .illustration {
-    order: 1;
-    margin-bottom: 40px;
-    justify-content: center;
-  }
-
-  .search-bar {
-    margin: 20px auto 0;
-  }
+    height: auto;
+    max-height: 320px;
+    object-fit: contain;
+    /* Soft float animation to feel interactive */
+    animation: floatingGraphic 4s ease-in-out infinite;
 }
 
-@media (max-width: 480px) {
-  .heading {
-    font-size: 28px;
-  }
-  .subheading {
-    font-size: 18px;
-  }
-  .search-bar input {
-    padding: 14px 50px 14px 16px;
+/* Premium 3D Floating Search Bar Layer */
+.search-bar {
+    position: absolute;
+    bottom: -28px; /* Perfectly floats across the section border cutoff */
+    width: 100%;
+    max-width: 620px;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    
+    /* 3D Drop shadow stack to pop out over both sections */
+    box-shadow: 0 15px 35px -5px rgba(29, 78, 216, 0.1), 
+                0 10px 15px -5px rgba(0, 0, 0, 0.03),
+                inset 0 -3px 0 rgba(0, 0, 0, 0.04);
+                
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 10;
+}
+
+.search-bar:focus-within {
+    transform: translateY(-4px) scale(1.01);
+    border-color: #1d4ed8; /* Deep Royal Blue Focus border */
+    box-shadow: 0 20px 40px -5px rgba(29, 78, 216, 0.18), 
+                0 1px 3px rgba(0,0,0,0.05),
+                inset 0 -3px 0 rgba(0, 0, 0, 0.04);
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    background: transparent;
     font-size: 16px;
-  }
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.search-bar input:focus {
+    outline: none;
+}
+
+.search-bar input::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.search-icon {
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.search-bar:focus-within .search-icon {
+    transform: scale(1.15);
+}
+
+/* Animations */
+@keyframes floatingGraphic {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================================================== */
+
+@media screen and (max-width: 991px) {
+    .container {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 30px;
+    }
+    .illustration {
+        justify-content: center;
+    }
+    .illustration img {
+        max-height: 240px;
+    }
+    .search-bar {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .hero-section {
+        padding-bottom: 70px;
+    }
+    .heading {
+        margin-bottom: 15px;
+    }
+    .search-bar input {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
 }
