@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.jpeg';
 import './HeaderSec.css';
 
 export default function HeaderSec() {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [activeSubDropdown, setActiveSubDropdown] = useState({});
+  const [activeSubDropdown, setActiveSubDropdown] = useState(null); // Tracks index of selected category in sidebar
+  
+  /* nosemgrep: typescript.react.portability.i18next.jsx-not-internationalized */
   const [menuItems, setMenuItems] = useState([
     { name: "Home", path: "/" },
     { name: "Syllabus", submenu: [], path: "/syllabus" },
@@ -14,14 +16,14 @@ export default function HeaderSec() {
     { name: "Solved Paper", path: "/solvedpaper" },
     { name: "Mock Test", path: "/testseries" },
   ]);
-  
+
   const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuActive(!isMenuActive);
     if (isMenuActive) {
       setActiveDropdown(null);
-      setActiveSubDropdown({});
+      setActiveSubDropdown(null);
     }
   };
 
@@ -84,25 +86,28 @@ export default function HeaderSec() {
     }
 
     if (!clickedItem.submenu || clickedItem.submenu.length === 0) {
-        if (clickedItem.path) {
-            navigate(clickedItem.path);
-            closeMenu();
-            return;
-        }
+      if (clickedItem.path) {
+        navigate(clickedItem.path);
+        closeMenu();
+        return;
+      }
     }
 
-    setActiveDropdown(activeDropdown === index ? null : index);
-    setActiveSubDropdown({});
+    if (activeDropdown === index) {
+      setActiveDropdown(null);
+      setActiveSubDropdown(null);
+    } else {
+      setActiveDropdown(index);
+      // Automatically default highlight to the first sidebar item if data exists
+      if (clickedItem.submenu && clickedItem.submenu.length > 0) {
+        setActiveSubDropdown(0);
+      } else {
+        setActiveSubDropdown(null);
+      }
+    }
   };
 
-  const toggleSubDropdown = (parentIndex, subIndex) => {
-    const key = `${parentIndex}-${subIndex}`;
-    setActiveSubDropdown(prev => ({
-      [key]: !prev[key]
-    }));
-  };
-
-  const handleClick = (courseId, subjectId) => {
+  const handleItemClick = (courseId, subjectId) => {
     if (!courseId) return;
     const activeItem = menuItems[activeDropdown];
     const routePath = activeItem && activeItem.name === "PYQP & Answer Key" ? "/PYQ" : "/syllabus";
@@ -120,12 +125,12 @@ export default function HeaderSec() {
   const closeMenu = () => {
     setIsMenuActive(false);
     setActiveDropdown(null);
-    setActiveSubDropdown({});
+    setActiveSubDropdown(null);
   };
 
   return (
     <div className="header-container">
-      <nav>
+      <nav className="navbar-main">
         <div className="logo" onClick={() => { navigate("/"); closeMenu(); }}>
           <img src={logo} alt="Logo" />
         </div>
@@ -138,9 +143,10 @@ export default function HeaderSec() {
 
         <ul className={`nav-links ${isMenuActive ? 'active' : ''}`}>
           {menuItems.map((item, index) => (
-            <li key={index} className="dropdown">
+            <li key={index} className="nav-item-root">
               <a
                 href="#"
+                className="nav-link-anchor"
                 onClick={(e) => {
                   e.preventDefault();
                   toggleDropdown(index);
@@ -154,31 +160,41 @@ export default function HeaderSec() {
                 )}
               </a>
 
+              {/* MEGA MENU SYSTEM (Triggers for Syllabus or PYQ) */}
               {item.submenu && item.submenu.length > 0 && activeDropdown === index && (
-                <ul className="dropdown-menu show">
-                  {item.submenu.map((subItem, subIndex) => (
-                    <li key={subIndex} className="sub-dropdown">
-                      <a href="#" onClick={(e) => { e.preventDefault(); toggleSubDropdown(index, subIndex); }}>
+                <div className="mega-menu-container">
+                  
+                  {/* Left Sidebar: e.g., Teaching, Banking, State Exams */}
+                  <div className="mega-sidebar">
+                    {item.submenu.map((subItem, subIndex) => (
+                      <div
+                        key={subIndex}
+                        className={`sidebar-item ${activeSubDropdown === subIndex ? 'active' : ''}`}
+                        onMouseEnter={() => setActiveSubDropdown(subIndex)}
+                      >
                         {subItem.name}
-                        {subItem.submenu && (
-                          <span className={`sub-dropdown-icon ${activeSubDropdown[`${index}-${subIndex}`] ? 'rotated' : ''}`}>
-                            <i className="bi bi-caret-right-fill"></i>
-                          </span>
-                        )}
-                      </a>
+                        <i className="bi bi-chevron-right"></i>
+                      </div>
+                    ))}
+                  </div>
 
-                      {subItem.submenu && activeSubDropdown[`${index}-${subIndex}`] && (
-                        <ul className="sub-dropdown-menu show">
-                          {subItem.submenu.map((subSubItem, subSubIndex) => (
-                            <li key={subSubIndex} onClick={() => handleClick(subItem.courseId, subSubItem.id)}>
-                              <a href="#" onClick={(e) => e.preventDefault()}>{subSubItem.name}</a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                  {/* Right Content Grid: Displays course/exam options inside selected vertical */}
+                  <div className="mega-grid">
+                    {item.submenu[activeSubDropdown]?.submenu?.map((subSubItem, subSubIndex) => (
+                      <div
+                        key={subSubIndex}
+                        className="grid-cell"
+                        onClick={() => handleItemClick(item.submenu[activeSubDropdown].courseId, subSubItem.id)}
+                      >
+                        {subSubItem.name}
+                      </div>
+                    ))}
+                    {(!item.submenu[activeSubDropdown]?.submenu || item.submenu[activeSubDropdown]?.submenu.length === 0) && (
+                      <div className="mega-menu-empty">No exams available found for this stream.</div>
+                    )}
+                  </div>
+
+                </div>
               )}
             </li>
           ))}

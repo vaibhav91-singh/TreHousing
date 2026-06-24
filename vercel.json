@@ -20,6 +20,7 @@ trehousingpublications-main
       "dest": "TREBACKEND-main/TREBACKEND-main/trebackend/index.py"
     },
     {
+      
       "src": "/media/(.*)",
       "dest": "TREBACKEND-main/TREBACKEND-main/trebackend/index.py"
     },
