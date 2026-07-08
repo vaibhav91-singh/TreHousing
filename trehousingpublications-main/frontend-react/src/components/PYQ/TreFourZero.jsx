@@ -4,8 +4,6 @@ import bpscImg from '@/assets/PYQ-Image/BPSC-PYQ.png';
 import './TreFourZero.css';
 
 export default function FourZero() {
-  // TODO: Convert Vue data(), methods, and mounted() manually
-  
   return (
     <>
       <div className="main-content">

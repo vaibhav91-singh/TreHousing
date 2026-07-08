@@ -18,7 +18,8 @@ export default function HomePageView() {
       <Header />
       <HeroSec />
       {/* <AboutUs /> */}
-      <MissionVision />
+      <MissionVision />   {/*  Current name on page is Goverment Competitve Exam Held*/}
+    
       <JobOpportunities />
       <RefBook />
       <DownloadApp />

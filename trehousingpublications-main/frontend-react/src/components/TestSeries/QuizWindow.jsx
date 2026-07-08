@@ -3,41 +3,54 @@ import React, { useState, useEffect } from 'react';
 import './QuizWindow.css';
 
 const QuizWindow = ({ subject, onBack }) => {
-  // Yahan 'subject' prop ke andar ab admin card ki Unique Database ID aa rahi hai
   const [quizDetails, setQuizDetails] = useState(null);
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
   const [selectedChoice, setSelectedChoice] = useState(null);
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
   const [completed, setCompleted] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(120);
 
-// QuizWindow.jsx ke andar ka useEffect block aise badal dijiye:
-useEffect(() => {
-  // Yeh saare quizzes mangayega aur frontend par exact filter query check karega
-  fetch('http://127.0.0.1:8000/api/v1/quiz/')
-    .then((res) => res.json())
-    .then((data) => {
-      // Jo title list mein se match karega strictly wahi array profile nikalega
-      const matchedQuiz = data.find(q => q.title === subject);
-      setQuizDetails(matchedQuiz || null);
-      setLoading(false);
-    })
-    .catch((err) => {
-      console.error("Lookup filter failed:", err);
-      setLoading(false);
-    });
-}, [subject]);
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/v1/quiz/')
+      .then((res) => res.json())
+      .then((data) => {
+        const matchedQuiz = data.find(q => q.title === subject);
+        setQuizDetails(matchedQuiz || null);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Lookup filter failed:", err);
+        setLoading(false);
+      });
+  }, [subject]);
 
-  if (loading) return <div className="quiz-container" style={{textAlign: 'center'}}>Loading Strict Verified Test Profile...</div>;
-  if (!quizDetails) return <div className="quiz-container">This test profile does not exist on server.</div>;
+  // Timer logic
+  useEffect(() => {
+    if (completed || selectedChoice !== null || !quizDetails) return;
+    if (timeLeft === 0) {
+      handleNext();
+      return;
+    }
+    const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft, completed, selectedChoice, quizDetails]);
 
-  const questions = quizDetails.questions || [];
-  if (questions.length === 0) return <div className="quiz-container">Admin has not added questions to this test yet.</div>;
-
-  const currentQuestion = questions[currentQuestionIdx];
+  // Function to save result to localStorage (Anonymous tracking)
+  const saveToHistory = (quizTitle, finalScore, total) => {
+    const history = JSON.parse(localStorage.getItem('quizHistory') || '[]');
+    const newEntry = {
+      title: quizTitle,
+      score: finalScore,
+      total: total,
+      date: new Date().toLocaleString()
+    };
+    history.push(newEntry);
+    localStorage.setItem('quizHistory', JSON.stringify(history));
+  };
 
   const handleOptionClick = (choice) => {
-    if (selectedChoice !== null) return; 
+    if (selectedChoice !== null) return;
     setSelectedChoice(choice.id);
     if (choice.is_correct) {
       setScore((prev) => prev + 1);
@@ -46,27 +59,28 @@ useEffect(() => {
 
   const handleNext = () => {
     setSelectedChoice(null);
-    if (currentQuestionIdx + 1 < questions.length) {
+    setTimeLeft(120);
+    if (currentQuestionIdx + 1 < (quizDetails?.questions.length || 0)) {
       setCurrentQuestionIdx((prev) => prev + 1);
     } else {
+      saveToHistory(quizDetails.title, score, quizDetails.questions.length); // Save here
       setCompleted(true);
     }
   };
+
+  if (loading) return <div className="quiz-container">Loading Test Profile...</div>;
+  if (!quizDetails) return <div className="quiz-container">Test not found.</div>;
+
+  const questions = quizDetails.questions || [];
+  const currentQuestion = questions[currentQuestionIdx];
 
   if (completed) {
     return (
       <div className="quiz-container result-card">
         <div className="result-icon">🎉</div>
         <h2 className="quiz-title">Quiz Completed!</h2>
-        <p style={{ color: '#6b7280', marginTop: '0.5rem' }}>Test: <strong>{quizDetails.title}</strong></p>
-        <div className="score-badge">
-          Score: {score} / {questions.length}
-        </div>
-        <div>
-          <button onClick={onBack} className="btn-next">
-            Back to Test Series
-          </button>
-        </div>
+        <div className="score-badge">Score: {score} / {questions.length}</div>
+        <button onClick={onBack} className="btn-next">Back to Test Series</button>
       </div>
     );
   }
@@ -75,29 +89,24 @@ useEffect(() => {
     <div className="quiz-container">
       <div className="quiz-header">
         <h3 className="quiz-title">{quizDetails.title}</h3>
-        <span className="quiz-progress">
-          Question: {currentQuestionIdx + 1} / {questions.length}
-        </span>
+        <div className="timer-badge">
+          {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
+        </div>
       </div>
 
-      <p className="question-text">
-        Q. {currentQuestion.text}
-      </p>
+      <p className="question-text">Q. {currentQuestion.text}</p>
 
       <div className="choices-list">
-        {currentQuestion.choices?.map((choice) => {
-          const isSelected = selectedChoice === choice.id;
-          return (
-            <button
-              key={choice.id}
-              onClick={() => handleOptionClick(choice)}
-              disabled={selectedChoice !== null}
-              className={`choice-button ${isSelected ? 'selected' : ''}`}
-            >
-              {choice.text}
-            </button>
-          );
-        })}
+        {currentQuestion.choices?.map((choice) => (
+          <button
+            key={choice.id}
+            onClick={() => handleOptionClick(choice)}
+            disabled={selectedChoice !== null}
+            className={`choice-button ${selectedChoice === choice.id ? 'selected' : ''}`}
+          >
+            {choice.text}
+          </button>
+        ))}
       </div>
 
       <div className="quiz-footer">

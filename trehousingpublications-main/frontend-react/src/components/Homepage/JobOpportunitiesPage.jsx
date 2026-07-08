@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './JobOpportunitiesPage.css';
+import JobCard from '../JobVacancy/JobCard';
 
 export default function JobOpportunitiesPage() {
   const jobs = [
@@ -116,6 +117,7 @@ export default function JobOpportunitiesPage() {
           ))}
         </div>
       </div>
+   
     </div>
   );
 }

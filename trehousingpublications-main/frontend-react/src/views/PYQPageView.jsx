@@ -12,8 +12,8 @@ export default function PYQPageView() {
   return (
     <div className="pyq-page-view">
       <Header />
-      <PYQup />
-      <PyqOverview />
+      {/* <PYQup /> */}
+      {/* <PyqOverview /> */}
       <TextTable />
       <BiharSyllabusComponent />
       <PyqSyPdf />

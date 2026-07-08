@@ -40,22 +40,23 @@ export default function TextTable() {
     }));
   };
 
-  if (isLoading) return null;
+  if (isLoading) return <div className="loading-spinner"></div>;
 
   return (
-    <div className="syllabus-container">
-      <div className="syllabus-overview">
+    <div className="table-wrapper">
+      <div className="table-header">
         <h2>{pageContent.overviewTitle}</h2>
         <p>{pageContent.overviewDescription}</p>
       </div>
-      <div className="table-container">
+      
+      <div className="responsive-table">
         <table>
           <thead>
             <tr>
-              <th></th>
+              <th>Topics</th>
               <th>Subject</th>
-              <th>Total Questions</th>
-              <th>Total Marks</th>
+              <th>Questions</th>
+              <th>Marks</th>
               <th>Duration</th>
             </tr>
           </thead>
@@ -64,11 +65,11 @@ export default function TextTable() {
               const parsed = parsePattern(pattern);
               return parsed.map((item, i) => (
                 <tr key={`${index}-${i}`}>
-                  {i === 0 && <td rowSpan={parsed.length}>{pattern.topics}</td>}
+                  {i === 0 && <td rowSpan={parsed.length} className="topic-cell">{pattern.topics}</td>}
                   <td>{item.sub_topic}</td>
                   <td>{item.questions}</td>
                   <td>{item.marks}</td>
-                  {i === 0 && <td rowSpan={parsed.length}>{pattern.duration}hr</td>}
+                  {i === 0 && <td rowSpan={parsed.length} className="duration-cell">{pattern.duration}hr</td>}
                 </tr>
               ));
             })}

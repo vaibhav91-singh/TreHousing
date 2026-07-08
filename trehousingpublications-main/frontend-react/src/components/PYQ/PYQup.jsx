@@ -60,10 +60,11 @@ export default function PYQup() {
             <p className="bpsc-normal">{pageData.introText}</p>
           </div>
           <div className="trePYQtable">
+            {/* sbse upr wala h latest news  then referal  */}
             <table>
               <thead>
                 <tr className="tble-hed">
-                  <td colSpan="2">{pageData.tableTitle || 'BPSC TRE Question Papers'}</td>
+                  <td colSpan="2">{pageData.tableTitle || 'BPSC TRE  Question Papers'}</td>
                 </tr>
               </thead>
               <tbody>

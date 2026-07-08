@@ -2,9 +2,37 @@
   background-color: #052A63;
   color: #fff;
   display: flex;
+  align-items: center;
+  position: relative; /* Zaroori hai */
+  overflow: hidden;   /* Splash bahar na nikle */
+  padding: 40px 0;
 }
 
-.first-box { width: 55%; }
+.first-box { 
+  width: 55%; 
+  position: relative; 
+  z-index: 2; /* Text ko upar rakhne ke liye */
+}
+
+/* Splash Effect Layer */
+.cont-downloadBox::after {
+  content: "";
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+  filter: blur(60px); /* Splash ka effect */
+  z-index: 1;
+  pointer-events: none; /* Mouse effect na kare */
+  animation: moveSplash 6s infinite alternate;
+}
+
+@keyframes moveSplash {
+  from { transform: translate(0, 0); }
+  to { transform: translate(50px, 20px); }
+}
 
 .main-text {
   padding: 50px;
@@ -13,32 +41,27 @@
   font-size: 42px;
   font-weight: 500;
   line-height: 50.83px;
-  text-align: left;
   margin-left: 24px;
 }
 
 .store-buttons {
   display: flex;
-  flex-direction: row;
   padding-left: 72px;
   gap: 20px;
 }
 
-.imageStore {
-  height: auto;
-  width: 150px;
-  max-width: 45%;
-}
+.imageStore { width: 150px; }
 
 .second-box .mobile-view {
-  height: auto;
   width: 100%;
   max-width: 350px;
+  z-index: 2;
+  position: relative;
 }
 
 @media (max-width: 768px) {
   .cont-downloadBox { display: block; text-align: center; }
   .first-box { width: 100%; }
-  .main-text { max-width: 100%; padding: 30px; font-size: 35px; }
+  .main-text { padding: 30px; font-size: 30px; margin-left: 0; }
   .store-buttons { padding-left: 0; justify-content: center; }
 }

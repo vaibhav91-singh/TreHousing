@@ -1,0 +1,35 @@
+.page-title {
+  text-align: center;
+  font-size: 3.5rem; /* Bada aur bold */
+  font-weight: 800;
+  margin: 40px 0;
+  padding: 20px;
+  
+  /* Theme Colors: Yellow text with a subtle blue shadow for depth */
+  color: #fbbf24; /* Vibrant Yellow */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+  
+  /* Background: Black/Dark contrast */
+  background: transparent; 
+  position: relative;
+}
+
+/* Add a line under the heading for extra professionalism */
+.page-title::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 4px;
+  background: #3b82f6; /* Blue Accent */
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+/* Responsive: Mobile ke liye font chhota kar do */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2.2rem;
+  }
+}

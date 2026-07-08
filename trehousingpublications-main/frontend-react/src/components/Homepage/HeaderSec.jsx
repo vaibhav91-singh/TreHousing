@@ -1,3 +1,4 @@
+// src/components/Header/HeaderSec.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.jpeg';
@@ -6,15 +7,16 @@ import './HeaderSec.css';
 export default function HeaderSec() {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
-  const [activeSubDropdown, setActiveSubDropdown] = useState(null); // Tracks index of selected category in sidebar
+  const [activeSubDropdown, setActiveSubDropdown] = useState(null);
   
-  /* nosemgrep: typescript.react.portability.i18next.jsx-not-internationalized */
   const [menuItems, setMenuItems] = useState([
     { name: "Home", path: "/" },
     { name: "Syllabus", submenu: [], path: "/syllabus" },
     { name: "PYQP & Answer Key", submenu: [], path: "/PYQ" },
     { name: "Solved Paper", path: "/solvedpaper" },
     { name: "Mock Test", path: "/testseries" },
+    { name: "Job Vacancy", path: "/job" },
+    { name: "Performance", path: "/performance" }
   ]);
 
   const navigate = useNavigate();
@@ -25,6 +27,12 @@ export default function HeaderSec() {
       setActiveDropdown(null);
       setActiveSubDropdown(null);
     }
+  };
+
+  const closeMenu = () => {
+    setIsMenuActive(false);
+    setActiveDropdown(null);
+    setActiveSubDropdown(null);
   };
 
   const fetchSyllabusData = async () => {
@@ -71,6 +79,14 @@ export default function HeaderSec() {
 
   const toggleDropdown = async (index) => {
     const clickedItem = menuItems[index];
+
+    // Special Handling for Performance: Direct Navigation
+    if (clickedItem.name === "Performance") {
+      navigate(clickedItem.path);
+      closeMenu();
+      return;
+    }
+
     const newMenuItems = [...menuItems];
 
     if (clickedItem.name === "Syllabus" && clickedItem.submenu.length === 0) {
@@ -98,7 +114,6 @@ export default function HeaderSec() {
       setActiveSubDropdown(null);
     } else {
       setActiveDropdown(index);
-      // Automatically default highlight to the first sidebar item if data exists
       if (clickedItem.submenu && clickedItem.submenu.length > 0) {
         setActiveSubDropdown(0);
       } else {
@@ -120,12 +135,6 @@ export default function HeaderSec() {
       }
     }
     closeMenu();
-  };
-
-  const closeMenu = () => {
-    setIsMenuActive(false);
-    setActiveDropdown(null);
-    setActiveSubDropdown(null);
   };
 
   return (
@@ -160,11 +169,8 @@ export default function HeaderSec() {
                 )}
               </a>
 
-              {/* MEGA MENU SYSTEM (Triggers for Syllabus or PYQ) */}
               {item.submenu && item.submenu.length > 0 && activeDropdown === index && (
                 <div className="mega-menu-container">
-                  
-                  {/* Left Sidebar: e.g., Teaching, Banking, State Exams */}
                   <div className="mega-sidebar">
                     {item.submenu.map((subItem, subIndex) => (
                       <div
@@ -178,7 +184,6 @@ export default function HeaderSec() {
                     ))}
                   </div>
 
-                  {/* Right Content Grid: Displays course/exam options inside selected vertical */}
                   <div className="mega-grid">
                     {item.submenu[activeSubDropdown]?.submenu?.map((subSubItem, subSubIndex) => (
                       <div
@@ -193,7 +198,6 @@ export default function HeaderSec() {
                       <div className="mega-menu-empty">No exams available found for this stream.</div>
                     )}
                   </div>
-
                 </div>
               )}
             </li>

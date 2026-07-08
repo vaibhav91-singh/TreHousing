@@ -40,35 +40,8 @@ export default function HeaderDropdown() {
   return (
     <nav className="header">
       <ul className="menu">
-        <li className="dropdown" onClick={(e) => e.stopPropagation()}>
-          <span onClick={() => toggleDropdown('previousYearPaper')}>
-            <i className="bi bi-newspaper"></i>Previous Year Paper
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="14px" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>
-          </span>
-          {dropdowns.previousYearPaper && (
-            <ul className="dropdown-menu">
-              <li><a href="#">2024 Papers</a></li>
-              <li><a href="#">2023 Papers</a></li>
-              <li><a href="#">2022 Papers</a></li>
-            </ul>
-          )}
-        </li>
-        <li className="dropdown" onClick={(e) => e.stopPropagation()}>
-          <span onClick={() => toggleDropdown('exams')}>
-            <i className="bi bi-pencil-square"></i>Exams
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height="14px" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>
-          </span>
-          {dropdowns.exams && (
-            <ul className="dropdown-menu">
-              <li><a href="#">Upcoming Exams</a></li>
-              <li><a href="#">Past Exam Results</a></li>
-            </ul>
-          )}
-        </li>
+        <marquee behavior="scroll" direction="left">Solved papers of all major exams 2022, including objective and descriptive sections, MCQs, PYQs, and mock tests with clear answers and explanations for effective preparation.</marquee>
+        
         {/* Other menu items... */}
       </ul>
     </nav>

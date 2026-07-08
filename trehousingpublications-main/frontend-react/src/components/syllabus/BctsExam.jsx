@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import './BctsExam.css';
 
+
+
 export default function BctsExam() {
   const [course, setCourse] = useState(null);
   const [subject, setSubject] = useState(null);
@@ -111,7 +113,10 @@ export default function BctsExam() {
   if (loading) return <div className="loading">Loading...</div>;
 
   return (
-    <div className="container">
+    // <div className="container">
+    <>
+    <h3>BCTS.JSX</h3> file name
+    <div className="main-container">
       <div className="content">
         {course && subject ? (
           <>
@@ -132,7 +137,7 @@ export default function BctsExam() {
           <div className="no-data">Syllabus not found</div>
         )}
       </div>
-
+</div>
       {showPopup && (
         <div className="popup-overlay" onClick={() => setShowPopup(false)}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
@@ -146,6 +151,6 @@ export default function BctsExam() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

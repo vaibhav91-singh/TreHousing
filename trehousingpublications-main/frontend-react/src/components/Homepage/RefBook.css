@@ -1,124 +1,305 @@
+/* ====================================
+   REFERENCE BOOKS SECTION
+==================================== */
+
 .reference-books-wrapper {
-  background-color: #fdf5f5;
   width: 100%;
-  padding: 60px 0;
-  font-family: 'Inter', sans-serif;
+  padding: 80px 20px;
+  background: linear-gradient(
+    135deg,
+    #fffef7 0%,
+    #fff9dd 40%,
+    #eef5ff 100%
+  );
+  font-family: "Inter", sans-serif;
   overflow: hidden;
 }
 
 .reference-books {
-  text-align: center;
-  width: 100%;
   max-width: 1400px;
-  margin: 0 auto;
+  margin: auto;
+  text-align: center;
 }
 
+/* ====================================
+   MAIN CONTAINER
+==================================== */
+
 .modern-books-pill {
-  background: white;
-  border-radius: 60px;
-  padding: 15px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.02);
-  display: inline-block;
-  max-width: 100%;
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 30px;
+  border: 1px solid rgba(0, 86, 214, 0.08);
+  box-shadow:
+    0 20px 60px rgba(0, 86, 214, 0.08),
+    0 8px 25px rgba(255, 193, 7, 0.08);
 }
+
+/* ====================================
+   BOOK LIST
+==================================== */
 
 .books-container {
   display: flex;
-  flex-wrap: nowrap;
-  gap: 15px;
+  gap: 24px;
   overflow-x: auto;
-  padding: 10px;
+  scroll-behavior: smooth;
+  padding: 10px 5px 20px;
+  scrollbar-width: none;
 }
 
+.books-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* ====================================
+   BOOK CARD
+==================================== */
+
 .book-card-modern {
+  position: relative;
   flex: 0 0 auto;
-  width: 200px;
-  text-align: left;
-  background: white;
-  border: 1px solid #f0f0f0;
-  border-radius: 12px;
-  transition: all 0.3s ease;
+  width: 230px;
+  background: #ffffff;
+  border-radius: 24px;
   overflow: hidden;
+  border: 1px solid #edf2ff;
+  transition: all 0.35s ease;
+  box-shadow:
+    0 8px 24px rgba(0, 86, 214, 0.08);
+}
+
+/* Top Accent Bar */
+
+.book-card-modern::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(
+    90deg,
+    #ffc107,
+    #ffd54f,
+    #0056d6
+  );
 }
 
 .book-card-modern:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-10px);
+  border-color: #ffc107;
+  box-shadow:
+    0 25px 50px rgba(0, 86, 214, 0.15),
+    0 10px 20px rgba(255, 193, 7, 0.15);
 }
 
+/* ====================================
+   IMAGE AREA
+==================================== */
+
 .image-holder {
-  width: 100%;
-  height: 280px;
+  height: 310px;
+  padding: 20px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 193, 7, 0.15),
+      transparent 45%
+    ),
+    linear-gradient(
+      180deg,
+      #ffffff,
+      #f5f9ff
+    );
 }
 
 .book-image-modern {
-  width: 80%;
-  height: 90%;
+  width: 100%;
+  max-width: 170px;
+  height: auto;
   object-fit: contain;
+  transition: transform 0.4s ease;
 }
 
-.details-section { padding: 10px 15px; }
+.book-card-modern:hover .book-image-modern {
+  transform: scale(1.08);
+}
+
+/* ====================================
+   DETAILS
+==================================== */
+
+.details-section {
+  padding: 18px;
+}
 
 .book-card-title {
-  color: #444;
-  font-weight: 500;
-  font-size: 15px;
-  margin-bottom: 10px;
+  color: #003b95;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 12px;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
+
+/* ====================================
+   RATINGS
+==================================== */
 
 .rating-modern {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
-.stars-modern { color: #f1c40f; font-size: 20px; }
+.stars-modern {
+  color: #ffc107;
+  font-size: 18px;
+}
 
 .rating-value-modern {
-  font-size: 14px;
-  font-weight: 600;
-  background-color: #2e7d32;
+  background: linear-gradient(
+    135deg,
+    #0056d6,
+    #003b95
+  );
   color: white;
-  padding: 1px 12px;
-  border-radius: 6px;
+  padding: 5px 12px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
 }
+
+/* ====================================
+   PRICE SECTION
+==================================== */
 
 .price-section-modern {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 14px;
 }
 
 .original-price-row {
-  display: flex;
-  align-items: center;
-  color: #c0392b;
+  color: #ff9800;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .original-price-val {
   text-decoration: line-through;
-  margin-right: 2px;
 }
 
 .free-tag {
-  font-size: 18px;
+  color: #0056d6;
+  font-size: 20px;
   font-weight: 800;
-  color: #2e7d32;
 }
 
+/* ====================================
+   BUTTON
+==================================== */
+
 .view-all-btn {
-  background: linear-gradient(to bottom, #0056d6, #003b95);
-  color: white;
-  padding: 15px 45px;
-  border-radius: 30px;
-  font-weight: 600;
-  font-size: 18px;
+  margin-top: 40px;
+  background: linear-gradient(
+    135deg,
+    #0056d6,
+    #003b95
+  );
+  color: #fff;
   border: none;
+  padding: 16px 42px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.35s ease;
+  box-shadow:
+    0 15px 35px rgba(0, 86, 214, 0.3);
+}
+
+.view-all-btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 20px 40px rgba(0, 86, 214, 0.45);
+}
+
+/* ====================================
+   TABLET
+==================================== */
+
+@media (max-width: 992px) {
+  .book-card-modern {
+    width: 210px;
+  }
+
+  .image-holder {
+    height: 280px;
+  }
+}
+
+/* ====================================
+   MOBILE
+==================================== */
+
+@media (max-width: 768px) {
+  .reference-books-wrapper {
+    padding: 50px 15px;
+  }
+
+  .modern-books-pill {
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .book-card-modern {
+    width: 180px;
+  }
+
+  .image-holder {
+    height: 240px;
+    padding: 15px;
+  }
+
+  .book-card-title {
+    font-size: 14px;
+  }
+
+  .view-all-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* ====================================
+   SMALL MOBILE
+==================================== */
+
+@media (max-width: 480px) {
+  .books-container {
+    gap: 16px;
+  }
+
+  .book-card-modern {
+    width: 165px;
+  }
+
+  .image-holder {
+    height: 210px;
+  }
+
+  .details-section {
+    padding: 14px;
+  }
 }

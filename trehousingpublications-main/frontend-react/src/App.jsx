@@ -8,8 +8,9 @@ import SolvedPaperView from './views/SolvedPaperView.jsx';
 import TestSeriesView from './views/TestSeriesView.jsx';
 import TermsAndConditions from './views/TermsAndConditions.jsx';
 import PrivacyPolicy from './views/PrivacyPolicy.jsx';
-
-
+import JobVacancy from './views/JobVacancy.jsx';
+import ResultDashbord from './views/ResultDashbord.jsx';
+  
 // Extend the window interface type safety for your custom window property object
 if (typeof window !== 'undefined') {
   window.webbot = window.webbot || [];
@@ -53,6 +54,8 @@ function App() {
         <Route path="/testseries" element={<TestSeriesView />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/job" element={<JobVacancy />} />
+        <Route path="/performance" element={<ResultDashbord />} />
       </Routes>
       
     </BrowserRouter>

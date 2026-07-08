@@ -1,233 +1,49 @@
-/* Loading styles */
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 300px;
-  width: 100%;
+.table-wrapper {
+  margin: 20px 0;
+  border: 1px solid #0277bd;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-.loading-spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  border-top: 4px solid #3498db;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
+.table-header {
+  background-color: #0277bd;
+  color: #ffffff;
+  padding: 20px;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Not available message styles */
-.not-available-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px;
-  width: 100%;
-  text-align: center;
-}
-
-.not-available-container h2 {
-  font-size: 24px;
-  color: #6c757d;
-}
-/* Your existing styles can remain here */
-
-
-
-
-  /* Table container with adjusted height and overflow */
-  .table-container {
-    width: 90%;
-    max-width: 1200px;
-    height: 600px; /* Original height */
-    margin: 30px auto;
-    overflow-x: auto; /* Enable horizontal scrolling */
-  }
-
-
- /* Container for the entire syllabus content */
-.syllabus-container {
-  width: 90%; /* Match the table's width */
-  max-width: 1200px;
-  margin: 0 auto; /* Center the content */
-}
-
-/* Syllabus Overview Section */
-.syllabus-overview {
-  width: 100%; /* Take full width inside the container */
-  text-align: left; /* Align text to the left */
-}
-
-.syllabus-overview h2 {
-  color: #0073e6; /* Blue color for the upper section heading */
-  font-size: 1.5rem; /* Font size for h2 heading */
-}
-
-.syllabus-overview p {
-  color: #000000; /* Black color for paragraph */
-  font-size: 1rem; /* Font size for paragraphs */
-}
-
-/* Table Container Styling */
-.table-container {
-  width: 100%;
+.responsive-table {
   overflow-x: auto;
-  margin: 30px auto;
 }
 
-/* Additional Information Section */
-.additional-info h3 {
-  color: #000000; /* Black color for lower section heading h3 */
-  font-size: 1.5rem; /* Font size for h3 */
-}
-
-.additional-info h4 {
-  color: #000000; /* Black color for lower section heading h4 */
-  font-size: 1.25rem; /* Font size for h4 */
-}
-
-/* Additional Info Text */
-.additional-info ul li {
-  color: #444; /* Black color for list items */
-  font-size: 1rem; /* Font size for list items */
-}
-
-/* Align text above and below the table with the table container width */
-.text-above, .text-below {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: left; /* Left-align the text */
-}
-
-/* Fix: Explicitly target the heading under text-below */
-.text-below h3 {
-  color: #000000; /* Black color for the heading under text-below */
-  font-size: 1.5rem; /* Font size for h3 under text-below */
-}
-
-/* Table styling */
 table {
   width: 100%;
   border-collapse: collapse;
-  text-align: center;
-  background: white;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  table-layout: fixed;
-  height: 90%; /* Ensure the table fits inside the container */
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .syllabus-container {
-    width: 93%;
-    max-width: 100%;
-  }
-  table {
-    font-size: 10px;
-  }
-  th, td {
-    padding: 6px;
-    font-size: 12px;
-  }
+th {
+  background-color: #e1f5fe;
+  color: #01579b;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ffeb3b;
 }
 
-  /* Table styling */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    background: white;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    table-layout: fixed;
-    height: 90%; /* Ensure the table fits inside the container */
-  }
-  
-  /* Column width adjustments */
-  .category-col {
-    width: 45%;
-  }
-  
-  .subject-col {
-    width: 50%;
-    text-align: left;
-  }
-  
-  .questions-col {
-    width: 20%;
-  }
-  
-  .marks-col {
-    width: 20%;
-  }
-  
-  .duration-col {
-    width: 15%; /* Reduced width */
-  }
-  
-  /* Header styling */
-  th {
-    background-color: #f54254;
-    color: white;
-    padding: 18px;
-    font-size: 17px;
-    font-weight: bold;
-  }
-  
-  /* Table cell styling */
-  td {
-    border: 1px solid #000;
-    padding: 14px;
-    font-size: 18px;
-    font-weight: bold;
-    height: 60px;
-    vertical-align: middle;
-    word-wrap: break-word; /* Allow text to break and wrap in the cell */
-    overflow-wrap: break-word; /* Ensure long words break */
-  }
-  
-  /* Footer (Total row) */
-  tfoot td {
-    font-weight: bold;
-    background-color: #fff;
-  }
-  
-  /* Only mobile adjustments */
-  @media (max-width: 768px) {
-    .table-container {
-      width: 93%; /* Full width for mobile */
-      height: auto; /* Allow height to adjust */
-      margin: 10px; /* Reduced margin */
-      overflow-x: auto; /* Allow horizontal scrolling if needed */
-    }
-  
-    table {
-      font-size: 10px; /* Reduce font size for mobile */
-    }
-  
-    th, td {
-      padding: 6px; /* Reduce padding */
-      font-size: 12px; /* Make font size smaller */
-    }
-  
-    .category-col,
-    .subject-col,
-    .questions-col,
-    .marks-col,
-    .duration-col {
-      width: auto; /* Allow columns to adjust */
-    }
-  
-    .table-container table {
-      max-height: 350px; /* Reduce max height */
-    }
-  }
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Yellow accent for grouped cells */
+.topic-cell, .duration-cell {
+  background-color: #fffdf0;
+  font-weight: 600;
+  color: #0277bd;
+}
+
+tr:hover {
+  background-color: #f1f9ff;
+}
+
+@media (max-width: 600px) {
+  th, td { padding: 8px; font-size: 13px; }
+}

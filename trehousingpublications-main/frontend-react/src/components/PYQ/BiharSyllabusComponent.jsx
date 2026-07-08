@@ -29,12 +29,13 @@ export default function BiharSyllabusComponent() {
   if (isLoading) return <div className="loading-container"><div className="loading-spinner"></div></div>;
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md ml-3">
-      <h2 className="text-xl font-bold mb-4">{title || 'Will be available soon'}</h2>
+    <div className="syllabus-card">
+      <h2 className="syllabus-title">{title || 'Will be available soon'}</h2>
+      
       {syllabusTopics.length > 0 ? (
-        <ul className="list-disc pl-5 space-y-2">
+        <ul className="syllabus-list">
           {syllabusTopics.map((topic, index) => (
-            <li key={index}>{topic}</li>
+            <li key={index} className="syllabus-item">{topic}</li>
           ))}
         </ul>
       ) : (

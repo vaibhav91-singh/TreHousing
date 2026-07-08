@@ -8,7 +8,7 @@ export default function PopularTest({ onSelectTest }) {
 
   // Live backend data call
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/v1/quiz/') // Aapka dynamic Quiz List endpoint
+    fetch(`api/v1/quiz/`) // Aapka dynamic Quiz List endpoint
       .then((res) => res.json())
       .then((data) => {
         setQuizzes(data);

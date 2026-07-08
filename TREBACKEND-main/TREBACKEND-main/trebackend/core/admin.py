@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 from .models import Course, Subject, Exam_Pattern, Subject_Content, PYQ, Syllabus, Sub_Courses
 from .models import Quiz, Question, Choice
+from .models import JobVacancy
 
 class SyllabusInline(admin.TabularInline):
     model = Syllabus
@@ -78,3 +79,12 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ('text', 'quiz__title')
     inlines = [ChoiceInline]  # Question kholte hi uski saari choices niche dikhengi
 
+#==============================================================
+#JOB VACANCY
+#==============================================================
+@admin.register(JobVacancy)
+class JobVacancyAdmin(admin.ModelAdmin):
+    list_display = ('title', 'organization', 'last_date', 'status')
+    list_filter = ('status', 'last_date')
+    search_fields = ('title', 'organization')
+    list_editable = ('status',)

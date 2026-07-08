@@ -54,36 +54,46 @@ export default function PyqSyPdf() {
   return (
     <div className="box">
       <div className="heading-pdf">
-        <h4>BPSC TRE Question Papers</h4>
+        <h4 style={{"color":"yellow"}}>BPSC TRE Question Papers</h4>
       </div>
 
       {pdfData?.['BPSC TRE'] ? (
         Object.entries(pdfData['BPSC TRE']).map(([versionKey, versions]) => (
           <div key={versionKey} className="version-section">
             <h3 className="version-title text-center mt-2">{versionKey}</h3>
+
             {versions.map((item) => (
               <div key={item.id} className="category-section">
                 {Object.entries(nonIdCategories(item)).map(([categoryName, files]) => (
                   <div key={categoryName}>
+
                     <h4 className="category-title center-category-title">
-                      <u>{categoryName}</u>
+                      {categoryName}
                     </h4>
                     <table className="table-data">
                       <thead>
                         <tr>
-                          <th>SL</th>
+                  
                           <th>PDF File Name</th>
                           <th>View</th>
+
+                          <th>Answer Key</th>
                         </tr>
                       </thead>
                       <tbody>
+                        {/* Data Come from Backend Here */}
                         {files.map((file, i) => (
                           <tr key={i}>
-                            <td>{i + 1}</td>
+                           
                             <td>{file}</td>
                             <td>
                               <a href={getPdfUrl(file, item.id)} target="_blank" rel="noopener noreferrer">
                                 View
+                              </a>
+                            </td>
+                            <td>
+                              <a href={getPdfUrl(file, item.id)} target="_blank" rel="noopener noreferrer">
+                                Answer Key 
                               </a>
                             </td>
                           </tr>

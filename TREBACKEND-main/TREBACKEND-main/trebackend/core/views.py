@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Course, Subject, Syllabus, PYQ, Sub_Courses
@@ -8,8 +9,8 @@ from .models import Quiz, Question, Choice
 from .serializers import QuizSerializer
 # For Solved Paper
 from rest_framework import status
-from .models import SolvedPaper
-from .serializers import SolvedPaperSerializer
+from .models import SolvedPaper,JobVacancy
+from .serializers import SolvedPaperSerializer,JobVacancySerializer
 import os
 
 
@@ -186,38 +187,52 @@ def pyq_api(request):
     # ==========================================================================
 # NEW: QUIZ AND MOCK TEST API ENDPOINT
 # ==========================================================================
+import random
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 @api_view(['GET'])
 def quiz_api(request):
     quiz_id = request.GET.get('quiz_id')
     subject_id = request.GET.get('subject_id')
+    
+    # Helper function to shuffle data
+    def shuffle_quiz_data(data):
+        # Agar data list hai (multiple quizzes), toh har quiz ke questions shuffle karo
+        if isinstance(data, list):
+            for quiz in data:
+                random.shuffle(quiz['questions'])
+                for q in quiz['questions']:
+                    random.shuffle(q['choices'])
+        # Agar single object hai
+        else:
+            random.shuffle(data['questions'])
+            for q in data['questions']:
+                random.shuffle(q['choices'])
+        return data
 
-    # ✅ Case 1: Agar specific quiz_id mangi hai, toh questions aur options ke sath return karein
     if quiz_id:
         try:
             quiz = Quiz.objects.prefetch_related('questions__choices').get(id=quiz_id)
             serializer = QuizSerializer(quiz)
-            return Response(serializer.data)
+            # Shuffle response data before returning
+            shuffled_data = shuffle_quiz_data(serializer.data)
+            return Response(shuffled_data)
         except Quiz.DoesNotExist:
             return Response({"error": "Quiz not found"}, status=404)
 
-    # ✅ Case 2: Agar subject_id pass ki hai, toh sirf us subject ke tests filter karein
+    # Subject filter ya All quizzes ke liye
     if subject_id:
         quizzes = Quiz.objects.filter(subject_id=subject_id).prefetch_related('questions__choices')
-        serializer = QuizSerializer(quizzes, many=True)
-        return Response(serializer.data)
-
-    # ✅ Case 3: Agar koi parameter nahi hai, toh saare available quizzes return karein
-    quizzes = Quiz.objects.prefetch_related('questions__choices').all()
+    else:
+        quizzes = Quiz.objects.prefetch_related('questions__choices').all()
+    
     serializer = QuizSerializer(quizzes, many=True)
-    return Response(serializer.data)
-
+    shuffled_data = shuffle_quiz_data(serializer.data)
+    return Response(shuffled_data)
     # ==========================================================================
 # NEW: Solved Papers API ENDPOINT
 # ==========================================================================
-
-
-
 
 @api_view(['GET'])
 def get_solved_papers(request):
@@ -228,3 +243,28 @@ def get_solved_papers(request):
         return Response({"success": True, "data": serializer.data}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({"success": False, "error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# ==========================================================================
+#   JOB VACANCY
+#=====================================================================
+
+@api_view(['GET', 'POST'])
+def job_list_create(request):
+    if request.method == 'GET':
+        # Sirf active jobs dikhane ke liye filter
+        jobs = JobVacancy.objects.filter(status=True) 
+        serializer = JobVacancySerializer(jobs, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        serializer = JobVacancySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+@api_view(['GET'])
+def job_detail_api(request, pk):
+    job = get_object_or_404(JobVacancy, pk=pk)
+    serializer = JobVacancySerializer(job)
+    return Response(serializer.data)
+    

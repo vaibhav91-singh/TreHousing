@@ -1,471 +1,81 @@
-/* Loading styles */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 300px;
+/* ==================================================
+   SCOPED CSS: Sirf .course-page-wrapper ke liye
+   ================================================== */
+
+.course-page-wrapper {
+  background-color: #05070f;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
+  color: #ffffff;
 }
 
-/* Popup styles */
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.popup-content {
-  background-color: white;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-
-.popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background-color: #f54254;
-  color: white;
-}
-
-.popup-header h3 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: white;
-  cursor: pointer;
-}
-
-.popup-body {
-  padding: 20px;
+.course-page-wrapper .content {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(15px);
+  padding: 50px;
+  border-radius: 30px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
   text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.popup-body p {
-  margin: 0;
-  font-size: 18px;
-  color: #333;
-}
-
-/* Keep your existing styles here */
-/* Custom styles for dropdowns and rotation */
-
-.heading-icon {
-  width: 40px;
-  margin-right: 10px;
-}
-.download-btn {
-  background: #1976d2;
-  color: #fff;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  border-radius: 6px;
-}
-.section-heading {
-  margin-top: 20px;
-  font-weight: bold;
-}
-
-.dropdown-arrow {
-  transition: transform 0.3s ease;
-}
-
-.rotate-90 {
-  transform: rotate(90deg);
-}
-
-.news-rotate {
-  transform: rotate(90deg);
-}
-
-/* General styles for dropdown */
-.dropdown-menu {
-  padding-left: 20px;
-  list-style-type: none;
-  display: none;
-  position: absolute;
-  background-color: transparent; /* Remove the white box background */
-  border: none; /* Remove border */
-  width: 100%;
-  z-index: 10;
-  box-shadow: none; /* Remove the box shadow */
-}
-
-.dropdown-menu li {
-  padding: 5px 0;
-}
-
-.menu-item-text {
-  margin-left: 8px;
-}
-
-.news-dropdown-content {
-  padding-left: 20px;
-  display: none;
-  position: absolute;
-  background-color: transparent; /* Remove the white box background */
-  border: none; /* Remove border */
-  width: 100%;
-  z-index: 10;
-  box-shadow: none; /* Remove the box shadow */
-}
-
-.news-dropdown-content li {
-  padding: 5px 0;
-}
-
-/* Syllabus and News Dropdown Toggle Button */
-.news-dropdown-btn {
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-}
-
-/* Main container and layout */
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 1rem;
-  gap: 1rem;
-  margin: 0;
-  width: 100%;
-}
-
-.sidebar-container {
-  flex: 2;
-  background-color: whitesmoke;
-  padding: 20px;
-  border: 1px solid gray;
-  border-radius: 8px;
-  height: 300px;
-  overflow-y: auto;
-}
-
-.explore {
-  color: black;
-  text-align: left;
-  font-size: medium;
-}
-
-ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.menu-item {
-  margin-bottom: 10px;
-}
-
-.dropdown-menu {
-  padding-left: 0;
-  max-height: 200px;
-  overflow-y: auto;
-  position: relative;
-  margin-left: 30px;
-}
-
-.dropdown a {
-  display: flex;
-  align-items: center;
-  transition: color 0.3s ease;
-  text-decoration: none;
-  color: black !important;
-}
-
-.dropdown a:hover {
-  color: orange !important;
-  text-decoration: none; /* Prevent underline on the whole link */
-}
-
-/* Ensure the arrow is never underlined */
-.dropdown-arrow {
-  margin-right: 10px;
-  font-size: 20px;
-  transition: transform 0.3s ease;
-  color: black;
-  text-decoration: none !important;
-  display: inline-block; /* Ensures correct behavior */
-}
-
-/* Only underline the text on hover */
-.dropdown a:hover .menu-item-text {
-  text-decoration: underline;
-}
-
-.dropdown-menu a {
-  padding-left: 20px;
-  color: black;
-  text-decoration: none;
-}
-
-.dropdown-menu a:hover {
-  color: orange;
-}
-
-/* Latest Event Section */
-.latest-event {
-  flex: 2;
-  background-color: #f9f9f9;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-left: 1rem;
-}
-
-.content {
-  flex: 6;
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: #fff;
-}
-
-/* Header Styles */
-.header h1 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.header .heading-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.header p {
-  font-size: 1rem;
-  color: #555;
-}
-
-/* Image Section */
-.image-section img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin: 1rem 0;
-}
-
-/* Button Style */
-.download-btn {
-  padding: 0.5rem 3rem;
-  font-size: 1rem;
-  font-weight: bold;
-  background-color: #04b8fa;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+/* Typography */
+.course-page-wrapper .course-title {
+  font-size: 3rem;
+  font-weight: 800;
   margin-bottom: 20px;
-  cursor: pointer;
+  color: #fbbf24; /* Theme Yellow */
 }
 
-.download-btn:hover {
-  background-color: #0056b3;
+.course-page-wrapper .course-description {
+  font-size: 1.1rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin-bottom: 30px;
 }
 
-/* Overview and Exam Pattern */
-.syllabus-overview,
-.exam-pattern {
-  margin-bottom: 1.5rem;
-}
-
-.syllabus-overview h3,
-.exam-pattern h3 {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #2804cb;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  background-color: #b1eef6;
-  border-radius: 4px;
-}
-
-.syllabus-overview p,
-.exam-pattern p {
-  font-size: 1rem;
-  color: #555;
-  line-height: 1.5;
-}
-
-/* Link Style */
-a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Scrollbar Styles */
-.sidebar-container::-webkit-scrollbar,
-.dropdown-menu::-webkit-scrollbar {
-  width: 8px;
-}
-
-.sidebar-container::-webkit-scrollbar-thumb,
-.dropdown-menu::-webkit-scrollbar-thumb {
-  background-color: gray;
-  border-radius: 4px;
-}
-
-.sidebar-container::-webkit-scrollbar-thumb:hover,
-.dropdown-menu::-webkit-scrollbar-thumb:hover {
-  background-color: darkgray;
-}
-
-.sidebar-container::-webkit-scrollbar-track,
-.dropdown-menu::-webkit-scrollbar-track {
-  background-color: whitesmoke;
-  border-radius: 4px;
-}
-
-/* News Section Styles */
-.news-container {
-  display: flex;
-  gap: 20px;
-  padding: 0 30px;
-  width: 100%;
-}
-
-.news-sidebar {
-  width: 100%;
-  padding-right: 20px;
-}
-
-.news-title {
-  background-color: #ff3b5c;
-  color: white;
-  padding: 10px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.news-list-wrapper {
-  list-style: none;
-  padding: 10px 0;
-  margin: 0;
-  border: 1px solid black;
-  font-size: 18px;
-}
-
-.news-dropdown {
-  position: relative;
-}
-
-.news-dropdown-btn {
-  display: flex;
-  align-items: center;
-  padding: 8px 8px;
-  cursor: pointer;
-  font-size: 20px;
-  color: black;
-  font-weight: 500;
-  border-radius: 5px;
-}
-
-.news-dropdown-btn span {
-  margin-right: 10px;
-  transition: transform 0.3s ease;
-}
-
-.news-rotate {
-  transform: rotate(90deg);
-}
-
-.news-dropdown-content {
-  padding: 0;
-  border-radius: 5px;
-  list-style: none;
-  position: relative;
-  left: 0;
-  top: 100%;
-  background-color: transparent; /* No background */
-  width: 100%;
-  z-index: 100;
-  border: none; /* No border */
-  box-shadow: none; /* No box-shadow */
-}
-
-.news-dropdown-content li {
-  padding: 5px 25px;
-  margin-left: 15px;
-  font-size: 18px;
-}
-
-.news-dropdown-content li:hover {
-  background: #dfdcdc;
-  border-radius: 5px;
-}
-
-.news-dropdown-content a {
-  text-decoration: none;
-  color: black;
+/* Responsive Image Fix */
+.course-page-wrapper .course-banner {
+  width: 100%;         /* Container ka pura space lega */
+  height: auto;        /* Aspect ratio sahi rakhega */
+  max-width: 100%;     /* Image ko stretch hone se rokega */
   display: block;
+  border-radius: 20px;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  transition: all 0.4s ease;
 }
 
-/* Show dropdowns when isOpen is true */
-.menu-item > .dropdown-menu {
-  display: block;
+.course-page-wrapper .course-banner:hover {
+  transform: translateY(-5px);
+  border-color: #fbbf24;
+  box-shadow: 0 10px 20px rgba(251, 191, 36, 0.1);
 }
 
-.news-dropdown-content {
-  display: block;
+/* Button Styling */
+.course-page-wrapper .course-banner {
+  width: 100%;           /* Container ki width ka 100% lega */
+  height: auto;          /* Aspect ratio maintain rakhega */
+  max-width: 100%;       /* Image kabhi bhi apni original size se badi nahi hogi */
+  display: block;        /* Bottom margin hatane ke liye */
+  border-radius: 20px;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  
+  /* Image ko crop hone se bachane ke liye */
+  object-fit: contain;   /* Ya 'cover' use karo agar image ko pura fill karna hai */
+  
+  transition: transform 0.5s ease;
 }
 
-.news-dropdown-btn span {
-  transform: rotate(90deg);
+.course-page-wrapper .download-btn:hover {
+  background: #ffffff;
+  transform: translateY(-5px) scale(1.02);
 }
 
-/* Responsive Styles */
-@media screen and (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    margin-left: 0;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .latest-event {
-    order: 2;
-  }
-
-  .sidebar-container {
-    order: 1;
-  }
-
-  .content {
-    order: 3;
-  }
-
-  .news-dropdown-btn {
-    font-size: 16px;
-  }
-
-  .news-dropdown-content li {
-    font-size: 16px;
-    padding: 0 10px;
-  }
-
-  .dropdown-menu a {
-    padding-left: 15px;
-  }
+/* Responsive Tablet & Mobile */
+@media (max-width: 768px) {
+  .course-page-wrapper .content { padding: 25px; }
+  .course-page-wrapper .course-title { font-size: 2rem; }
+  .course-page-wrapper .download-btn { width: 100%; }
 }

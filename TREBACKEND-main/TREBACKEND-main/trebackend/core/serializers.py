@@ -1,6 +1,6 @@
-from rest_framework import serializers
-from .models import Course, Subject, Exam_Pattern, Subject_Content, Syllabus, Quiz, Question, Choice, SolvedPaper, PYQ
 
+from rest_framework import serializers
+from .models import Course, Subject, Exam_Pattern, Subject_Content, Syllabus, Quiz, Question, Choice, SolvedPaper, PYQ, JobVacancy
 class SyllabusSerializer(serializers.ModelSerializer):
     filename = serializers.ReadOnlyField()
 
@@ -89,3 +89,11 @@ class SolvedPaperSerializer(serializers.ModelSerializer):
     class Meta:
         model = SolvedPaper
         fields = ['id', 'subject', 'subject_title', 'title', 'year', 'paper_link', 'created_at']
+#==============================================================
+#JOB VACANCY
+#==============================================================
+
+class JobVacancySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobVacancy
+        fields = '__all__'

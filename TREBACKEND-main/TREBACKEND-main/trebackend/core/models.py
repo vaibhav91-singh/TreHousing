@@ -160,3 +160,22 @@ class SolvedPaper(models.Model):
         
     class Meta:
         verbose_name_plural = "Solved Papers"
+
+#==============================================================
+#JOB VACANCY
+#==============================================================
+class JobVacancy(models.Model):
+    title = models.CharField(max_length=200)
+    organization = models.CharField(max_length=200)
+    eligibility = models.CharField(max_length=255)
+    form_fee = models.IntegerField()
+    apply_date = models.DateField()
+    last_date = models.DateField()
+    official_website = models.URLField()
+    status = models.BooleanField(default=True) # Active/Inactive
+    apply_link= models.URLField()
+    class Meta:
+        verbose_name_plural = "Job Vacancies"
+
+    def __str__(self):
+        return f"{self.title} - {self.organization}"

@@ -1,289 +1,96 @@
-/* ==========================================================================
-   BPSC PREVIOUS YEAR SOLVED PAPERS - DOWNLOAD AND ATTEMPTS
-   ========================================================================== */
-
-body, .solved-page-wrapper, .attemptpaper {
-    /* Pure metallic dark canvas infused with your exact premium brand liquid mesh */
-    background: 
-        radial-gradient(circle at 10% 15%, rgba(83, 203, 243, 0.18) 0%, transparent 45%),  /* Light Nude Blue (#53CBF3) */
-        radial-gradient(circle at 85% 25%, rgba(255, 222, 66, 0.12) 0%, transparent 50%), /* Premium Yellow (#FFDE42) */
-        radial-gradient(circle at 50% 85%, rgba(84, 120, 255, 0.15) 0%, transparent 60%),  /* Royal Blue (#5478FF) */
-        linear-gradient(180deg, #070b14 0%, #030509 100%);
-    position: relative;
+/* Scope this CSS specifically to .attemptpaper to prevent site-wide conflicts */
+.attemptpaper {
+    background: radial-gradient(circle at 10% 15%, rgba(83, 203, 243, 0.18) 0%, transparent 45%),
+                radial-gradient(circle at 85% 25%, rgba(255, 222, 66, 0.12) 0%, transparent 50%),
+                linear-gradient(180deg, #070b14 0%, #030509 100%);
     min-height: 100vh;
-    box-sizing: border-box;
+    padding: 40px 20px;
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    position: relative;
     overflow-x: hidden;
-    color: #FFDE42;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Hyper-Sleek Engineering Matrix Grid for Technical Premium Depth */
-body::before, .attemptpaper::before {
+/* Matrix Background (Local to container) */
+.attemptpaper::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
-        linear-gradient(rgba(83, 203, 243, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(83, 203, 243, 0.015) 1px, transparent 1px);
-    background-size: 45px 45px;
+    background-image: linear-gradient(rgba(83, 203, 243, 0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(83, 203, 243, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
     pointer-events: none;
     z-index: 0;
 }
 
-/* ==========================================================================
-   UPDATED CONTAINER HEADER - CENTERED 3D HERO BANNER WITH AMBIENT ORBS
-   ========================================================================== */
-
-.previous {
-    /* Glassmorphic card blending with your Royal Blue and Nude Blue tone */
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.45) 0%, rgba(15, 23, 42, 0.8) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 45px 30px;
-    border-radius: 28px;
-    
-    /* Dynamic surrounding lighting framework instead of a single side line */
-    border-top: 1px solid rgba(83, 203, 243, 0.25) !important;
-    border-bottom: 1px solid rgba(84, 120, 255, 0.1) !important;
-    border-left: none !important; /* Removed side border to ensure perfect center balance */
-    
-    box-shadow: 0 25px 55px rgba(0, 0, 0, 0.5);
-    margin-bottom: 40px;
-    
-    /* Structural adjustments for 3D Background Layering */
-    position: relative;
-    overflow: hidden;
-    
-    /* Core Layout Centering Engine */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* Hero Banner */
+.attemptpaper .centered-banner {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(83, 203, 243, 0.2);
+    border-radius: 24px;
+    padding: 40px;
+    max-width: 900px;
+    margin: 0 auto 50px;
     text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
-/* 3D Glowing Ambient Circles Embedded behind the Header Content */
-.orb {
+/* Orbs */
+.attemptpaper .orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(40px);
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.35;
+    filter: blur(60px);
+    opacity: 0.2;
+    z-index: -1;
 }
 
-/* Light Nude Blue Fluid Orb (#53CBF3) */
-.orb-1 {
-    width: 120px;
-    height: 120px;
-    background: #53CBF3;
-    top: -20px;
-    left: 10%;
-    animation: floatingOrbOne 6s ease-in-out infinite alternate;
-}
-
-/* Royal Blue Liquid Orb (#5478FF) */
-.orb-2 {
-    width: 140px;
-    height: 140px;
-    background: #5478FF;
-    bottom: -30px;
-    right: 12%;
-    animation: floatingOrbTwo 6s ease-in-out infinite alternate-reverse;
-}
-
-.banner-content {
-    position: relative;
-    z-index: 5; /* Ensures clear text interaction above back layers */
-    width: 100%;
-    max-width: 850px;
-}
-
-.previous h2 {
-    font-size: clamp(1.5rem, 2.8vw, 2.2rem);
-    font-weight: 800;
-    color: #ffffff;
-    margin: 0 0 16px 0;
-    letter-spacing: -0.5px;
-    line-height: 1.3;
-    text-shadow: 0 2px 15px rgba(83, 203, 243, 0.15);
-}
-
-/* Center symmetry mapping rows */
-.centered-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 15px;
-}
-
-.ratings-count {
-    color: #94a3b8;
-    font-size: 13.5px;
-    font-weight: 600;
-}
-
-.stars-line i {
-    color: #FFDE42; /* Premium Yellow Focus for Stars */
-    margin-right: 3px;
-    font-size: 15px;
-    filter: drop-shadow(0 0 4px rgba(255, 222, 66, 0.4));
-}
-
-.previous .papers-count {
-    font-size: 15.5px;
-    color: #cbd5e1;
-    margin: 0 0 20px 0;
-    font-weight: 500;
-}
-
-.highlight-count {
-    color: #FFDE42; /* Premium Yellow Focus */
-    font-weight: 800;
-    font-size: 17px;
-    text-shadow: 0 0 12px rgba(255, 222, 66, 0.5);
-}
-
-.centered-content.language-tag {
-    background: rgba(83, 203, 243, 0.08) !important; /* Soft Nude Blue Base */
-    border: 1px solid rgba(83, 203, 243, 0.25) !important;
-    color: #53CBF3 !important;
-    font-weight: 700;
-    padding: 7px 18px !important;
-    font-size: 13px !important;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* ==========================================================================
-   HIGH-VELOCITY 3D LIQUID GLOW CARDS
-   ========================================================================== */
-
-.card-section {
+/* Cards Grid */
+.attemptpaper .card-section {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.attemptpaper .paper-card {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 25px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    z-index: 1;
+}
+
+.attemptpaper .paper-card:hover {
+    transform: translateY(-10px);
+    border-color: #FFDE42;
+    box-shadow: 0 10px 30px rgba(255, 222, 66, 0.1);
+}
+
+/* Premium Button */
+.attemptpaper .purchase-btn {
     width: 100%;
-}
-
-.paper-card {
-    background: linear-gradient(135deg, rgba(21, 32, 54, 0.65) 0%, rgba(11, 16, 28, 0.9) 100%) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 30px 24px;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    
-    /* Dual-Rim Border using Nude Blue for extreme precision */
-    border: 1px solid rgba(83, 203, 243, 0.15) !important;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55),
-                inset 0 1px 2px rgba(255, 255, 255, 0.05) !important;
-                
-    animation: instantCardEntrance 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
-}
-
-/* Instant Staggered Entrance */
-.card-section .paper-card:nth-child(2) { animation-delay: 0.05s; }
-.card-section .paper-card:nth-child(3) { animation-delay: 0.1s; }
-
-/* 3D Hover Shockwave: Blends Yellow (#FFDE42) and Royal Blue (#5478FF) Auras */
-.paper-card:hover {
-    transform: translateY(-8px) scale(1.015) !important;
-    border-color: rgba(255, 222, 66, 0.45) !important; /* Yellow Rim Accent on Hover */
-    box-shadow: 
-        0 25px 45px -10px rgba(84, 120, 255, 0.25),   /* Royal Blue Outer Shadow */
-        0 15px 35px -5px rgba(255, 222, 66, 0.15),   /* Yellow Ambient Shadow */
-        inset 0 1px 3px rgba(255, 255, 255, 0.1) !important;
-}
-
-.paper-card h4 {
-    font-size: 1.2rem;
+    padding: 15px;
+    background: linear-gradient(135deg, #FFDE42, #e6be10);
+    border: none;
+    border-radius: 12px;
+    color: #000;
     font-weight: 800;
-    color: #ffffff;
-    line-height: 1.4;
-    margin: 0 0 20px 0;
-    letter-spacing: -0.3px;
-}
-
-.info-line p {
-    background: rgba(83, 203, 243, 0.03); /* Subtle Nude Blue details background */
-    border: 1px solid rgba(83, 203, 243, 0.06);
-    color: #e2e8f0;
-}
-
-.info-line p i {
-    color: #53CBF3; /* Nude Blue colored structural icons */
-}
-
-/* ==========================================================================
-   HIGH-GLOSS 3D SOLID PREMIUM YELLOW BUTTON
-   ========================================================================== */
-
-.purchase-btn {
-    width: 100%;
-    padding: 14px 0;
-    /* Pure Solid Premium Yellow to Deep Amber Gold Gradient (#FFDE42 Focus) */
-    background: linear-gradient(135deg, #FFDE42 0%, #e6be10 100%) !important;
-    border: none !important;
-    border-radius: 14px;
-    color: #0b0f19 !important; /* Extreme black-slate readability contrast */
-    font-weight: 800;
-    font-size: 13.5px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    letter-spacing: 0.3px;
-    
-    /* Heavy Mechanical 3D Shadow Lift */
-    box-shadow: 0 5px 18px rgba(255, 255, 222, 66, 0.25), 
-                inset 0 -3px 0 rgba(0, 0, 0, 0.18) !important;
-    transition: all 0.15s ease-out !important;
-
-}
-.purchase-btn:hover {
-    background: linear-gradient(135deg, #fff275 0%, #ccaa0c 100%) !important;
-    box-shadow: 0 8px 24px rgba(255, 222, 66, 0.45), 
-                inset 0 -3px 0 rgba(0, 0, 0, 0.18) !important;
-    transform: translateY(-2px);
+    transition: transform 0.2s, filter 0.2s;
 }
 
-/* Mechanical Click Compress Effect */
-.purchase-btn:active {
-    transform: translateY(2px) !important;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+.attemptpaper .purchase-btn:hover {
+    filter: brightness(1.2);
+    transform: scale(1.02);
 }
 
-.purchase-btn i {
-    font-size: 13px;
-    color: #0b0f19;
-}
-
-/* ==========================================================================
-   ANIMATIONS & PERFORMANCE LOGIC
-   ========================================================================== */
-
-@keyframes instantCardEntrance {
-    0% { opacity: 0; transform: translateY(15px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes floatingOrbOne {
-    0% { transform: translateY(0) scale(1); opacity: 0.3; }
-    100% { transform: translateY(12px) scale(1.12); opacity: 0.45; }
-}
-
-@keyframes floatingOrbTwo {
-    0% { transform: translateY(0) scale(1); opacity: 0.35; }
-    100% { transform: translateY(-12px) scale(0.92); opacity: 0.25; }
-}
+/* Icons and Text Colors */
+.attemptpaper .highlight-count { color: #FFDE42; }
+.attemptpaper .language-tag { color: #53CBF3; border: 1px solid #53CBF3; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-top: 10px;}
