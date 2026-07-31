@@ -1,73 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './DownloadAttempt.css';
 
-// is part ke jsx ko backend se connect baki h----
-//  download previous year solved papers wala section h ye.
-
 export default function DownloadAttempt() {
+  const [papers, setPapers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    // ⚠️ Here I get error 
+    const API_URL = 'http://127.0.0.1:8000/api/v1/solved-papers/';
+
+    fetch(API_URL)
+      .then((res) => {
+        // Agar response JSON nahi hai (HTML hai), toh ye error dega
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new TypeError("Oops! Server ne JSON nahi, HTML bheja hai. URL check karo.");
+        }
+        return res.json();
+      })
+      .then((res) => {
+        if (res.success) {
+          setPapers(res.data);
+          setErrorMsg(null);
+        } else {
+          setErrorMsg("Backend status false hai.");
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setErrorMsg(err.message);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="attemptpaper">
-      
-{/* 1. Top Section - Premium Centered Banner with Floating Glowing Circles */}
-<div className="previous centered-banner">
-  {/* Decorative Ambient Orbs for 3D depth */}
-  <div className="orb orb-1"></div>
-  <div className="orb orb-2"></div>
-  
-  <div className="banner-content">
-    <h2>BPSC Previous Year Solved Papers - Download & Attempt</h2>
-    
-    <div className="ratings-wrapper centered-row">
-      <p className="stars-line">
-        <i className="bi bi-star-fill"></i>
-        <i className="bi bi-star-fill"></i>
-        <i className="bi bi-star-fill"></i>
-        <i className="bi bi-star-fill"></i>
-        <i className="bi bi-star-half"></i>
-      </p>
-      <span className="ratings-count">4.5 (92,441 ratings)</span>
-    </div>
-    
-    <p className="papers-count">Total Previous Year Paper Available: <span className="highlight-count">3</span></p>
-    
-    <div className="centered-content language-tag">
-      <i className="bi bi-globe"></i>
-      <span>Hindi, English</span>
-    </div>
-  </div>
-</div>
-
-      {/* 2. Lower Grid Section - Cards Matrix */}
-      <div className="downloadpapers">
-        <h3>Download Previous Year Solved Papers</h3>
-        <div className="card-section">
-          {[...Array(3)].map((_, index) => (
-            <div className="paper-card" key={index}>
-              <h4>BPSC 2021 Previous Year Paper</h4>
-              
-              {/* Detailed Metrics */}
-              <div className="info-row">
-                <div className="info-line">
-                  <p><i className="bi bi-clock"></i> 120 Minutes</p>
-                  <p><i className="bi bi-list-task"></i> 200 Questions</p>
-                </div>
-                <div className="info-line">
-                  <p><i className="bi bi-pencil-square"></i> 200 Marks</p>
-                </div>
-              </div>
-              
-              <hr className="card-divider-line" />
-              
-              {/* Premium 3D Light Blue Glowing Button */}
-              <button className="purchase-btn">
-                <i className="bi bi-lock-fill"></i>
-                <span>Buy All Exam Mock Test @Rs.199</span>
-              </button>
-            </div>
-          ))}
-        </div>
+      <h7 className="text-red-500">this is DownloadAttempts.jsx file</h7>
+      <div className="previous centered-banner">
+        <h2>All Previous Year Solved Papers</h2>
+        <p>Total Papers Available: {papers.length}</p>
       </div>
 
+      <div className="downloadpapers">
+        {errorMsg && (
+          <div style={{ color: 'red', padding: '20px', border: '1px solid red' }}>
+            <strong>Error:</strong> {errorMsg} <br />
+            <small>Tip: Browser mein http://127.0.0.1:8000/v1/solved-papers/ khol kar dekho kya data aa raha hai.</small>
+          </div>
+        )}
+
+        <div className="card-section">
+          {loading ? <p>Loading...</p> : 
+           papers.length > 0 ? papers.map((paper) => (
+            <div className="paper-card" key={paper.id}>
+              <h4>{paper.title}</h4>
+              <p>Subject: {paper.subject_title}</p>
+              <p>Year: {paper.year}</p>
+              <a href={paper.paper_link} target="_blank" rel="noopener noreferrer">Download PDF</a>
+            </div>
+          )) : !errorMsg && <p>No papers found.</p>}
+        </div>
+      </div>
     </div>
   );
 }

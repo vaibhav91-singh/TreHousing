@@ -18,6 +18,7 @@ export default function PopularTest({ onSelectTest }) {
         console.error("Error fetching admin quizzes:", err);
         setLoading(false);
       });
+
   }, []);
 
   if (loading) return <div className="main-container" style={{ textAlign: 'center', padding: '20px' }}>Loading Active Tests...</div>;
@@ -65,7 +66,7 @@ export default function PopularTest({ onSelectTest }) {
               className="btn-view"
               onClick={() => onSelectTest && onSelectTest(item.title)} // id ke badle title bheja
             >
-              View Test Series
+              Start Mock Test
             </button>
           </div>
         ))}

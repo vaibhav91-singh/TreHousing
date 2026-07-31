@@ -76,7 +76,7 @@ class QuizSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Quiz
-        fields = ['id', 'title', 'description', 'subject', 'questions']
+        fields = ['id', 'title', 'description', 'subject', 'questions', 'category']
 
 
 # ==========================================================================
@@ -89,6 +89,7 @@ class SolvedPaperSerializer(serializers.ModelSerializer):
     class Meta:
         model = SolvedPaper
         fields = ['id', 'subject', 'subject_title', 'title', 'year', 'paper_link', 'created_at']
+
 #==============================================================
 #JOB VACANCY
 #==============================================================

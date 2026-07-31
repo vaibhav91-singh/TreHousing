@@ -14,7 +14,7 @@ export default function SolvedPaperView() {
       <Header />
       <TestSeriesHeroSection />
       <HeaderDropdown />
-      <DownloadAttempt />3
+      <DownloadAttempt />
       <FAQ />
       <Recomm_mock />
       <Footer />

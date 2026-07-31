@@ -113,6 +113,9 @@ class Syllabus(models.Model):
 # ==========================================================================
 
 class Quiz(models.Model):
+    # Comma hat gaya hai
+    category = models.CharField(max_length=100, default="General") 
+    
     subject = models.ForeignKey(
         'Subject', 
         on_delete=models.CASCADE, 

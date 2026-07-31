@@ -57,6 +57,7 @@ export default function HeroSec() {
 
   return (
     <div className="hero-section">
+
       <div className="carousel">
         {slides.map((slide, index) => (
           <div
@@ -99,6 +100,7 @@ export default function HeroSec() {
           ))}
         </div>
       </div>
+       
     </div>
   );
 }

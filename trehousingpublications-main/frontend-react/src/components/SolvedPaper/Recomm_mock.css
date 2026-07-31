@@ -3,14 +3,117 @@
    ========================================================================== */
 
 .recomm-mock-section-wrapper {
-    max-width: 1300px;
-    margin: 0 auto;
-    padding: 60px 2vw;
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    background:
+        radial-gradient(circle at 10% 15%,
+            rgba(83, 203, 243, 0.18) 0%,
+            transparent 45%),
+        radial-gradient(circle at 85% 25%,
+            rgba(255, 222, 66, 0.12) 0%,
+            transparent 50%),
+        linear-gradient(
+            180deg,
+            #070b14 0%,
+            #030509 100%
+        );
+
+    /* min-height: 100vh; */
+    padding: 40px 20px;
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
     position: relative;
-    z-index: 5;
+    overflow-x: hidden;
+
+    /* Responsive Container */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
 }
 
+.recomm-mock-section-wrapper::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-image:
+        linear-gradient(
+            rgba(83, 203, 243, 0.05) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(83, 203, 243, 0.05) 1px,
+            transparent 1px
+        );
+
+    background-size: 50px 50px;
+
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==========================
+   Large Tablets
+========================== */
+
+@media (max-width: 1024px) {
+
+    .recomm-mock-section-wrapper {
+        padding: 35px 18px;
+    }
+
+    .recomm-mock-section-wrapper::before {
+        background-size: 40px 40px;
+    }
+}
+
+/* ==========================
+   Tablets
+========================== */
+
+@media (max-width: 768px) {
+
+    .recomm-mock-section-wrapper {
+        min-height: auto;
+        padding: 30px 15px;
+    }
+
+    .recomm-mock-section-wrapper::before {
+        background-size: 35px 35px;
+    }
+}
+
+/* ==========================
+   Mobile Devices
+========================== */
+
+@media (max-width: 480px) {
+
+    .recomm-mock-section-wrapper {
+        padding: 25px 12px;
+    }
+
+    .recomm-mock-section-wrapper::before {
+        background-size: 25px 25px;
+    }
+}
+
+/* ==========================
+   Small Mobile Devices
+========================== */
+
+@media (max-width: 360px) {
+
+    .recomm-mock-section-wrapper {
+        padding: 20px 10px;
+    }
+}
 /* Premium Section Heading Typography with Subtle Text Glow */
 .recomm-mock-heading {
     font-size: 1.5rem;
@@ -183,7 +286,8 @@ p.recomm-mock-heading:nth-of-type(2)::after {
 @media screen and (max-width: 991px) {
     .recomm-mock-cards-container {
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 20px;
+        gap: 30px;
+        margin-top: 20px;
     }
 }
 
@@ -194,9 +298,10 @@ p.recomm-mock-heading:nth-of-type(2)::after {
     }
     .recomm-mock-cards-container {
         grid-template-columns: 1fr;
-        padding: 0 15px;
+        padding: 5px 30px;
     }
     .recomm-mock-card {
         min-height: auto;
+        
     }
 }

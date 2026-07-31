@@ -1,0 +1,12 @@
+{% extends "admin/change_form.html" %}
+
+{% block object-tools-items %}
+    {% if original.pk %}
+    <li>
+        <a href="/admin/core/quiz/{{ original.pk }}/bulk-upload-questions/" style="background: #ffc107; color: #000; font-weight: bold; border-radius: 4px; padding: 5px 10px;">
+            📥 Bulk Upload Questions
+        </a>
+    </li>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}

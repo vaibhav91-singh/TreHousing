@@ -139,6 +139,7 @@ export default function HeaderSec() {
 
   return (
     <div className="header-container">
+     
       <nav className="navbar-main">
         <div className="logo" onClick={() => { navigate("/"); closeMenu(); }}>
           <img src={logo} alt="Logo" />
@@ -204,6 +205,8 @@ export default function HeaderSec() {
           ))}
         </ul>
       </nav>
+      
     </div>
+    
   );
 }

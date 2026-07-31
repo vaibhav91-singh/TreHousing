@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import Course, Subject, Exam_Pattern, Subject_Content, PYQ, Syllabus, Sub_Courses
+from .models import Course, Subject, Exam_Pattern, Subject_Content, PYQ, Syllabus, Sub_Courses,SolvedPaper
 from .models import Quiz, Question, Choice
 from .models import JobVacancy
 
@@ -37,7 +37,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'course', 'pdf_link')
+    list_display = ('title', 'course')
     search_fields = ('title', 'course__title')
     list_filter = ('course',)
     ordering = ['id']
@@ -65,12 +65,7 @@ class QuestionInline(admin.TabularInline):
     model = Question
     extra = 1  # Quiz page par hi question add karne ka option milega
 
-@admin.register(Quiz)
-class QuizAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'description')
-    list_filter = ('subject',)
-    search_fields = ('title', 'subject__title')
-    inlines = [QuestionInline]  # Quiz ke andar direct questions dikhenge
+
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
@@ -88,3 +83,94 @@ class JobVacancyAdmin(admin.ModelAdmin):
     list_filter = ('status', 'last_date')
     search_fields = ('title', 'organization')
     list_editable = ('status',)
+
+# Solved Paper Section
+
+
+@admin.register(SolvedPaper)
+class SolvedPaperAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subject', 'year','paper_link') # Admin table mein ye dikhega
+    search_fields = ('title', 'subject__title') # Title aur Subject se search kar sakoge
+    list_filter = ('subject', 'year') # Filter karne ke liye asaan hoga
+
+#==============================================================
+# Part 2 of Code Upload Bulk MCQ Question
+#==============================================================
+import json
+from django.urls import path
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django import forms
+
+# 1. Form for JSON upload inside Quiz admin
+class QuizJSONUploadForm(forms.Form):
+    json_file_or_text = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 10, 'cols': 80, 'placeholder': 'Paste your JSON array of questions here...'}),
+        label="Paste Questions JSON"
+    )
+
+# 2. Update your QuizAdmin to include the bul   k upload URL & view
+@admin.register(Quiz)
+class QuizAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subject', 'category') 
+    fields = ('subject', 'category', 'title', 'description') 
+    list_filter = ('subject', 'category') 
+    search_fields = ('title', 'subject__title', 'category')
+    inlines = [QuestionInline]
+    
+    change_form_template = 'admin/quiz_change_form.html'
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('<int:quiz_id>/bulk-upload-questions/', self.admin_site.admin_view(self.quiz_bulk_upload_view), name='quiz_bulk_upload'),
+        ]
+        return custom_urls + urls
+
+    def quiz_bulk_upload_view(self, request, quiz_id):
+        try:
+            quiz = Quiz.objects.get(pk=quiz_id)
+        except Quiz.DoesNotExist:
+            messages.error(request, "Quiz not found!")
+            return redirect('..')
+
+        if request.method == 'POST':
+            form = QuizJSONUploadForm(request.POST)
+            if form.is_valid():
+                raw_data = form.cleaned_data['json_file_or_text']
+                try:
+                    questions_data = json.loads(raw_data)
+                    q_count = 0
+                    c_count = 0
+
+                    for q_item in questions_data:
+                        # Question create karna
+                        question_text = q_item.get('text') or q_item.get('question_text')
+                        question = Question.objects.create(quiz=quiz, text=question_text)
+                        q_count += 1
+
+                        # Choices create karna
+                        choices = q_item.get('choices', [])
+                        for c_item in choices:
+                            Choice.objects.create(
+                                question=question,
+                                text=c_item.get('text'),
+                                is_correct=c_item.get('is_correct', False)
+                            )
+                            c_count += 1
+
+                    messages.success(request, f"Successfully added {q_count} questions with {c_count} choices!")
+                    return redirect(f'/admin/core/quiz/{quiz.id}/change/')
+                except Exception as e:
+                    messages.error(request, f"JSON parsing error: {e}")
+        else:
+            form = QuizJSONUploadForm()
+
+        context = {
+            'form': form,
+            'quiz': quiz,
+            'opts': self.model._meta,
+            'title': f'Bulk Upload Questions for: {quiz.title}'
+        }
+        return render(request, 'admin/quiz_bulk_upload.html', context)
+ 

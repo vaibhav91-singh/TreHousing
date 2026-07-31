@@ -1,96 +1,128 @@
-/* Scope this CSS specifically to .attemptpaper to prevent site-wide conflicts */
+/* --- DownloadAttempt Styling --- */
+
 .attemptpaper {
-    background: radial-gradient(circle at 10% 15%, rgba(83, 203, 243, 0.18) 0%, transparent 45%),
-                radial-gradient(circle at 85% 25%, rgba(255, 222, 66, 0.12) 0%, transparent 50%),
-                linear-gradient(180deg, #070b14 0%, #030509 100%);
-    min-height: 100vh;
-    padding: 40px 20px;
-    color: #ffffff;
-    font-family: 'Segoe UI', sans-serif;
-    position: relative;
-    overflow-x: hidden;
+  background-color: #f8f9fa;
+  min-height: 80vh;
+  padding-bottom: 60px;
 }
 
-/* Matrix Background (Local to container) */
-.attemptpaper::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(rgba(83, 203, 243, 0.05) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(83, 203, 243, 0.05) 1px, transparent 1px);
-    background-size: 50px 50px;
-    pointer-events: none;
-    z-index: 0;
+/* Banner Styling */
+.centered-banner {
+  background: linear-gradient(135deg, #111111 0%, #222222 100%);
+  color: #ffffff;
+  padding: 40px 20px;
+  text-align: center;
+  border-bottom: 4px solid #ffc107;
+  margin-bottom: 40px;
 }
 
-/* Hero Banner */
-.attemptpaper .centered-banner {
-    background: rgba(30, 41, 59, 0.5);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(83, 203, 243, 0.2);
-    border-radius: 24px;
-    padding: 40px;
-    max-width: 900px;
-    margin: 0 auto 50px;
-    text-align: center;
-    position: relative;
-    z-index: 1;
+.centered-banner h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
 }
 
-/* Orbs */
-.attemptpaper .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.2;
-    z-index: -1;
+.papers-count {
+  font-size: 1.1rem;
+  color: #cccccc;
 }
 
-/* Cards Grid */
-.attemptpaper .card-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    max-width: 1100px;
-    margin: 0 auto;
+.highlight-count {
+  color: #ffc107;
+  font-weight: bold;
 }
 
-.attemptpaper .paper-card {
-    background: rgba(15, 23, 42, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 25px;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-    z-index: 1;
+/* Section Title */
+.downloadpapers h3 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #222222;
+  margin-bottom: 30px;
 }
 
-.attemptpaper .paper-card:hover {
-    transform: translateY(-10px);
-    border-color: #FFDE42;
-    box-shadow: 0 10px 30px rgba(255, 222, 66, 0.1);
+/* Card Section Grid */
+.card-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-/* Premium Button */
-.attemptpaper .purchase-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, #FFDE42, #e6be10);
-    border: none;
-    border-radius: 12px;
-    color: #000;
-    font-weight: 800;
-    cursor: pointer;
-    transition: transform 0.2s, filter 0.2s;
+/* Individual Paper Card */
+.paper-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+  border-top: 5px solid #ffc107;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
 }
 
-.attemptpaper .purchase-btn:hover {
-    filter: brightness(1.2);
-    transform: scale(1.02);
+.paper-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(255, 193, 7, 0.2);
 }
 
-/* Icons and Text Colors */
-.attemptpaper .highlight-count { color: #FFDE42; }
-.attemptpaper .language-tag { color: #53CBF3; border: 1px solid #53CBF3; padding: 5px 15px; border-radius: 20px; display: inline-block; margin-top: 10px;}
+.paper-card h4 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 15px;
+}
+
+/* Info Row Styling */
+.info-row {
+  margin-bottom: 15px;
+}
+
+.info-line p {
+  font-size: 0.95rem;
+  color: #555555;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-line i {
+  color: #ffc107;
+  font-size: 1.1rem;
+}
+
+/* Card Divider */
+.card-divider-line {
+  border: none;
+  height: 1px;
+  background-color: #eee;
+  margin: 15px 0;
+}
+
+/* Download / Purchase Button */
+.purchase-btn {
+  background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+  color: #111111 !important;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.purchase-btn:hover {
+  background: linear-gradient(135deg, #ffb300 0%, #ffa000 100%);
+  box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+  transform: scale(1.02);
+}

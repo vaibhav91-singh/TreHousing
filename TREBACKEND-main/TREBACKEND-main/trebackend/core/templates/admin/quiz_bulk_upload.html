@@ -1,0 +1,23 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<div id="content-main">
+    <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <h2>Bulk Upload Questions for Quiz: <span style="color: #ffc107;">{{ quiz.title }}</span></h2>
+        <p style="color: #666; margin-bottom: 20px;">
+            Yahan niche diye gaye format mein JSON paste karein. Ek sath multiple questions aur unke choices add ho jayenge.
+        </p>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <fieldset class="module aligned" style="border: none; padding: 0;">
+                {{ form.as_p }}
+            </fieldset>
+            
+            <div class="submit-row" style="background: transparent; padding: 15px 0; border: none;">
+                <input type="submit" value="Upload and Save Questions" class="default" style="background: #ffc107; color: #000; font-weight: bold; padding: 10px 20px; border-radius: 4px; border: none; cursor: pointer;">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
