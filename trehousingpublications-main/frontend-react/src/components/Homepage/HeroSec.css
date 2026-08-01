@@ -2,11 +2,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #fdf5f5;
+  background: var(--bg-color);
   padding: 80px 0;
   width: 100%;
   overflow: hidden;
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-main);
 }
 
 .carousel {
@@ -36,7 +36,7 @@
 
 .subtitle {
   font-weight: 600;
-  color: #444;
+  color: var(--text-muted);
   font-size: 1.1rem;
   margin-bottom: 15px;
 }
@@ -45,16 +45,16 @@
   font-size: 2.8rem;
   font-weight: 800;
   line-height: 1.2;
-  color: #1a1a1a;
+  color: var(--secondary);
   margin-bottom: 20px;
 }
 
 .text-blue {
-  color: #1a46e5;
+  color: var(--primary-dark);
 }
 
 .description {
-  color: #666;
+  color: var(--text-muted);
   font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 30px;
@@ -62,20 +62,20 @@
 }
 
 .cta {
-  background: #1a46e5;
-  color: white;
+  background: var(--primary);
+  color: var(--secondary);
   padding: 15px 35px;
   border: none;
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(26, 70, 229, 0.3);
-  transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 4px 15px rgba(255, 179, 0, 0.3);
+  transition: var(--transition);
 }
 
 .cta:hover {
-  background: #1539bd;
+  background: var(--primary-hover);
   transform: translateY(-2px);
 }
 
@@ -98,12 +98,12 @@
 .main-image-wrapper {
   width: 320px;
   height: 320px;
-  background: #9d66ff;
+  background: var(--secondary);
   border-radius: 50%;
   overflow: hidden;
   position: relative;
   z-index: 1;
-  box-shadow: 0 20px 40px rgba(157, 102, 255, 0.2);
+  box-shadow: 0 20px 40px rgba(30, 41, 59, 0.2);
 }
 
 .main-image {
@@ -140,16 +140,16 @@
   font-size: 1.2rem;
 }
 
-.icon-cap { top: 10%; left: 0; color: #9d66ff; }
-.icon-book { top: 20%; right: -5%; color: #ffab2e; }
-.icon-bulb { bottom: 15%; right: 10%; color: #ffcc00; }
+.icon-cap { top: 10%; left: 0; color: var(--secondary); }
+.icon-book { top: 20%; right: -5%; color: var(--primary); }
+.icon-bulb { bottom: 15%; right: 10%; color: var(--primary-dark); }
 
 .nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   background: white;
-  color: #333;
+  color: var(--secondary);
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -164,7 +164,7 @@
   transition: all 0.3s;
 }
 
-.nav:hover { background: #1a46e5; color: white; }
+.nav:hover { background: var(--primary); color: var(--secondary); }
 .nav.left { left: 20px; }
 .nav.right { right: 20px; }
 
@@ -187,7 +187,7 @@
 }
 
 .dot.active {
-  background: #1a46e5;
+  background: var(--primary);
   width: 25px;
   border-radius: 10px;
 }

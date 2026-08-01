@@ -74,6 +74,16 @@ const QuizWindow = ({ subject, onBack }) => {
   const questions = quizDetails.questions || [];
   const currentQuestion = questions[currentQuestionIdx];
 
+  if (!currentQuestion && !completed) {
+    return (
+      <div className="quiz-container result-card">
+        <h2 className="quiz-title">Oops!</h2>
+        <p style={{ margin: '20px 0', color: '#666' }}>This mock test doesn't have any questions uploaded yet. Please check back later!</p>
+        <button onClick={onBack} className="btn-next">Back to Test Series</button>
+      </div>
+    );
+  }
+
   if (completed) {
     return (
       <div className="quiz-container result-card">

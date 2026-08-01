@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.jpeg';
+import ThemeToggle from '../ThemeToggle';
 import './HeaderSec.css';
 
 export default function HeaderSec() {
@@ -12,7 +13,6 @@ export default function HeaderSec() {
   const [menuItems, setMenuItems] = useState([
     { name: "Home", path: "/" },
     { name: "Syllabus", submenu: [], path: "/syllabus" },
-    { name: "PYQP & Answer Key", submenu: [], path: "/PYQ" },
     { name: "Solved Paper", path: "/solvedpaper" },
     { name: "Mock Test", path: "/testseries" },
     { name: "Job Vacancy", path: "/job" },
@@ -145,11 +145,12 @@ export default function HeaderSec() {
           <img src={logo} alt="Logo" />
         </div>
 
-        <div className="menu-icon" onClick={toggleMenu}>
-          <div className={isMenuActive ? 'bar1 active' : 'bar1'}></div>
-          <div className={isMenuActive ? 'bar2 active' : 'bar2'}></div>
-          <div className={isMenuActive ? 'bar3 active' : 'bar3'}></div>
-        </div>
+        <div className="navbar-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <div className="menu-icon" onClick={toggleMenu}>
+            <div className={isMenuActive ? 'bar1 active' : 'bar1'}></div>
+            <div className={isMenuActive ? 'bar2 active' : 'bar2'}></div>
+            <div className={isMenuActive ? 'bar3 active' : 'bar3'}></div>
+          </div>
 
         <ul className={`nav-links ${isMenuActive ? 'active' : ''}`}>
           {menuItems.map((item, index) => (
@@ -203,7 +204,10 @@ export default function HeaderSec() {
               )}
             </li>
           ))}
-        </ul>
+          </ul>
+
+          <ThemeToggle />
+        </div>
       </nav>
       
     </div>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from "../components/Homepage/HeaderSec.jsx";
 import Footer from "../components/Homepage/FooterSec.jsx";
 import PopularTest from '../components/TestSeries/PopularTest.jsx';
@@ -7,10 +8,17 @@ import QuizWindow from '../components/TestSeries/QuizWindow.jsx';
 import './TestSeriesView.css';
 
 export default function TestSeriesView() {
-  // Ab state mein sirf true/false nahi, balki selected subject ka naam/id store hoga
   const [selectedSubject, setSelectedSubject] = useState(null);
+  const location = useLocation();
 
-  // Jab koi card click hoga, tab yeh function call hoga
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const quizTitle = urlParams.get('quiz_title');
+    if (quizTitle) {
+      setSelectedSubject(quizTitle);
+    }
+  }, [location.search]);
+
   const handleStartTest = (subjectName) => {
     setSelectedSubject(subjectName);
   };

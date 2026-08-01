@@ -3,8 +3,8 @@
    ========================================================================== */
 .header-container {
   width: 100%;
-  background-color: #ffffff;
-  border-bottom: 1px solid #eef2f5;
+  background-color: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 99999; /* Keeps nav anchored above everything else on page scroll */
@@ -52,7 +52,7 @@ nav.navbar-main {
 
 .nav-link-anchor {
   text-decoration: none;
-  color: #2d3748;
+  color: var(--text-dark);
   font-size: 15px;
   font-weight: 600;
   padding: 10px 16px;
@@ -64,8 +64,8 @@ nav.navbar-main {
 }
 
 .nav-link-anchor:hover {
-  color: #ff4d4d;
-  background-color: #fff5f5;
+  color: var(--primary-dark);
+  background-color: var(--primary-light);
 }
 
 .dropdown-icon {
@@ -75,7 +75,7 @@ nav.navbar-main {
 
 .dropdown-icon.rotated {
   transform: rotate(180deg);
-  color: #ff4d4d;
+  color: var(--primary-dark);
 }
 
 /* ==========================================================================
@@ -87,9 +87,9 @@ nav.navbar-main {
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: #ffffff;
+  background-color: var(--bg-white);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-  border-top: 1px solid #edf2f7;
+  border-top: 1px solid var(--border-color);
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   z-index: 99999;
@@ -107,8 +107,8 @@ nav.navbar-main {
 /* --- Left Sidebar Area --- */
 .mega-sidebar {
   width: 25%;
-  background-color: #f7fafc;
-  border-right: 1px solid #e2e8f0;
+  background-color: var(--bg-color);
+  border-right: 1px solid var(--border-color);
   overflow-y: auto;
   padding: 12px 0;
 }
@@ -131,7 +131,7 @@ nav.navbar-main {
   padding: 14px 20px;
   font-size: 14px;
   font-weight: 500;
-  color: #4a5568;
+  color: var(--text-muted);
   cursor: pointer;
   transition: all 0.15s ease;
   border-left: 4px solid transparent;
@@ -144,21 +144,21 @@ nav.navbar-main {
 }
 
 .sidebar-item:hover {
-  background-color: #edf2f7;
-  color: #1a202c;
+  background-color: var(--border-color);
+  color: var(--text-dark);
 }
 
 .sidebar-item.active {
-  background-color: #ffffff;
-  color: #ff4d4d;
+  background-color: var(--bg-white);
+  color: var(--primary-dark);
   font-weight: 600;
-  border-left-color: #ff4d4d;
+  border-left-color: var(--primary-dark);
 }
 
 .sidebar-item.active i {
   opacity: 1;
   transform: translateX(3px);
-  color: #ff4d4d;
+  color: var(--primary-dark);
 }
 
 /* --- Right Grid Area --- */
@@ -170,18 +170,18 @@ nav.navbar-main {
   grid-gap: 12px 18px;
   align-content: start;
   overflow-y: auto;
-  background-color: #ffffff;
+  background-color: var(--bg-white);
 }
 
 .grid-cell {
   font-size: 14px;
-  color: #4a5568;
+  color: var(--text-muted);
   padding: 10px 14px;
   border-radius: 6px;
-  border: 1px solid #edf2f7;
+  border: 1px solid var(--border-color);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  background-color: #f8fafc;
+  background-color: var(--bg-color);
   
   /* Text overflow containment safety settings */
   white-space: nowrap;
@@ -190,17 +190,17 @@ nav.navbar-main {
 }
 
 .grid-cell:hover {
-  background-color: #fff5f5;
-  color: #ff4d4d;
-  border-color: #feb2b2;
+  background-color: var(--primary-light);
+  color: var(--primary-dark);
+  border-color: var(--primary);
   font-weight: 500;
   transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(255, 77, 77, 0.08);
+  box-shadow: 0 2px 6px rgba(255, 179, 0, 0.15);
 }
 
 .mega-menu-empty {
   grid-column: span 3;
-  color: #a0aec0;
+  color: var(--text-muted);
   text-align: center;
   padding: 60px 0;
   font-size: 14px;
@@ -222,7 +222,7 @@ nav.navbar-main {
 .menu-icon div {
   width: 100%;
   height: 2.5px;
-  background-color: #2d3748;
+  background-color: var(--text-dark);
   border-radius: 4px;
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
@@ -261,7 +261,7 @@ nav.navbar-main {
     top: 100%;
     left: 0;
     width: 100%;
-    background-color: #ffffff;
+    background-color: var(--bg-white);
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
     padding: 16px;
     gap: 4px;
@@ -289,10 +289,10 @@ nav.navbar-main {
     position: static;
     flex-direction: column;
     box-shadow: none;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     min-height: auto;
     max-height: none;
-    background-color: #f8fafc;
+    background-color: var(--bg-color);
     margin-top: 6px;
     border-radius: 8px;
   }
@@ -301,22 +301,22 @@ nav.navbar-main {
   .mega-sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid #edf2f7;
+    border-bottom: 1px solid var(--border-color);
     padding: 6px 0;
     max-height: 240px; /* Keep sidebar small on screen */
   }
 
   .sidebar-item {
     padding: 12px 16px;
-    background-color: #f1f5f9;
+    background-color: var(--bg-color);
     margin: 4px 8px;
     border-radius: 6px;
     border-left: none;
   }
 
-  .sidebar-item.active {
-    background-color: #ffffff;
-    border-bottom: 2px solid #ff4d4d;
+.sidebar-item.active {
+    background-color: var(--bg-white);
+    border-bottom: 2px solid var(--primary-dark);
     padding-bottom: 10px;
   }
   
@@ -337,7 +337,7 @@ nav.navbar-main {
   }
 
   .grid-cell {
-    background-color: #ffffff;
+    background-color: var(--bg-white);
     padding: 12px;
     font-size: 13px;
     text-align: center;

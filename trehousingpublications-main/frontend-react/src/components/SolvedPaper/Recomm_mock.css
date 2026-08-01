@@ -1,25 +1,12 @@
 /* ==========================================================================
-   CYBER-GLASS RECO MOCK GRID SYSTEM - ULTRA PREMIUM DARK
+   CYBER-GLASS RECO MOCK GRID SYSTEM - ULTRA PREMIUM DARK -> YELLOW THEME
    ========================================================================== */
 
 .recomm-mock-section-wrapper {
-    background:
-        radial-gradient(circle at 10% 15%,
-            rgba(83, 203, 243, 0.18) 0%,
-            transparent 45%),
-        radial-gradient(circle at 85% 25%,
-            rgba(255, 222, 66, 0.12) 0%,
-            transparent 50%),
-        linear-gradient(
-            180deg,
-            #070b14 0%,
-            #030509 100%
-        );
-
-    /* min-height: 100vh; */
+    background: var(--bg-color);
     padding: 40px 20px;
-    color: #ffffff;
-    font-family: 'Segoe UI', sans-serif;
+    color: var(--text-heading);
+    font-family: var(--font-main);
     position: relative;
     overflow-x: hidden;
 
@@ -43,12 +30,12 @@
 
     background-image:
         linear-gradient(
-            rgba(83, 203, 243, 0.05) 1px,
+            rgba(255, 179, 0, 0.05) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(83, 203, 243, 0.05) 1px,
+            rgba(255, 179, 0, 0.05) 1px,
             transparent 1px
         );
 
@@ -118,14 +105,14 @@
 .recomm-mock-heading {
     font-size: 1.5rem;
     font-weight: 800;
-    color: #ffffff !important;
+    color: var(--secondary) !important;
     margin: 45px 0 25px 0;
     letter-spacing: -0.5px;
     text-transform: uppercase;
     display: flex;
     align-items: center;
     gap: 10px;
-    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+    text-shadow: none;
 }
 
 /* Dynamic Border Underline Accent for Headings */
@@ -139,13 +126,13 @@
 
 /* Heading specific neon accents */
 p.recomm-mock-heading:nth-of-type(1)::after {
-    background: #eab308; /* Yellow underline for Recommended */
-    box-shadow: 0 0 10px rgba(234, 179, 8, 0.5);
+    background: var(--primary); /* Yellow underline for Recommended */
+    box-shadow: 0 0 10px rgba(255, 179, 0, 0.5);
 }
 
 p.recomm-mock-heading:nth-of-type(2)::after {
-    background: #38bdf8; /* Light Blue underline for Mock Tests */
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    background: var(--primary-dark); /* Dark yellow underline for Mock Tests */
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
 }
 
 /* Fixed Broken Layout - High-Performance CSS Grid Setup */
@@ -160,7 +147,7 @@ p.recomm-mock-heading:nth-of-type(2)::after {
 
 /* Futuristic 3D Cyber-Glass Container Cards */
 .recomm-mock-card {
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
+    background: var(--bg-white) !important;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-radius: 20px;
@@ -175,9 +162,8 @@ p.recomm-mock-heading:nth-of-type(2)::after {
     overflow: hidden;
     
     /* Subtle 3D Depth Shadow & Rim Light Outlines */
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
-                inset 0 1px 1px rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-lg) !important;
                 
     /* Complex elastic animation response */
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
@@ -185,40 +171,38 @@ p.recomm-mock-heading:nth-of-type(2)::after {
 
 /* Card Type Border Color Mapping */
 .course-card-variant {
-    border-left: 4px solid #eab308 !important; /* Left rim highlight yellow */
+    border-left: 4px solid var(--primary) !important; /* Left rim highlight yellow */
 }
 
 .mock-card-variant {
-    border-left: 4px solid #38bdf8 !important; /* Left rim highlight light blue */
+    border-left: 4px solid var(--primary-dark) !important; /* Left rim highlight dark yellow */
 }
 
 /* Insane 3D Hover Pop-Up Effect with Adaptive Neon Glow */
 .recomm-mock-card:hover {
     transform: translateY(-10px) scale(1.02) !important;
-    background: rgba(30, 41, 59, 0.95) !important;
+    background: var(--bg-white) !important;
 }
 
 /* Hover Accent for Course Cards (Yellow Glow) */
 .course-card-variant:hover {
-    border-color: rgba(234, 179, 8, 0.4) !important;
-    box-shadow: 0 20px 35px -10px rgba(234, 179, 8, 0.25),
-                0 4px 6px rgba(0, 0, 0, 0.2),
-                inset 0 1px 2px rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 179, 0, 0.4) !important;
+    box-shadow: 0 20px 35px -10px rgba(255, 179, 0, 0.25),
+                0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Hover Accent for Mock Test Cards (Light Blue Glow) */
+/* Hover Accent for Mock Test Cards (Light Blue Glow -> Dark Yellow) */
 .mock-card-variant:hover {
-    border-color: rgba(56, 189, 248, 0.5) !important;
-    box-shadow: 0 20px 35px -10px rgba(56, 189, 248, 0.3),
-                0 4px 6px rgba(0, 0, 0, 0.2),
-                inset 0 1px 2px rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 152, 0, 0.5) !important;
+    box-shadow: 0 20px 35px -10px rgba(255, 152, 0, 0.3),
+                0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Premium Card Typography */
 .recomm-mock-title {
     font-size: 1.15rem;
     font-weight: 700;
-    color: #f8fafc !important;
+    color: var(--secondary) !important;
     line-height: 1.4;
     margin: 0;
     letter-spacing: -0.2px;
@@ -245,31 +229,31 @@ p.recomm-mock-heading:nth-of-type(2)::after {
 
 /* 1. Yellow 3D Button Style (Premium Course Details) */
 .yellow-3d-btn {
-    background: linear-gradient(135deg, #fde047 0%, #eab308 100%);
-    color: #0f172a;
-    box-shadow: 0 4px 14px rgba(234, 179, 8, 0.3), 
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--secondary);
+    box-shadow: 0 4px 14px rgba(255, 179, 0, 0.3), 
                 inset 0 -3px 0 rgba(0, 0, 0, 0.2);
 }
 
 .yellow-3d-btn:hover {
-    background: linear-gradient(135deg, #fffbeb 0%, #ca8a04 100%);
+    background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(234, 179, 8, 0.45), 
+    box-shadow: 0 6px 20px rgba(255, 179, 0, 0.45), 
                 inset 0 -3px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* 2. Light Blue 3D Button Style (Premium Test Attempts) */
 .blue-3d-btn {
-    background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-    color: #ffffff;
-    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3), 
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--secondary);
+    box-shadow: 0 4px 14px rgba(255, 179, 0, 0.3), 
                 inset 0 -3px 0 rgba(0, 0, 0, 0.2);
 }
 
 .blue-3d-btn:hover {
-    background: linear-gradient(135deg, #7dd3fc 0%, #0369a1 100%);
+    background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45), 
+    box-shadow: 0 6px 20px rgba(255, 179, 0, 0.45), 
                 inset 0 -3px 0 rgba(0, 0, 0, 0.2);
 }
 

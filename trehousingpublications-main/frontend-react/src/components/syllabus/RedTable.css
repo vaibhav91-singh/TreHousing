@@ -47,8 +47,8 @@ table {
 
 /* Header styling */
 th {
-  background-color: #f54254;
-  color: white;
+  background-color: var(--primary);
+  color: var(--secondary);
   padding: 18px;
   font-size: 17px;
   font-weight: bold;

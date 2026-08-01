@@ -9,8 +9,8 @@ from .models import Quiz, Question, Choice
 from .serializers import QuizSerializer
 # For Solved Paper
 from rest_framework import status
-from .models import SolvedPaper,JobVacancy
-from .serializers import SolvedPaperSerializer,JobVacancySerializer
+from .models import SolvedPaper,JobVacancy, RecentUpdate
+from .serializers import SolvedPaperSerializer,JobVacancySerializer, RecentUpdateSerializer
 import os
 
 
@@ -239,6 +239,11 @@ def get_solved_papers(request):
     """Sare solved papers fetch karne ke liye API endpoint"""
     try:
         papers = SolvedPaper.objects.all().order_by('-created_at')
+        
+        subject_id = request.GET.get('subject_id')
+        if subject_id:
+            papers = papers.filter(subject_id=subject_id)
+            
         serializer = SolvedPaperSerializer(papers, many=True)
         return Response({"success": True, "data": serializer.data}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -267,4 +272,18 @@ def job_detail_api(request, pk):
     job = get_object_or_404(JobVacancy, pk=pk)
     serializer = JobVacancySerializer(job)
     return Response(serializer.data)
-    
+
+@api_view(['GET'])
+def get_user_performance(request):
+    performance = UserPerformance.objects.all()
+    serializer = UserPerformanceSerializer(performance, many=True)
+    return Response(serializer.data)
+
+# ==========================================================================
+# RECENT UPDATES
+#=====================================================================
+@api_view(['GET'])
+def recent_updates_list(request):
+    updates = RecentUpdate.objects.all()[:10]  # Only fetch latest 10 updates
+    serializer = RecentUpdateSerializer(updates, many=True)
+    return Response(serializer.data)

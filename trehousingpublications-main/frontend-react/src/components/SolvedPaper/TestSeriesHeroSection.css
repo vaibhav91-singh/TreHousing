@@ -5,13 +5,13 @@
 .hero-section {
     position: relative;
     /* Soft top yellow to subtle background fluid tint */
-    background: linear-gradient(135deg, #fffbeb 0%, #ffffff 60%, #eff6ff 100%);
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-white) 60%, var(--bg-color) 100%);
     padding: 60px 4vw 90px 4vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: hidden;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border-color);
 }
 
 /* Background elements mapping for a modern portal feel */
@@ -22,7 +22,7 @@
     right: -5%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(254, 240, 138, 0.4) 0%, rgba(255,255,255,0) 70%);
+    background: radial-gradient(circle, rgba(255, 179, 0, 0.2) 0%, rgba(255,255,255,0) 70%);
     pointer-events: none;
 }
 
@@ -45,7 +45,7 @@
 .heading {
     font-size: clamp(2rem, 3.5vw, 2.8rem);
     font-weight: 800;
-    color: #0f172a;
+    color: var(--text-heading);
     line-height: 1.2;
     margin: 0 0 20px 0;
     letter-spacing: -1px;
@@ -53,7 +53,7 @@
 
 .subheading {
     font-size: clamp(1rem, 1.5vw, 1.2rem);
-    color: #475569;
+    color: var(--text-muted);
     line-height: 1.6;
     margin: 0 0 15px 0;
     font-weight: 500;
@@ -61,19 +61,19 @@
 
 /* Branding Highlight using the Signature Golden Yellow */
 .highlight {
-    background: linear-gradient(120deg, #fef08a 0%, #fde047 100%);
+    background: linear-gradient(120deg, var(--primary) 0%, var(--primary-hover) 100%);
     padding: 2px 8px;
     border-radius: 6px;
-    color: #1e293b;
+    color: var(--secondary);
     font-weight: 700;
     display: inline-block;
     margin-top: 5px;
-    box-shadow: 2px 4px 10px rgba(234, 179, 8, 0.15);
+    box-shadow: 2px 4px 10px rgba(255, 179, 0, 0.15);
 }
 
 .exam-count {
     font-size: 0.95rem;
-    color: #0ea5e9; /* Electric Blue Accent */
+    color: var(--primary-dark);
     font-weight: 700;
     margin: 0;
     letter-spacing: 0.2px;
@@ -104,14 +104,14 @@
     max-width: 620px;
     display: flex;
     align-items: center;
-    background: #ffffff;
+    background: var(--bg-white);
     border-radius: 16px;
     padding: 4px 6px;
     box-sizing: border-box;
-    border: 1px solid rgba(14, 165, 233, 0.2);
+    border: 1px solid var(--border-color);
     
     /* 3D Drop shadow stack to pop out over both sections */
-    box-shadow: 0 15px 35px -5px rgba(29, 78, 216, 0.1), 
+    box-shadow: 0 15px 35px -5px rgba(30, 41, 59, 0.1), 
                 0 10px 15px -5px rgba(0, 0, 0, 0.03),
                 inset 0 -3px 0 rgba(0, 0, 0, 0.04);
                 
@@ -121,8 +121,8 @@
 
 .search-bar:focus-within {
     transform: translateY(-4px) scale(1.01);
-    border-color: #1d4ed8; /* Deep Royal Blue Focus border */
-    box-shadow: 0 20px 40px -5px rgba(29, 78, 216, 0.18), 
+    border-color: var(--primary);
+    box-shadow: 0 20px 40px -5px rgba(255, 179, 0, 0.18), 
                 0 1px 3px rgba(0,0,0,0.05),
                 inset 0 -3px 0 rgba(0, 0, 0, 0.04);
 }
@@ -134,7 +134,7 @@
     background: transparent;
     font-size: 16px;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--text-dark);
 }
 
 .search-bar input:focus {
@@ -142,7 +142,7 @@
 }
 
 .search-bar input::placeholder {
-    color: #94a3b8;
+    color: var(--text-muted);
     font-weight: 500;
 }
 

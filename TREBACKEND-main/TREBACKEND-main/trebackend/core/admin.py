@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from .models import Course, Subject, Exam_Pattern, Subject_Content, PYQ, Syllabus, Sub_Courses,SolvedPaper
 from .models import Quiz, Question, Choice
-from .models import JobVacancy
+from .models import JobVacancy, RecentUpdate
 
 class SyllabusInline(admin.TabularInline):
     model = Syllabus
@@ -174,3 +174,7 @@ class QuizAdmin(admin.ModelAdmin):
         }
         return render(request, 'admin/quiz_bulk_upload.html', context)
  
+@admin.register(RecentUpdate)
+class RecentUpdateAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')
+    search_fields = ('title',) 

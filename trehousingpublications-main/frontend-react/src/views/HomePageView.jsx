@@ -1,30 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import HeroSec from "@/components/Homepage/HeroSec.jsx";
-import RefBook from "@/components/Homepage/RefBook.jsx";
-import AboutUs from "@/components/Homepage/AboutUs.jsx";
-import NewsLetter from "@/components/Homepage/NewsLetter.jsx";
+import React from 'react';
 import Header from "@/components/Homepage/HeaderSec.jsx";
-import Footer from "@/components/Homepage/FooterSec.jsx";
-import MissionVision from "@/components/Homepage/MissionVision.jsx";
-import JobOpportunities from "@/components/Homepage/JobOpportunitiesPage.jsx";
-import DownloadApp from "@/components/Homepage/DownloadApp.jsx";
-import './HomePageView.css';
+import NewHeroSection from "@/components/Homepage/NewHeroSection.jsx";
+import QuickLinksSection from "@/components/Homepage/QuickLinksSection.jsx";
+import ActiveRecruitmentSection from "@/components/Homepage/ActiveRecruitmentSection.jsx";
+import RapidFireSection from "@/components/Homepage/RapidFireSection.jsx";
+import RecommendationsSection from "@/components/Homepage/RecommendationsSection.jsx";
+import ResourceLibrarySection from "@/components/Homepage/ResourceLibrarySection.jsx";
+import FooterSec from "@/components/Homepage/FooterSec.jsx";
+import './NewHomePage.css';
 
 export default function HomePageView() {
-  // TODO: Convert Vue data(), methods, and mounted() manually
-  
   return (
-    <>
+    <div className="new-homepage">
       <Header />
-      <HeroSec />
-      {/* <AboutUs /> */}
-      <MissionVision />   {/*  Current name on page is Goverment Competitve Exam Held*/}
-    
-      <JobOpportunities />
-      <RefBook />
-      <DownloadApp />
-      <NewsLetter />
-      <Footer />
-    </>
+      <NewHeroSection />
+      <QuickLinksSection />
+      <ActiveRecruitmentSection />
+      <RapidFireSection />
+      <RecommendationsSection />
+      <ResourceLibrarySection />
+      <FooterSec />
+    </div>
   );
 }

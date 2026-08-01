@@ -9,17 +9,18 @@
     padding: 12px 24px;
     font-size: 1rem;
     font-weight: 600;
-    color: #ffffff;
-    background-color: #4f46e5;
+    color: var(--secondary);
+    background-color: var(--primary);
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
 }
 
 .start-quiz-btn:hover {
-    background-color: #4338ca;
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
 }
 
 .start-quiz-btn:active {

@@ -6,8 +6,8 @@
     padding: 2rem;
     background: linear-gradient(145deg, #ffffff, #f8fafc);
     border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(79, 70, 229, 0.12);
-    border: 1px solid rgba(79, 70, 229, 0.08);
+    box-shadow: 0 15px 40px rgba(30, 41, 59, 0.12);
+    border: 1px solid rgba(30, 41, 59, 0.08);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     animation: fadeIn 0.5s ease;
 }
@@ -20,30 +20,30 @@
     gap: 10px;
     padding-bottom: 1rem;
     margin-bottom: 1.8rem;
-    border-bottom: 2px solid #eef2ff;
+    border-bottom: 2px solid var(--border-color);
 }
 
 .quiz-title {
     font-size: 1.5rem;
     font-weight: 800;
-    color: #1e293b;
+    color: var(--secondary);
 }
 
 /* Progress Badge */
 .quiz-progress {
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
-    color: #fff;
+    background: var(--secondary);
+    color: var(--primary);
     padding: 0.5rem 1rem;
     border-radius: 30px;
     font-size: 0.85rem;
     font-weight: 700;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    box-shadow: 0 4px 12px rgba(30, 41, 59, 0.25);
 }
 
 /* Timer */
 .timer-badge {
-    background: linear-gradient(135deg, #ffde42, #ffc107);
-    color: #111827;
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+    color: var(--secondary);
     padding: 8px 16px;
     border-radius: 30px;
     font-weight: 800;
@@ -55,7 +55,7 @@
 /* Question */
 .question-text {
     font-size: 1.25rem;
-    color: #1f2937;
+    color: var(--secondary);
     font-weight: 700;
     line-height: 1.6;
     margin-bottom: 1.8rem;
@@ -73,10 +73,10 @@
     text-align: left;
     padding: 1rem 1.2rem;
     border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    background: #ffffff;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
     font-size: 1rem;
-    color: #4b5563;
+    color: var(--text-muted);
     cursor: pointer;
     transition: all 0.25s ease;
     position: relative;
@@ -89,7 +89,7 @@
     inset: 0;
     background: linear-gradient(
         90deg,
-        rgba(79, 70, 229, 0.05),
+        rgba(255, 179, 0, 0.1),
         transparent
     );
     transform: translateX(-100%);
@@ -102,18 +102,18 @@
 
 .choice-button:hover:not(:disabled) {
     transform: translateY(-3px);
-    border-color: #4f46e5;
-    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
-    color: #111827;
+    border-color: var(--primary);
+    box-shadow: 0 8px 20px rgba(255, 179, 0, 0.15);
+    color: var(--secondary);
 }
 
 /* Selected Option */
 .choice-button.selected {
-    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
-    border-color: #4f46e5;
-    color: #4f46e5;
+    background: var(--primary-light);
+    border-color: var(--primary-dark);
+    color: var(--primary-dark);
     font-weight: 700;
-    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 6px 16px rgba(255, 179, 0, 0.2);
 }
 
 .choice-button:disabled {
@@ -130,8 +130,8 @@
 /* Quit Button */
 .btn-quit {
     padding: 0.7rem 1.4rem;
-    background: #f3f4f6;
-    color: #4b5563;
+    background: var(--bg-color);
+    color: var(--text-muted);
     border: none;
     border-radius: 10px;
     font-weight: 700;
@@ -147,19 +147,19 @@
 /* Next Button */
 .btn-next {
     padding: 0.75rem 1.8rem;
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
-    color: #fff;
+    background: var(--primary);
+    color: var(--secondary);
     border: none;
     border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.25s ease;
-    box-shadow: 0 8px 18px rgba(79, 70, 229, 0.25);
+    box-shadow: 0 8px 18px rgba(255, 179, 0, 0.25);
 }
 
 .btn-next:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 12px 24px rgba(79, 70, 229, 0.35);
+    box-shadow: 0 12px 24px rgba(255, 179, 0, 0.35);
 }
 
 .btn-next:disabled {
@@ -186,12 +186,12 @@
     display: inline-block;
     margin: 1.5rem 0;
     padding: 1rem 2.5rem;
-    background: linear-gradient(135deg, #eef2ff, #ddd6fe);
-    color: #4f46e5;
+    background: var(--primary-light);
+    color: var(--primary-dark);
     font-size: 1.8rem;
     font-weight: 800;
     border-radius: 40px;
-    box-shadow: 0 10px 20px rgba(79, 70, 229, 0.15);
+    box-shadow: 0 10px 20px rgba(255, 179, 0, 0.15);
 }
 
 /* Animations */

@@ -89,38 +89,36 @@ export default function SyllabusPdf() {
   };
 
   return (
-    <div className="box">
+    <div className="box syllabus-pdf-container">
       {pdfContent.length > 0 ? (
         <>
-          <h3 className="table-head">Download Subject PDFs</h3>
+          <h3 className="table-head">Syllabus Documents</h3>
           <hr className="horiz-line" />
-          <div className="table-wrapper">
-            <table className="table-data">
-              <thead>
-                <tr className="imp-link">
-                  <th>Subject</th>
-                  <th>Download Link</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pdfContent.map((pdf, index) => (
-                  <tr className="rowData" key={index}>
-                    <td>{pdf.subject}</td>
-                    <td>
-                      <a href={pdf.link} target="_blank" rel="noopener noreferrer" className="pdf-link">
-                        {pdf.filename}
-                      </a>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="syllabus-grid">
+            {pdfContent.map((pdf, index) => (
+              <div key={index} className="syllabus-card">
+                <div className="syllabus-card-header">
+                  <span className="syllabus-badge">PDF Document</span>
+                  <h4 className="syllabus-title">{pdf.filename}</h4>
+                </div>
+                
+                <div className="syllabus-actions">
+                  <a href={pdf.link} target="_blank" rel="noopener noreferrer" className="btn-syllabus-action btn-view-syllabus">
+                    👁️ View Syllabus
+                  </a>
+                  
+                  <a href={pdf.link} download target="_blank" rel="noopener noreferrer" className="btn-syllabus-action btn-download-syllabus">
+                    📥 Download Syllabus
+                  </a>
+                </div>
+              </div>
+            ))}
           </div>
         </>
       ) : (
         <div>
           {error ? (
-            <p style={{ color: 'red', textAlign: 'center', fontWeight: 'bold', fontSize: '24px' }}>
+            <p style={{ color: 'red', textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>
               {error}
             </p>
           ) : (

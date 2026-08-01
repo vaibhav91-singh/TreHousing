@@ -153,21 +153,29 @@ class Choice(models.Model):
 class SolvedPaper(models.Model):
     # Subject ke sath mapping taaki filtering asaan ho
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="solved_papers")
-    title = models.CharField(max_length=255) # Jaise: "AKTU 2024 AI-DS Operating System Solved Paper"
-    year = models.IntegerField() # Jaise: 2024
-    paper_link = models.URLField(max_length=1000) # AWS S3 bucket ya Google Drive ka public link
+    title = models.CharField(max_length=255, help_text="e.g. UPSC 2024 Prelims GS Paper")
+    year = models.IntegerField(help_text="e.g. 2024") 
+    paper_link = models.URLField(max_length=1000, verbose_name="Paper Link", help_text="Google Drive or AWS S3 link for the Question Paper.")
+    answer_key_link = models.URLField(max_length=1000, verbose_name="Answer Key Link", help_text="Google Drive or AWS S3 link for the Answer Key.", blank=True, null=True)
+    linked_mock = models.ForeignKey('Quiz', on_delete=models.SET_NULL, null=True, blank=True, related_name="linked_papers", verbose_name="Linked Mock Test", help_text="Select a Mock Test to link with this paper.")
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
     def __str__(self):
         return f"{self.title} ({self.year})"
         
     class Meta:
-        verbose_name_plural = "Solved Papers"
+        verbose_name = "Past Paper / Answer Key"
+        verbose_name_plural = "Past Papers & Answer Keys"
 
 #==============================================================
 #JOB VACANCY
 #==============================================================
 class JobVacancy(models.Model):
+    JOB_TYPE_CHOICES = [
+        ('GOVT', 'Government'),
+        ('PRIVATE', 'Private'),
+    ]
+    
     title = models.CharField(max_length=200)
     organization = models.CharField(max_length=200)
     eligibility = models.CharField(max_length=255)
@@ -177,8 +185,32 @@ class JobVacancy(models.Model):
     official_website = models.URLField()
     status = models.BooleanField(default=True) # Active/Inactive
     apply_link= models.URLField()
+    
+    # New fields for Govt Exam Hub UI
+    category_badge = models.CharField(max_length=50, blank=True, null=True, help_text="e.g., BPSC, SSC, UPSC")
+    vacancy_count = models.CharField(max_length=100, blank=True, null=True, help_text="e.g., 600+ Vacancies")
+    qualification = models.CharField(max_length=100, blank=True, null=True, help_text="e.g., Graduation, 10th Pass")
+    
+    job_type = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES, default='GOVT')
+
     class Meta:
         verbose_name_plural = "Job Vacancies"
+        ordering = ['-apply_date']
 
     def __str__(self):
         return f"{self.title} - {self.organization}"
+
+#==============================================================
+# RECENT UPDATES (For Job Vacancy Hub)
+#==============================================================
+class RecentUpdate(models.Model):
+    title = models.CharField(max_length=255, help_text="e.g. BPSC 68th Mains Result Declared")
+    description = models.CharField(max_length=500, blank=True, null=True, help_text="Check your merit list and cut-off marks")
+    link = models.URLField(max_length=1000, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title

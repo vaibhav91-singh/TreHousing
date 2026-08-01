@@ -1,6 +1,6 @@
 
 from rest_framework import serializers
-from .models import Course, Subject, Exam_Pattern, Subject_Content, Syllabus, Quiz, Question, Choice, SolvedPaper, PYQ, JobVacancy
+from .models import Course, Subject, Exam_Pattern, Subject_Content, Syllabus, Quiz, Question, Choice, SolvedPaper, PYQ, JobVacancy, RecentUpdate
 class SyllabusSerializer(serializers.ModelSerializer):
     filename = serializers.ReadOnlyField()
 
@@ -85,10 +85,11 @@ class QuizSerializer(serializers.ModelSerializer):
 class SolvedPaperSerializer(serializers.ModelSerializer):
     # Isse string field me subject ka title (naam) direct pass ho jayega frontend tabs ke liye
     subject_title = serializers.CharField(source='subject.title', read_only=True)
+    linked_mock_title = serializers.CharField(source='linked_mock.title', read_only=True)
 
     class Meta:
         model = SolvedPaper
-        fields = ['id', 'subject', 'subject_title', 'title', 'year', 'paper_link', 'created_at']
+        fields = ['id', 'subject', 'subject_title', 'title', 'year', 'paper_link', 'answer_key_link', 'linked_mock', 'linked_mock_title', 'created_at']
 
 #==============================================================
 #JOB VACANCY
@@ -97,4 +98,9 @@ class SolvedPaperSerializer(serializers.ModelSerializer):
 class JobVacancySerializer(serializers.ModelSerializer):
     class Meta:
         model = JobVacancy
+        fields = '__all__'
+
+class RecentUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecentUpdate
         fields = '__all__'

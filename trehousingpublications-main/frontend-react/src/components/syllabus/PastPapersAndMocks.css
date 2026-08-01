@@ -1,28 +1,16 @@
-.box.syllabus-pdf-container {
+.past-papers-container {
   margin-top: 30px;
   background-color: #fff;
 }
 
-.table-head {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.horiz-line {
-  border: 0;
-  height: 2px;
-  background: linear-gradient(to right, var(--primary), transparent);
-  margin-bottom: 20px;
-}
-
-.syllabus-grid {
+.papers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
+  margin-top: 20px;
 }
 
-.syllabus-card {
+.paper-card {
   background: #fdfdfd;
   border: 1px solid #e0e6ed;
   border-radius: 12px;
@@ -34,17 +22,17 @@
   justify-content: space-between;
 }
 
-.syllabus-card:hover {
+.paper-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
   border-color: var(--primary);
 }
 
-.syllabus-card-header {
+.paper-card-header {
   margin-bottom: 20px;
 }
 
-.syllabus-badge {
+.paper-year-badge {
   display: inline-block;
   background: var(--primary-light);
   color: var(--primary-dark);
@@ -56,22 +44,21 @@
   margin-bottom: 10px;
 }
 
-.syllabus-title {
+.paper-title {
   font-size: 18px;
   color: #222;
   margin: 0;
   font-weight: 700;
   line-height: 1.4;
-  word-break: break-all;
 }
 
-.syllabus-actions {
+.paper-actions {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.btn-syllabus-action {
+.btn-past-action {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,44 +73,32 @@
   color: #fff;
 }
 
-.btn-view-syllabus {
-  background: var(--primary);
-  color: var(--secondary);
+.btn-view-paper {
+  background: var(--secondary);
 }
 
-.btn-view-syllabus:hover {
-  background: var(--primary-hover);
+.btn-view-paper:hover {
+  background: var(--secondary-hover);
   transform: translateY(-2px);
 }
 
-.btn-download-syllabus {
+.btn-answer-key {
   background: transparent;
   color: var(--secondary);
   border: 1px solid var(--secondary);
 }
 
-.btn-download-syllabus:hover {
+.btn-answer-key:hover {
   background: var(--bg-color);
   transform: translateY(-2px);
 }
 
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
+.btn-start-mock {
+  background: var(--primary);
+  color: var(--secondary);
 }
 
-.spinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid var(--primary);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.btn-start-mock:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
 }

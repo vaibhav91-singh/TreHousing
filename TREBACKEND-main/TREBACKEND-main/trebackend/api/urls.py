@@ -10,5 +10,5 @@ urlpatterns = [
     path('v1/solved-papers/', views.get_solved_papers, name='get_solved_papers'),
     path('job/', views.job_list_create, name='job-list-create'),
     path('job/<int:pk>/', views.job_detail_api, name='job-detail-api'),
-    
+    path('recent-updates/', views.recent_updates_list, name='recent-updates-list'),
 ]

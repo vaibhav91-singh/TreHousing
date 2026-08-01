@@ -3,13 +3,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import HomePageView from './views/HomePageView.jsx';
 import SyllabusView from './views/SyllabusView.jsx';
-import PYQPageView from './views/PYQPageView.jsx';
 import SolvedPaperView from './views/SolvedPaperView.jsx';
 import TestSeriesView from './views/TestSeriesView.jsx';
 import TermsAndConditions from './views/TermsAndConditions.jsx';
 import PrivacyPolicy from './views/PrivacyPolicy.jsx';
 import JobVacancy from './views/JobVacancy.jsx';
 import ResultDashbord from './views/ResultDashbord.jsx';
+import JobNotificationListener from './components/JobNotificationListener.jsx';
   
 // Extend the window interface type safety for your custom window property object
 if (typeof window !== 'undefined') {
@@ -46,10 +46,10 @@ function App() {
 
   return (
     <BrowserRouter>
+      <JobNotificationListener />
       <Routes>
         <Route path="/" element={<HomePageView />} />
         <Route path="/syllabus" element={<SyllabusView />} />
-        <Route path="/PYQ" element={<PYQPageView />} />
         <Route path="/solvedpaper" element={<SolvedPaperView />} />
         <Route path="/testseries" element={<TestSeriesView />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />

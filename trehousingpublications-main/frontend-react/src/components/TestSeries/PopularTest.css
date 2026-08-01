@@ -1,9 +1,9 @@
 /* src/components/TestSeries/PopularTest.css */
 
 .main-container {
-    background-color: #f2f9a3; 
+    background-color: var(--bg-color); 
     padding: 4vh 4vw;
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-main);
     box-sizing: border-box;
 }
 
@@ -13,7 +13,7 @@
     font-weight: 800;
     margin-top: 10px;
     margin-bottom: 2rem;
-    color: #1e293b;
+    color: var(--secondary);
     letter-spacing: -0.5px;
 }
 
@@ -29,13 +29,13 @@
 /* Modern 3D Card with Gorgeous Yellow to Blue Top-Down Gradient */
 .cardDesign {
     /* Upar se Soft Golden Yellow -> Center me Clean Fluid Blush -> Bottom me Beautiful Sky/Royal Blue */
-    background: linear-gradient(180deg, #fef08a 0%, #ffffff 50%, #e0f2fe 100%);
+    background: linear-gradient(180deg, var(--primary-light) 0%, var(--bg-white) 50%, var(--bg-color) 100%);
     border-radius: 20px;
     padding: 22px 20px;
     box-sizing: border-box;
     
     /* Dual bordered outline layout for crisp premium feel */
-    border: 1px solid rgba(254, 240, 138, 0.8);
+    border: 1px solid var(--primary-light);
     
     /* 3D Neumorphic Base Layering Soft Shadow Depth */
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.03), 
@@ -54,11 +54,11 @@
 /* Hyper-Realistic 3D Hover Depth Lift and Color Shift Animation */
 .cardDesign:hover {
     transform: translateY(-12px) scale(1.02); /* True 3D Floating Action */
-    border-color: #bae6fd; /* Soft blue highlight border on floating active state */
+    border-color: var(--primary); /* Soft blue highlight border on floating active state */
     
     /* Deep multi-layered dynamic drop shadows to look raised up in physical space */
-    box-shadow: 0 25px 30px -5px rgba(59, 130, 246, 0.15), 
-                0 12px 14px -5px rgba(253, 224, 71, 0.2),
+    box-shadow: 0 25px 30px -5px rgba(30, 41, 59, 0.15), 
+                0 12px 14px -5px rgba(255, 179, 0, 0.2),
                 inset 0 2px 0 rgba(255, 255, 255, 1);
 }
 
@@ -84,11 +84,11 @@
     width: 44px;
     height: 44px;
     object-fit: contain;
-    background-color: #ffffff;
+    background-color: var(--bg-white);
     border-radius: 50%;
     padding: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    border: 1.5px solid #fef08a;
+    border: 1.5px solid var(--primary-light);
     z-index: 2;
 }
 
@@ -107,12 +107,12 @@
     align-items: center;
     gap: 4px;
     border-radius: 30px;
-    border: 1px solid rgba(254, 240, 138, 0.5);
+    border: 1px solid var(--primary-light);
     z-index: 2;
 }
 
 .views #user {
-    color: #854d0e; /* Strong rich golden text contrast */
+    color: var(--primary-dark); /* Strong rich golden text contrast */
 }
 
 .cardDesign #heading {
@@ -120,25 +120,25 @@
     font-weight: 800;
     line-height: 1.4;
     margin: 20px 0 10px 0;
-    color: #0f172a;
+    color: var(--secondary);
     z-index: 2;
 }
 
 .cardDesign p {
     margin: 8px 0;
     font-size: 13px;
-    color: #475569;
+    color: var(--text-muted);
     font-weight: 600;
     z-index: 2;
 }
 
 .cardDesign #free {
     font-weight: 700;
-    color: #10b981;
+    color: var(--primary-dark);
 }
 
 .cardDesign #lang {
-    color: #1d4ed8; /* Bold clean royal blue */
+    color: var(--secondary); /* Bold clean royal blue */
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -146,12 +146,12 @@
 }
 
 .cardDesign #lang span {
-    color: #334155;
+    color: var(--text-muted);
 }
 
 .cardDesign hr {
     border: 0;
-    border-top: 1px solid rgba(226, 232, 240, 0.8);
+    border-top: 1px solid var(--border-color);
     margin: 12px 0;
     z-index: 2;
 }
@@ -161,7 +161,7 @@
     line-height: 20px;
     margin: 5px 0 22px 0;
     font-size: 12.5px;
-    color: #334155;
+    color: var(--text-muted);
     font-weight: 500;
     flex-grow: 1;
     z-index: 2;
@@ -176,15 +176,15 @@
     width: 100%; 
     height: auto;
     padding: 11px 0;
-    background: linear-gradient(135deg, #0ea5e9 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     border: none;
     border-radius: 12px;
     margin: 0;
-    color: #ffffff;
+    color: var(--secondary);
     font-weight: 700;
     font-size: 13px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25), 
+    box-shadow: 0 4px 12px rgba(255, 179, 0, 0.25), 
                 inset 0 -3px 0 rgba(0, 0, 0, 0.18); /* Extra distinct mechanical click depth */
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 2;
@@ -192,15 +192,15 @@
 
 /* Button Hover State Accent Swap */
 .cardDesign .btn-view:hover {
-    background: linear-gradient(135deg, #38bdf8 0%, #1e40af 100%);
+    background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(29, 78, 216, 0.4), 
+    box-shadow: 0 6px 16px rgba(255, 179, 0, 0.4), 
                 inset 0 -3px 0 rgba(0, 0, 0, 0.18);
 }
 
 .cardDesign .btn-view:active {
     transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(29, 78, 216, 0.2), 
+    box-shadow: 0 2px 4px rgba(255, 179, 0, 0.2), 
                 inset 0 -1px 0 rgba(0, 0, 0, 0.18);
 }
 
