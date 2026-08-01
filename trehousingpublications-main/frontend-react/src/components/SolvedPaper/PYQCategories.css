@@ -1,0 +1,284 @@
+/* ==========================================================================
+   PYQ CATEGORIES DASHBOARD - 3D RESPONSIVE STYLING
+   ========================================================================== */
+
+.pyq-categories {
+    background-color: var(--bg-color);
+    padding: 4vh 4vw;
+    font-family: var(--font-main);
+    transition: all 0.3s ease;
+}
+
+/* Header & Search Bar Controller */
+.pyq-head-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.pyq-head-section h1 {
+    width: 50%;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--secondary);
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+/* 3D-Inward Depth Shaded Input Search Box */
+.pyq-head-section input {
+    width: 35%;
+    min-width: 280px;
+    padding: 12px 20px 12px 45px;
+    background: var(--bg-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' class='bi bi-search'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0'/%3E%3C/svg%3E") no-repeat left 16px center;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pyq-head-section input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.15), 0 10px 15px -3px rgba(255, 179, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Main Core Layout Wrapper Block */
+.pyq-sublink-cards {
+    background-color: var(--bg-white);
+    margin: 3vh 0;
+    padding: 30px;
+    display: flex;
+    gap: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+/* Category Sidebar Links Menu */
+.pyq-subcard {
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pyq-subcard p {
+    padding: 12px 18px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-muted);
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.pyq-subcard p:hover:not(.active-tab) {
+    color: var(--primary-dark);
+    background-color: var(--bg-color);
+    transform: translateX(4px);
+}
+
+.pyq-subcard p.active-tab {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+    color: var(--secondary) !important;
+    box-shadow: 0 4px 12px rgba(255, 179, 0, 0.35), 
+                inset 0 -3px 0 rgba(0, 0, 0, 0.2) !important;
+    transform: scale(1.02);
+}
+
+.pyq-subcard p:first-child:not(.active-tab) {
+    background-color: transparent;
+    color: var(--text-muted);
+}
+
+/* Grid Layout Dashboard for PYQ Cards */
+.pyq-cards-portion {
+    background-color: var(--bg-color);
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* 3D Isometric Elevation PYQ Card Item */
+.pyq-cardDesign {
+    padding: 20px;
+    border-radius: 16px;
+    background: linear-gradient(185deg, var(--primary-light) 0%, var(--bg-white) 35%, var(--bg-white) 100%);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    min-height: 200px;
+}
+
+.pyq-cardDesign:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 25px -5px rgba(30, 41, 59, 0.1), 0 10px 10px -5px rgba(255, 179, 0, 0.1);
+    border-color: var(--primary);
+}
+
+.pyq-cardDesign .year-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--bg-color);
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    border-radius: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.pyq-cardDesign #heading {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin: 10px 0 15px;
+    line-height: 1.4;
+}
+
+.pyq-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.btn-pyq-paper {
+    width: 100%;
+    padding: 10px 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--secondary);
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 179, 0, 0.2);
+    transition: all 0.25s ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-pyq-paper:hover {
+    background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
+    box-shadow: 0 6px 14px rgba(255, 179, 0, 0.4);
+    transform: translateY(-1px);
+    color: var(--secondary);
+}
+
+.btn-pyq-answer {
+    width: 100%;
+    padding: 10px 0;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-pyq-answer:hover {
+    border-color: var(--primary);
+    background-color: var(--bg-color);
+    color: var(--primary-dark);
+}
+
+/* ==========================================================================
+   BREAKPOINTS - BULLETPROOF FLUID MEDIA QUERIES
+   ========================================================================== */
+
+@media screen and (max-width: 1024px) {
+    .pyq-sublink-cards {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .pyq-subcard {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .pyq-subcard::-webkit-scrollbar {
+        height: 5px;
+    }
+
+    .pyq-subcard::-webkit-scrollbar-thumb {
+        background-color: var(--primary-light);
+        border-radius: 10px;
+    }
+
+    .pyq-subcard p {
+        white-space: nowrap;
+        font-size: 0.95rem;
+        padding: 8px 16px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .pyq-head-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .pyq-head-section h1 {
+        width: 100%;
+        text-align: center;
+        font-size: 1.6rem;
+    }
+
+    .pyq-head-section input {
+        width: 100%;
+        min-width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .pyq-categories {
+        padding: 3vh 3vw;
+    }
+
+    .pyq-sublink-cards {
+        padding: 12px;
+        margin: 2vh 0;
+    }
+
+    .pyq-cards-portion {
+        padding: 15px 10px;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .pyq-cardDesign {
+        max-width: 100%;
+    }
+
+    .pyq-head-section h1 {
+        font-size: 1.4rem;
+    }
+}

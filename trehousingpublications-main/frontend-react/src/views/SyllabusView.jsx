@@ -6,7 +6,7 @@ import SyllabusPdf from "../components/syllabus/syllabusPdf.jsx";
 import PastPapersAndMocks from "../components/syllabus/PastPapersAndMocks.jsx";
 import BctsExam from "../components/syllabus/BctsExam.jsx";
 import RedTable from "../components/syllabus/RedTable.jsx";
-import './SyllabusView.css';
+
 
 export default function SyllabusView() {
   return (

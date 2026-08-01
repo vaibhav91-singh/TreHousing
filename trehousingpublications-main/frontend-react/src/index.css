@@ -47,8 +47,23 @@ body {
   font-family: var(--font-main);
   background-color: var(--bg-color);
   color: var(--text-dark);
+  
+  /* Rendering Optimizations */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+html {
+  /* Lenis handles smooth scrolling, but this is a fallback */
+  scroll-behavior: smooth;
+}
+
+/* Hardware acceleration for images and general buttery feel */
+img, svg {
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 #root {

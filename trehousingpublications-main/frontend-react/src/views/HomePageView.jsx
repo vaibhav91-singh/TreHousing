@@ -7,6 +7,7 @@ import RapidFireSection from "@/components/Homepage/RapidFireSection.jsx";
 import RecommendationsSection from "@/components/Homepage/RecommendationsSection.jsx";
 import ResourceLibrarySection from "@/components/Homepage/ResourceLibrarySection.jsx";
 import FooterSec from "@/components/Homepage/FooterSec.jsx";
+import FAQ from '../components/SolvedPaper/FAQ.jsx';
 import './NewHomePage.css';
 
 export default function HomePageView() {
@@ -19,6 +20,7 @@ export default function HomePageView() {
       <RapidFireSection />
       <RecommendationsSection />
       <ResourceLibrarySection />
+      <FAQ />
       <FooterSec />
     </div>
   );

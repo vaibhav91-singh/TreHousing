@@ -114,6 +114,7 @@
 
 .btn-apply-now:hover {
   background-color: var(--primary-hover);
+  color:#e3f2fd;
 }
 
 .btn-bookmark {

@@ -33,8 +33,9 @@ export default function TestSeriesView() {
       ) : (
         <>
           {/* Dono components mein click handler prop pass kar di */}
-          <PopularTest onSelectTest={handleStartTest} />
+          
           <SeriesCategories onSelectTest={handleStartTest} />
+          <PopularTest onSelectTest={handleStartTest} />
         </>
       )}
 
