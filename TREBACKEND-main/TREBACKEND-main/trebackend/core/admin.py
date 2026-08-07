@@ -3,6 +3,8 @@ from django import forms
 from .models import Course, Subject, Exam_Pattern, Subject_Content, PYQ, Syllabus, Sub_Courses,SolvedPaper
 from .models import Quiz, Question, Choice
 from .models import JobVacancy, RecentUpdate
+from .models import TopicExam, TopicSubject, TopicName, TopicQuestion
+from .models import StudyMaterialExam, StudyMaterialSubject, StudyMaterialDocument
 
 class SyllabusInline(admin.TabularInline):
     model = Syllabus
@@ -112,8 +114,8 @@ class QuizJSONUploadForm(forms.Form):
 # 2. Update your QuizAdmin to include the bul   k upload URL & view
 @admin.register(Quiz)
 class QuizAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'category') 
-    fields = ('subject', 'category', 'title', 'description') 
+    list_display = ('title', 'subject', 'category', 'display_questions_limit') 
+    fields = ('subject', 'category', 'title', 'description', 'display_questions_limit') 
     list_filter = ('subject', 'category') 
     search_fields = ('title', 'subject__title', 'category')
     inlines = [QuestionInline]
@@ -177,4 +179,51 @@ class QuizAdmin(admin.ModelAdmin):
 @admin.register(RecentUpdate)
 class RecentUpdateAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at')
-    search_fields = ('title',) 
+    search_fields = ('title',)
+    ordering = ('-created_at',)
+
+# ==========================================================================
+# NEW FEATURE: TOPIC-WISE MCQ SYSTEM ADMIN
+# ==========================================================================
+
+class TopicQuestionInline(admin.StackedInline):
+    model = TopicQuestion
+    extra = 1
+
+@admin.register(TopicName)
+class TopicNameAdmin(admin.ModelAdmin):
+    list_display = ('name', 'subject')
+    list_filter = ('subject', 'subject__exam')
+    search_fields = ('name', 'subject__name', 'subject__exam__name')
+    inlines = [TopicQuestionInline]
+
+@admin.register(TopicSubject)
+class TopicSubjectAdmin(admin.ModelAdmin):
+    list_display = ('name', 'exam')
+    list_filter = ('exam',)
+    search_fields = ('name', 'exam__name')
+
+@admin.register(TopicExam)
+class TopicExamAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+# ==========================================================================
+# NEW FEATURE: STUDY MATERIAL SYSTEM ADMIN
+# ==========================================================================
+
+class StudyMaterialDocumentInline(admin.TabularInline):
+    model = StudyMaterialDocument
+    extra = 1
+
+@admin.register(StudyMaterialSubject)
+class StudyMaterialSubjectAdmin(admin.ModelAdmin):
+    list_display = ('name', 'exam')
+    list_filter = ('exam',)
+    search_fields = ('name', 'exam__name')
+    inlines = [StudyMaterialDocumentInline]
+
+@admin.register(StudyMaterialExam)
+class StudyMaterialExamAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)

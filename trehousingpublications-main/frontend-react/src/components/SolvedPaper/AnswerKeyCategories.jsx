@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Loader from '../common/Loader.jsx';
 import './PYQCategories.css'; // Reusing the same CSS for identical layout
 
 export default function AnswerKeyCategories() {
@@ -57,7 +59,7 @@ export default function AnswerKeyCategories() {
     setFilteredKeys(result);
   }, [activeCategory, searchTerm, keys, examTypes]);
 
-  if (loading) return <div className="pyq-categories" style={{textAlign: 'center', padding: '2rem'}}>Loading...</div>;
+  if (loading) return <Loader fullPage={true} text="Loading Answer Keys..." />;
 
   return (
     <div className="pyq-categories">

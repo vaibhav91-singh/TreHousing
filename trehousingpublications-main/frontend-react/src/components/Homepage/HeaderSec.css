@@ -3,7 +3,9 @@
    ========================================================================== */
 .header-container {
   width: 100%;
-  background-color: var(--bg-white);
+  background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent for glass effect */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
@@ -14,7 +16,7 @@ nav.navbar-main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
+  padding: 6px 24px;
   max-width: 1320px;
   margin: 0 auto;
   position: relative; /* Fixed point reference anchor for Mega Menu calculations */
@@ -27,8 +29,8 @@ nav.navbar-main {
 }
 
 .logo img {
-  width: 65px;
-  height: 65px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -350,7 +352,7 @@ nav.navbar-main {
     grid-template-columns: 1fr; /* Force 1 item per row layout structure on tiny screens */
   }
   .logo img {
-    width: 55px;
-    height: 55px;
+    width: 40px;
+    height: 40px;
   }
 }

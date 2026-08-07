@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function NewHeroSection() {
+  const navigate = useNavigate();
   return (
     <section className="hp-section hp-hero">
       <div className="hp-hero-content">
@@ -14,7 +16,7 @@ export default function NewHeroSection() {
         </p>
         <div className="hp-hero-buttons">
           <a href="#" className="hp-btn hp-btn-primary">Start Prep Now</a>
-          <a href="#" className="hp-btn hp-btn-secondary">Explore Materials</a>
+          <button onClick={() => navigate('/study-materials')} className="hp-btn hp-btn-secondary" style={{fontFamily: 'inherit'}}>Explore Materials</button>
         </div>
       </div>
       

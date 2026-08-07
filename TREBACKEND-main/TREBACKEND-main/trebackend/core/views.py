@@ -9,8 +9,8 @@ from .models import Quiz, Question, Choice
 from .serializers import QuizSerializer
 # For Solved Paper
 from rest_framework import status
-from .models import SolvedPaper,JobVacancy, RecentUpdate
-from .serializers import SolvedPaperSerializer,JobVacancySerializer, RecentUpdateSerializer
+from .models import SolvedPaper,JobVacancy, RecentUpdate, TopicExam, StudyMaterialExam
+from .serializers import SolvedPaperSerializer,JobVacancySerializer, RecentUpdateSerializer, TopicExamSerializer, StudyMaterialExamSerializer
 import os
 
 
@@ -196,7 +196,6 @@ def quiz_api(request):
     quiz_id = request.GET.get('quiz_id')
     subject_id = request.GET.get('subject_id')
     
-    # Helper function to shuffle data
     def shuffle_quiz_data(data):
         # Agar data list hai (multiple quizzes), toh har quiz ke questions shuffle karo
         if isinstance(data, list):
@@ -204,11 +203,15 @@ def quiz_api(request):
                 random.shuffle(quiz['questions'])
                 for q in quiz['questions']:
                     random.shuffle(q['choices'])
+                if quiz.get('display_questions_limit'):
+                    quiz['questions'] = quiz['questions'][:quiz['display_questions_limit']]
         # Agar single object hai
         else:
             random.shuffle(data['questions'])
             for q in data['questions']:
                 random.shuffle(q['choices'])
+            if data.get('display_questions_limit'):
+                data['questions'] = data['questions'][:data['display_questions_limit']]
         return data
 
     if quiz_id:
@@ -287,3 +290,47 @@ def recent_updates_list(request):
     updates = RecentUpdate.objects.all()[:10]  # Only fetch latest 10 updates
     serializer = RecentUpdateSerializer(updates, many=True)
     return Response(serializer.data)
+
+# ==========================================================================
+# NEW FEATURE: TOPIC-WISE MCQ SYSTEM ENDPOINT
+# ==========================================================================
+@api_view(['GET'])
+def topic_wise_mcq_api(request):
+    """
+    Returns a nested hierarchy of Topic-wise MCQs:
+    Exam -> Subject -> Topic -> Questions
+    """
+    try:
+        exams = TopicExam.objects.all().prefetch_related('subjects__topics__questions')
+        serializer = TopicExamSerializer(exams, many=True)
+        return Response({
+            "success": True,
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            "success": False,
+            "error": str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# ==========================================================================
+# NEW FEATURE: STUDY MATERIAL SYSTEM ENDPOINT
+# ==========================================================================
+@api_view(['GET'])
+def study_materials_api(request):
+    """
+    Returns a nested hierarchy of Study Materials:
+    Exam -> Subject -> Documents
+    """
+    try:
+        exams = StudyMaterialExam.objects.all().prefetch_related('materials_subjects__documents')
+        serializer = StudyMaterialExamSerializer(exams, many=True)
+        return Response({
+            "success": True,
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({
+            "success": False,
+            "error": str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

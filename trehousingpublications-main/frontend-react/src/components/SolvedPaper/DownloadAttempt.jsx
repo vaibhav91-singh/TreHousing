@@ -7,8 +7,7 @@ export default function DownloadAttempt() {
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
-    // ⚠️ Here I get error 
-    const API_URL = 'http://127.0.0.1:8000/api/v1/solved-papers/';
+    const API_URL = '/api/v1/solved-papers/';
 
     fetch(API_URL)
       .then((res) => {
@@ -47,7 +46,7 @@ export default function DownloadAttempt() {
         {errorMsg && (
           <div style={{ color: 'red', padding: '20px', border: '1px solid red' }}>
             <strong>Error:</strong> {errorMsg} <br />
-            <small>Tip: Browser mein http://127.0.0.1:8000/v1/solved-papers/ khol kar dekho kya data aa raha hai.</small>
+            <small>Tip: Check the browser console for more details.</small>
           </div>
         )}
 

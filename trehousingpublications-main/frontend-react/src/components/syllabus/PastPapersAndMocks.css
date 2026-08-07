@@ -1,6 +1,6 @@
 .past-papers-container {
   margin-top: 30px;
-  background-color: #fff;
+  background-color: var(--bg-color);
 }
 
 .papers-grid {
@@ -11,8 +11,8 @@
 }
 
 .paper-card {
-  background: #fdfdfd;
-  border: 1px solid #e0e6ed;
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.03);
@@ -46,7 +46,7 @@
 
 .paper-title {
   font-size: 18px;
-  color: #222;
+  color: var(--text-heading);
   margin: 0;
   font-weight: 700;
   line-height: 1.4;
@@ -70,7 +70,7 @@
   cursor: pointer;
   border: none;
   transition: all 0.3s ease;
-  color: #fff;
+  color: var(--secondary);
 }
 
 .btn-view-paper {

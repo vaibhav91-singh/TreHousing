@@ -42,21 +42,34 @@ export default function FooterSec() {
         </div>
         
         <div className="hp-footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/study-materials">Study Materials</Link></li>
+            <li><Link to="/testseries">Test Series</Link></li>
+            <li><Link to="/quiz">Topic Wise Quiz</Link></li>
+          </ul>
+        </div>
+
+        <div className="hp-footer-links">
           <h4>Previous Year Paper</h4>
           <ul>
             <li><Link to="/PYQ?course_id=1&sub_courses=1">BPSC TRE 1.0</Link></li>
             <li><Link to="/PYQ?course_id=1&sub_courses=2">BPSC TRE 2.0</Link></li>
             <li><Link to="/PYQ?course_id=1&sub_courses=3">BPSC TRE 3.0</Link></li>
+            <li><Link to="/answer-keys">Answer Keys</Link></li>
           </ul>
         </div>
         
         <div className="hp-footer-links">
-          <h4>Syllabus</h4>
+          <h4>Syllabus & Career</h4>
           <ul>
             <li><Link to="/syllabus?course_id=1&subject_id=17">BPSC TRE (1-5)</Link></li>
             <li><Link to="/syllabus?course_id=1&subject_id=16">BPSC TRE (6-8)</Link></li>
             <li><Link to="/syllabus?course_id=1&subject_id=15">BPSC TRE (9-10)</Link></li>
             <li><Link to="/syllabus?course_id=1&subject_id=14">BPSC TRE (11-12)</Link></li>
+            <li><Link to="/jobs">Job Vacancies</Link></li>
+            <li><Link to="/performance">Result Dashboard</Link></li>
           </ul>
         </div>
       </div>

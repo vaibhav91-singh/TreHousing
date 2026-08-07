@@ -14,6 +14,11 @@
   color: var(--hp-text);
   font-family: var(--font-main);
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+.new-homepage *, .new-homepage *::before, .new-homepage *::after {
+  box-sizing: border-box;
 }
 
 .hp-section {
@@ -130,6 +135,7 @@
 .hp-hero-buttons {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 .hp-hero-card {
   background: var(--secondary);
@@ -387,18 +393,33 @@
   }
 }
 @media (max-width: 768px) {
+  .hp-section {
+    padding: 2rem 1rem;
+  }
   .hp-title {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
   }
   .hp-jobs-grid, .hp-quick-links, .hp-recs, .hp-resource-lists {
     grid-template-columns: 1fr;
   }
+  .hp-hero-card {
+    padding: 1.5rem;
+  }
   .hp-challenge {
     flex-direction: column;
     text-align: center;
-    gap: 2rem;
+    gap: 1.5rem;
+    padding: 1.5rem;
   }
   .hp-challenge-content {
     max-width: 100%;
+  }
+  .hp-play-btn {
+    width: 80px;
+    height: 80px;
+    font-size: 1rem;
+  }
+  .hp-rec-main, .hp-rec-side-card {
+    padding: 1.5rem;
   }
 }

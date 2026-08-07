@@ -9,12 +9,13 @@ import SolvedPaperView from './views/SolvedPaperView.jsx';
 import PYQPageView from './views/PYQPageView.jsx';
 import AnswerKeyPageView from './views/AnswerKeyPageView.jsx';
 import TestSeriesView from './views/TestSeriesView.jsx';
+import TopicWiseMCQView from './views/TopicWiseMCQView.jsx';
 import TermsAndConditions from './views/TermsAndConditions.jsx';
 import PrivacyPolicy from './views/PrivacyPolicy.jsx';
 import JobVacancy from './views/JobVacancy.jsx';
 import ResultDashbord from './views/ResultDashbord.jsx';
 import JobNotificationListener from './components/JobNotificationListener.jsx';
-  
+import StudyMaterialView from './views/StudyMaterialView.jsx';
 // Extend the window interface type safety for your custom window property object
 if (typeof window !== 'undefined') {
   window.webbot = window.webbot || [];
@@ -85,11 +86,13 @@ function App() {
         <Route path="/PYQ" element={<PYQPageView />} />
         <Route path="/answer-keys" element={<AnswerKeyPageView />} />
         <Route path="/testseries" element={<TestSeriesView />} />
+        <Route path="/quiz" element={<TopicWiseMCQView />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/job" element={<JobVacancy />} />
         <Route path="/jobs" element={<JobVacancy />} />
         <Route path="/performance" element={<ResultDashbord />} />
+        <Route path="/study-materials" element={<StudyMaterialView />} />
       </Routes>
       
     </BrowserRouter>

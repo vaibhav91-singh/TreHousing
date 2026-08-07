@@ -2,6 +2,7 @@
 // not working when i clicked at button reslove it-: 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loader from '../common/Loader.jsx';
 import "./Recomm_mock.css";
 
 export default function Recomm_mock({ onSelectTest }) {
@@ -37,11 +38,9 @@ export default function Recomm_mock({ onSelectTest }) {
 
   if (loading) {
     return (
-      <section className="recomm-mock-section-wrapper">
-        <div className="loading-state">
-          Loading Recommended Tests...
-        </div>
-      </section>
+      <div className="recommendations-wrapper">
+        <Loader text="Loading Recommended Tests..." />
+      </div>
     );
   }
 

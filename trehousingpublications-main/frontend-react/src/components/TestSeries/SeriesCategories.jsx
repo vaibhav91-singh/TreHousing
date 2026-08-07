@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Loader from '../common/Loader.jsx';
 import './SeriesCategories.css';
 import irbLogo from '../../assets/TestSeries/IRB.png';
 
@@ -47,7 +49,7 @@ export default function SeriesCategories({ onSelectTest }) {
     setFilteredQuizzes(result);
   }, [activeCategory, searchTerm, quizzes]);
 
-  if (loading) return <div className="catogories" style={{textAlign: 'center', padding: '2rem'}}>Loading...</div>;
+  if (loading) return <Loader fullPage={true} text="Loading Test Series..." />;
 
   return (
     <div className="catogories">

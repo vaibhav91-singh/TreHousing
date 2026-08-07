@@ -1,10 +1,11 @@
 
 /* Quiz Container */
 .quiz-container {
+    width: 100%;
     max-width: 700px;
     margin: 2rem auto;
     padding: 2rem;
-    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    background: var(--bg-white);
     border-radius: 20px;
     box-shadow: 0 15px 40px rgba(30, 41, 59, 0.12);
     border: 1px solid rgba(30, 41, 59, 0.08);
@@ -49,7 +50,6 @@
     font-weight: 800;
     font-size: 0.9rem;
     box-shadow: 0 4px 10px rgba(255, 193, 7, 0.35);
-    animation: pulse 1.8s infinite;
 }
 
 /* Question */

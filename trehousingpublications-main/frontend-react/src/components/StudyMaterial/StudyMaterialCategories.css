@@ -1,0 +1,218 @@
+.study-material-container {
+    background-color: var(--bg-color);
+    padding: 2vh 4vw 4vh 4vw;
+    font-family: var(--font-main);
+    transition: all 0.3s ease;
+    min-height: 80vh;
+}
+
+.sm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.sm-header h1 {
+    width: 50%;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--secondary);
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.sm-header input {
+    width: 35%;
+    min-width: 280px;
+    padding: 12px 20px 12px 45px;
+    background: var(--bg-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' class='bi bi-search'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0'/%3E%3C/svg%3E") no-repeat left 16px center;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.sm-header input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.15);
+}
+
+.sm-layout {
+    display: flex;
+    gap: 30px;
+    background-color: var(--bg-white);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.sm-main {
+    flex-grow: 1;
+    background-color: var(--bg-color);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.sm-breadcrumbs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    flex-wrap: wrap;
+}
+.sm-breadcrumbs span {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.sm-breadcrumbs span:hover {
+    color: var(--primary-dark);
+}
+.sm-breadcrumbs .active {
+    color: var(--secondary);
+}
+
+/* Exam Grid View */
+.sm-exam-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.sm-exam-card {
+    background: linear-gradient(145deg, var(--bg-white), var(--bg-color));
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.sm-exam-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px -5px rgba(255, 179, 0, 0.2);
+    border-color: var(--primary);
+}
+
+.sm-exam-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.sm-exam-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+/* Subjects List View */
+.sm-list-item {
+    padding: 15px 20px;
+    background: linear-gradient(185deg, var(--primary-light) 0%, var(--bg-white) 35%, var(--bg-white) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    color: var(--secondary);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+
+.sm-list-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(255, 179, 0, 0.15);
+    border-color: var(--primary);
+}
+
+/* Materials Document View */
+.sm-document-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-white);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    transition: all 0.2s ease;
+}
+
+.sm-document-card:hover {
+    border-color: var(--primary-dark);
+}
+
+.sm-doc-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.sm-doc-icon {
+    font-size: 2rem;
+    color: #ef4444; /* PDF Red */
+}
+
+.sm-doc-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.sm-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.sm-download-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+@media screen and (max-width: 768px) {
+    .sm-layout {
+        flex-direction: column;
+    }
+    .sm-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .sm-header h1 {
+        width: 100%;
+        font-size: 1.5rem;
+    }
+    .sm-header input {
+        width: 100%;
+        min-width: unset;
+    }
+    .sm-document-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .sm-download-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

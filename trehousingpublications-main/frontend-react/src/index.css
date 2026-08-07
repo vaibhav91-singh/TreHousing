@@ -42,6 +42,10 @@
   --border-color: #1f2937;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: var(--font-main);
@@ -55,9 +59,30 @@ body {
   overflow-x: hidden;
 }
 
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e0; /* light gray/muted */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary); /* changes to theme color on hover */
+}
+
 html {
   /* Lenis handles smooth scrolling, but this is a fallback */
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Hardware acceleration for images and general buttery feel */
@@ -72,6 +97,13 @@ img, svg {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* Ensure all route wrappers span full height for sticky footer */
+#root > div {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {

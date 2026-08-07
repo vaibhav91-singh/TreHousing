@@ -4,13 +4,13 @@ import Performance from "../components/Dashbord/Performance";
 
 export default function ResultDashbord() {
     return (
-        <>
+        <div>
            
             <HeaderSec />
 
              <Performance/>
             
             <FooterSec />
-        </>
+        </div>
     );
 }

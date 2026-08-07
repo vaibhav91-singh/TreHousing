@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Loader from '../common/Loader.jsx';
 import { useLocation } from 'react-router-dom';
 import './BctsExam.css';
 
@@ -110,7 +111,7 @@ export default function BctsExam() {
     }
   };
 
-  if (loading) return <div className="loading">Loading...</div>;
+  if (loading) return <Loader fullPage={true} text="Loading Syllabus..." />;
 
   return (
     // <div className="container">

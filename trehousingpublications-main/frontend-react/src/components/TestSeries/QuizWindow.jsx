@@ -1,5 +1,6 @@
 // src/components/TestSeries/QuizWindow.jsx
 import React, { useState, useEffect } from 'react';
+import Loader from '../common/Loader.jsx';
 import './QuizWindow.css';
 
 const QuizWindow = ({ subject, onBack }) => {
@@ -12,7 +13,7 @@ const QuizWindow = ({ subject, onBack }) => {
   const [timeLeft, setTimeLeft] = useState(120);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/v1/quiz/')
+    fetch('/api/v1/quiz/')
       .then((res) => res.json())
       .then((data) => {
         const matchedQuiz = data.find(q => q.title === subject);
@@ -50,25 +51,32 @@ const QuizWindow = ({ subject, onBack }) => {
   };
 
   const handleOptionClick = (choice) => {
-    if (selectedChoice !== null) return;
+    // Allow users to change their selection
     setSelectedChoice(choice.id);
-    if (choice.is_correct) {
-      setScore((prev) => prev + 1);
-    }
   };
 
   const handleNext = () => {
+    // Check correctness on next/skip
+    let earnedPoint = 0;
+    if (selectedChoice !== null) {
+      const choice = currentQuestion.choices.find(c => c.id === selectedChoice);
+      if (choice && choice.is_correct) {
+        earnedPoint = 1;
+        setScore((prev) => prev + 1);
+      }
+    }
+
     setSelectedChoice(null);
     setTimeLeft(120);
     if (currentQuestionIdx + 1 < (quizDetails?.questions.length || 0)) {
       setCurrentQuestionIdx((prev) => prev + 1);
     } else {
-      saveToHistory(quizDetails.title, score, quizDetails.questions.length); // Save here
+      saveToHistory(quizDetails.title, score + earnedPoint, quizDetails.questions.length); 
       setCompleted(true);
     }
   };
 
-  if (loading) return <div className="quiz-container">Loading Test Profile...</div>;
+  if (loading) return <Loader fullPage={true} text="Loading Test Profile..." />;
   if (!quizDetails) return <div className="quiz-container">Test not found.</div>;
 
   const questions = quizDetails.questions || [];
@@ -99,8 +107,13 @@ const QuizWindow = ({ subject, onBack }) => {
     <div className="quiz-container">
       <div className="quiz-header">
         <h3 className="quiz-title">{quizDetails.title}</h3>
-        <div className="timer-badge">
-          {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <div className="quiz-progress">
+            Q {currentQuestionIdx + 1} / {questions.length}
+          </div>
+          <div className="timer-badge">
+            {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
+          </div>
         </div>
       </div>
 
@@ -111,7 +124,6 @@ const QuizWindow = ({ subject, onBack }) => {
           <button
             key={choice.id}
             onClick={() => handleOptionClick(choice)}
-            disabled={selectedChoice !== null}
             className={`choice-button ${selectedChoice === choice.id ? 'selected' : ''}`}
           >
             {choice.text}
@@ -121,8 +133,8 @@ const QuizWindow = ({ subject, onBack }) => {
 
       <div className="quiz-footer">
         <button onClick={onBack} className="btn-quit">Quit</button>
-        <button onClick={handleNext} disabled={selectedChoice === null} className="btn-next">
-          {currentQuestionIdx + 1 === questions.length ? 'Finish' : 'Next'}
+        <button onClick={handleNext} className="btn-next">
+          {currentQuestionIdx + 1 === questions.length ? 'Finish' : (selectedChoice === null ? 'Skip' : 'Next')}
         </button>
       </div>
     </div>

@@ -1,6 +1,8 @@
 
 from rest_framework import serializers
 from .models import Course, Subject, Exam_Pattern, Subject_Content, Syllabus, Quiz, Question, Choice, SolvedPaper, PYQ, JobVacancy, RecentUpdate
+from .models import TopicExam, TopicSubject, TopicName, TopicQuestion
+from .models import StudyMaterialExam, StudyMaterialSubject, StudyMaterialDocument
 class SyllabusSerializer(serializers.ModelSerializer):
     filename = serializers.ReadOnlyField()
 
@@ -76,7 +78,7 @@ class QuizSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Quiz
-        fields = ['id', 'title', 'description', 'subject', 'questions', 'category']
+        fields = ['id', 'title', 'description', 'subject', 'questions', 'category', 'display_questions_limit']
 
 
 # ==========================================================================
@@ -104,3 +106,51 @@ class RecentUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecentUpdate
         fields = '__all__'
+
+# ==========================================================================
+# NEW FEATURE: TOPIC-WISE MCQ SYSTEM SERIALIZERS
+# ==========================================================================
+
+class TopicQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TopicQuestion
+        fields = '__all__'
+
+class TopicNameSerializer(serializers.ModelSerializer):
+    questions = TopicQuestionSerializer(many=True, read_only=True)
+    class Meta:
+        model = TopicName
+        fields = ['id', 'name', 'questions']
+
+class TopicSubjectSerializer(serializers.ModelSerializer):
+    topics = TopicNameSerializer(many=True, read_only=True)
+    class Meta:
+        model = TopicSubject
+        fields = ['id', 'name', 'topics']
+
+class TopicExamSerializer(serializers.ModelSerializer):
+    subjects = TopicSubjectSerializer(many=True, read_only=True)
+    class Meta:
+        model = TopicExam
+        fields = ['id', 'name', 'subjects']
+
+# ==========================================================================
+# NEW FEATURE: STUDY MATERIAL SYSTEM SERIALIZERS
+# ==========================================================================
+
+class StudyMaterialDocumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudyMaterialDocument
+        fields = '__all__'
+
+class StudyMaterialSubjectSerializer(serializers.ModelSerializer):
+    documents = StudyMaterialDocumentSerializer(many=True, read_only=True)
+    class Meta:
+        model = StudyMaterialSubject
+        fields = ['id', 'name', 'documents']
+
+class StudyMaterialExamSerializer(serializers.ModelSerializer):
+    materials_subjects = StudyMaterialSubjectSerializer(many=True, read_only=True)
+    class Meta:
+        model = StudyMaterialExam
+        fields = ['id', 'name', 'materials_subjects']

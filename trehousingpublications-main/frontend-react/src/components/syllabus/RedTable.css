@@ -14,7 +14,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   text-align: center;
-  background: white;
+  background: var(--bg-white);
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   table-layout: fixed;
@@ -56,7 +56,7 @@ th {
 
 /* Table cell styling */
 td {
-  border: 1px solid #000;
+  border: 1px solid var(--border-color);
   padding: 14px;
   font-size: 18px;
   font-weight: bold;
@@ -71,7 +71,7 @@ td {
 /* Footer (Total row) */
 tfoot td {
   font-weight: bold;
-  background-color: #fff;
+  background-color: var(--bg-color);
 }
 
 /* Only mobile adjustments */

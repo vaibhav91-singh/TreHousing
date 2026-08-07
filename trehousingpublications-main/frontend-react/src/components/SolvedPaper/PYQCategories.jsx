@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Loader from '../common/Loader.jsx';
 import './PYQCategories.css';
 
 export default function PYQCategories() {
@@ -56,7 +58,7 @@ export default function PYQCategories() {
     setFilteredPapers(result);
   }, [activeCategory, searchTerm, papers, examTypes]);
 
-  if (loading) return <div className="pyq-categories" style={{textAlign: 'center', padding: '2rem'}}>Loading...</div>;
+  if (loading) return <Loader fullPage={true} text="Loading Previous Year Papers..." />;
 
   return (
     <div className="pyq-categories">

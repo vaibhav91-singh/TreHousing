@@ -15,7 +15,7 @@
         rgba(30, 41, 59, 0.12),
         rgba(30, 41, 59, 0.05)
     ),
-        #ffffff;
+        var(--bg-color);
     box-shadow: 
         0 20px 60px rgba(255, 179, 0, 0.12);
     border: 1px solid rgba(255, 179, 0, 0.08);
@@ -26,14 +26,14 @@
 .performance-container h2 {
     font-size: 2rem;
     font-weight: 800;
-    color: #111827;
+    color: var(--text-heading);
     margin-bottom: 30px;
 }
 
 .performance-container h3 {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #111827;
+    color: var(--text-heading);
     margin-bottom: 20px;
 }
 
@@ -49,9 +49,8 @@
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--bg-white);
 
-    backdrop-filter: blur(12px);
 
     border-radius: 20px;
 
@@ -122,9 +121,7 @@
 ========================== */
 
 .analytics-card {
-    background: rgba(255,255,255,0.75);
-
-    backdrop-filter: blur(12px);
+    background: var(--bg-white);
 
     border-radius: 22px;
 
@@ -175,7 +172,7 @@
 .metric-box strong {
     font-size: 2rem;
     font-weight: 800;
-    color: #111827;
+    color: var(--text-heading);
 }
 
 .positive {
@@ -296,7 +293,7 @@
 
     border-radius: 18px;
 
-    background: white;
+    background: var(--bg-white);
 
     box-shadow:
         0 10px 25px rgba(0,0,0,0.05);
@@ -319,8 +316,8 @@
 
 .history-table td {
     padding: 16px;
-    border-bottom: 1px solid #eef2ff;
-    color: #374151;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-muted);
 }
 
 .history-table tbody tr {

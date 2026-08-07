@@ -1,6 +1,7 @@
 // src/components/TestSeries/PopularTest.jsx
 import React, { useState, useEffect } from 'react';
 import './PopularTest.css';
+import Loader from '../common/Loader.jsx';
 
 export default function PopularTest({ onSelectTest }) {
   const [quizzes, setQuizzes] = useState([]);
@@ -21,7 +22,7 @@ export default function PopularTest({ onSelectTest }) {
 
   }, []);
 
-  if (loading) return <div className="main-container" style={{ textAlign: 'center', padding: '20px' }}>Loading Active Tests...</div>;
+  if (loading) return <Loader text="Loading Active Tests..." />;
   if (quizzes.length === 0) return <div className="main-container" style={{ textAlign: 'center', padding: '20px' }}>Abhi admin ne koi quiz add nahi kiya hai.</div>;
 
   return (

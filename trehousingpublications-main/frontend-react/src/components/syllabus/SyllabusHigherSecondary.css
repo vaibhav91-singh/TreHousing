@@ -4,7 +4,7 @@
   max-width: 100%;
   margin: auto;
   font-family: Arial, sans-serif;
-  background: white;
+  background: var(--bg-white);
   padding: 0 18px;
 }
 
