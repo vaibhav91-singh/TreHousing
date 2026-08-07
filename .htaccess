@@ -1,0 +1,17 @@
+Options -MultiViews
+RewriteEngine On
+
+# Proxy /api requests to live Render backend if mod_proxy is enabled
+<IfModule mod_proxy.c>
+    RewriteRule ^api/(.*)$ https://trehousing.onrender.com/api/$1 [P,L]
+</IfModule>
+
+# Fallback redirect for /api if proxy isn't enabled
+<IfModule !mod_proxy.c>
+    RewriteRule ^api/(.*)$ https://trehousing.onrender.com/api/$1 [R=307,L]
+</IfModule>
+
+# SPA routing: redirect all other requests to index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [QSA,L]
