@@ -39,13 +39,14 @@ export default function HeaderSec() {
     try {
       const response = await fetch("/api/v1/");
       const apiData = await response.json();
+      if (!Array.isArray(apiData)) return [];
       return apiData.map((item) => ({
         name: item.title,
         courseId: item.id,
-        submenu: item.subjects.map((subject) => ({
+        submenu: Array.isArray(item.subjects) ? item.subjects.map((subject) => ({
           name: subject.title,
           id: subject.id,
-        })),
+        })) : [],
       }));
     } catch (e) {
       console.error(e);

@@ -16,38 +16,7 @@ import JobVacancy from './views/JobVacancy.jsx';
 import ResultDashbord from './views/ResultDashbord.jsx';
 import JobNotificationListener from './components/JobNotificationListener.jsx';
 import StudyMaterialView from './views/StudyMaterialView.jsx';
-// Extend the window interface type safety for your custom window property object
-if (typeof window !== 'undefined') {
-  window.webbot = window.webbot || [];
-}
-
 function App() {
-  
-  // This hook runs exactly once when your student portal loads in the browser
-  useEffect(() => {
-    const initializeChatbot = () => {
-      // Prevent duplicating the script if the component re-renders
-      if (window.webbot && window.webbot.init) return;
-
-      window.webbot.load = function(e) {
-        var o = document.createElement("script");
-        o.type = "text/javascript"; // Fixed the typo from the original snippet
-        o.async = true;
-        o.crossOrigin = "anonymous";
-        o.src = "https://app.botsify.com/web-bot/script/frame/" + e + "/webbot.js";
-        
-        var n = document.getElementsByTagName("script")[0];
-        if (n && n.parentNode) {
-          n.parentNode.insertBefore(o, n);
-        }
-      };
-
-      // Fire the load function with your explicit Botsify token ID
-      window.webbot.load('VzkJrwqHZmIpHfrSfIYcPfPvA6s1yYWxM2x4va9w');
-    };
-
-    initializeChatbot();
-  }, []);
 
   // Initialize Lenis Smooth Scroll
   useEffect(() => {

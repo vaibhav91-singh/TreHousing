@@ -13,9 +13,7 @@ const JobNotificationListener = () => {
         const response = await axios.get('/api/job/');
         const jobs = response.data;
         
-        if (jobs && jobs.length > 0) {
-          // Assuming the last job in the array or the one with highest ID is the newest
-          // Backend returns filter(status=True). Let's find max ID.
+        if (Array.isArray(jobs) && jobs.length > 0) {
           const maxId = Math.max(...jobs.map(job => job.id));
           const newestJob = jobs.find(job => job.id === maxId);
           
