@@ -20,11 +20,11 @@ const JobPage = () => {
           axios.get(`/api/recent-updates/`)
         ]);
         
-        const allJobs = jobsRes.data || [];
+        const allJobs = Array.isArray(jobsRes.data) ? jobsRes.data : [];
         setGovtJobs(allJobs.filter(job => !job.job_type || job.job_type === 'GOVT'));
         setPrivateJobs(allJobs.filter(job => job.job_type === 'PRIVATE'));
         
-        setUpdates(updatesRes.data);
+        setUpdates(Array.isArray(updatesRes.data) ? updatesRes.data : []);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Failed to load data. Please try again later.");

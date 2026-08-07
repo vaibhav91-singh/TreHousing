@@ -12,7 +12,7 @@ export default function PopularTest({ onSelectTest }) {
     fetch(`api/v1/quiz/`) // Aapka dynamic Quiz List endpoint
       .then((res) => res.json())
       .then((data) => {
-        setQuizzes(data);
+        setQuizzes(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch((err) => {

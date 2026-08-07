@@ -10,8 +10,11 @@ export default function ActiveRecruitmentSection() {
     const fetchJobs = async () => {
       try {
         const response = await axios.get('/api/job/');
-        // Show up to 3 jobs for the homepage
-        setJobs(response.data.slice(0, 3));
+        if (response.data && Array.isArray(response.data)) {
+          setJobs(response.data.slice(0, 3));
+        } else {
+          setJobs([]);
+        }
         setLoading(false);
       } catch (err) {
         console.error("Error fetching jobs:", err);
