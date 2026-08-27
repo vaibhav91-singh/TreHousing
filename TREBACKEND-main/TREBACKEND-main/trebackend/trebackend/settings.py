@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-e8ttk-rb*48gp-wza%jz=(kqi5kq)rr&4was+sn54r@3at3tm$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['trehousingpublications.com', 'api.trehousingpublications.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['trehousingpublications.com', 'api.trehousingpublications.com', 'backend.trehousingpublications.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
