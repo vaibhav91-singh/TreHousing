@@ -1,4 +1,4 @@
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend.treehousingpublications.com';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend.trehousingpublications.com';
 
 /**
  * Returns the full API URL given an endpoint path.
