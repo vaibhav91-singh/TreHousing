@@ -1318,42 +1318,64 @@ input[type="file"]:hover {
   background: var(--bg-card) !important;
   border: 1px solid var(--border-color) !important;
   border-radius: var(--radius-md) !important;
-  padding: 14px 20px !important;
+  padding: 10px 18px !important;
   color: var(--text-secondary) !important;
   font-size: 0.88rem !important;
   font-weight: 600 !important;
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
   box-shadow: var(--shadow-sm) !important;
-  margin-top: 20px !important;
-  border-top: 1px solid var(--border-color) !important;
+  margin-top: 0 !important;
+  margin-bottom: 16px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
 
-.paginator a, .paginator span {
-  padding: 8px 16px !important;
-  border-radius: var(--radius-sm) !important;
+.paginator-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  background: rgba(99, 102, 241, 0.08) !important;
+  color: var(--accent-indigo) !important;
+  padding: 6px 16px !important;
+  border-radius: 20px !important;
+  font-weight: 700 !important;
+  font-size: 0.84rem !important;
+  border: 1px solid rgba(99, 102, 241, 0.18) !important;
+}
+
+.paginator-controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.paginator a, .paginator span.this-page {
+  padding: 6px 14px !important;
+  border-radius: 8px !important;
   text-decoration: none !important;
   font-weight: 600 !important;
+  font-size: 0.85rem !important;
   transition: all 0.25s ease !important;
 }
 
 .paginator a {
   background: var(--bg-tertiary) !important;
   color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
 }
 
 .paginator a:hover {
   background: var(--gradient-accent) !important;
   color: #ffffff !important;
-  transform: translateY(-2px) !important;
+  transform: translateY(-1px) !important;
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+  border-color: transparent !important;
 }
 
 .paginator .this-page {
-  background: var(--gradient-accent) !important;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
 }

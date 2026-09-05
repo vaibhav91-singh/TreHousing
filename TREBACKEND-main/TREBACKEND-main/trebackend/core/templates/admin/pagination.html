@@ -1,0 +1,24 @@
+{% load i18n %}
+<div class="paginator">
+  <div class="paginator-info">
+    <span class="paginator-badge">
+      <i class="fa-solid fa-layer-group" style="color: var(--accent-indigo); margin-right: 6px;"></i>
+      {{ cl.result_count }} {% if cl.result_count == 1 %}{{ cl.opts.verbose_name }}{% else %}{{ cl.opts.verbose_name_plural }}{% endif %}
+    </span>
+  </div>
+
+  {% if pagination_required or show_all_url %}
+  <div class="paginator-controls">
+    {% if pagination_required %}
+      {% for i in page_range %}
+          {% filter_page_number cl i %}
+      {% endfor %}
+    {% endif %}
+    {% if show_all_url %}
+      <a href="{{ show_all_url }}" class="showall">
+        <i class="fa-solid fa-eye" style="margin-right: 4px;"></i> {% translate 'Show all' %}
+      </a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
