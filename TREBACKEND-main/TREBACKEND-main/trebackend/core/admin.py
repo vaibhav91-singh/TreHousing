@@ -115,7 +115,7 @@ class QuizJSONUploadForm(forms.Form):
 @admin.register(Quiz)
 class QuizAdmin(admin.ModelAdmin):
     list_display = ('title', 'subject', 'category', 'display_questions_limit') 
-    fields = ('subject', 'category', 'title', 'description', 'display_questions_limit') 
+    fields = ('subject', 'category', 'title', 'description', 'display_questions_limit', 'bulk_upload_json') 
     list_filter = ('subject', 'category') 
     search_fields = ('title', 'subject__title', 'category')
     inlines = [QuestionInline]

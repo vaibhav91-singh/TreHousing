@@ -321,11 +321,41 @@ class Quiz(models.Model):
     title = models.CharField(max_length=200) 
     description = models.TextField(blank=True)
     display_questions_limit = models.IntegerField(blank=True, null=True, help_text="Number of questions to show to the user (e.g. 50). Leave blank to show all.")
+    bulk_upload_json = models.TextField(
+        blank=True, 
+        null=True, 
+        help_text='Paste JSON array here to bulk upload MCQs. e.g. [{"text": "Q1", "choices": [{"text": "A", "is_correct": true}, {"text": "B", "is_correct": false}]}]'
+    )
 
     def __str__(self):
         if self.subject:
             return f"[{self.subject.title}] {self.title}"
         return self.title
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.bulk_upload_json:
+            import json
+            try:
+                data = json.loads(self.bulk_upload_json)
+                for q_item in data:
+                    q_text = q_item.get('text') or q_item.get('question_text') or q_item.get('question')
+                    if q_text:
+                        question = Question.objects.create(quiz=self, text=q_text)
+                        choices = q_item.get('choices', [])
+                        for c_item in choices:
+                            c_text = c_item.get('text') or c_item.get('option')
+                            if c_text:
+                                is_corr = c_item.get('is_correct', False) or c_item.get('correct', False)
+                                Choice.objects.create(
+                                    question=question,
+                                    text=c_text,
+                                    is_correct=bool(is_corr)
+                                )
+                # Clear the field after successful upload
+                Quiz.objects.filter(id=self.id).update(bulk_upload_json="")
+            except Exception as e:
+                print(f"Error processing Quiz bulk upload JSON: {e}")
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
