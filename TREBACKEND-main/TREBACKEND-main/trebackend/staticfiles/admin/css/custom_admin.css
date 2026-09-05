@@ -71,17 +71,21 @@ h1, h2, h3, h4, .brand-title {
 
 #main {
   display: flex !important;
-  flex: 1 !important;
+  flex-direction: row !important;
+  flex: 1 1 auto !important;
   width: 100% !important;
+  min-width: 0 !important;
 }
 
-#content {
-  flex: 1 !important;
+/* Content Layout Fix */
+#content, .colM, .colMS {
+  flex: 1 1 auto !important;
+  width: calc(100% - 270px) !important;
+  min-width: 0 !important;
+  max-width: 1600px !important;
   padding: 24px 32px !important;
-  width: 100% !important;
   box-sizing: border-box !important;
-  max-width: 1600px;
-  margin: 0 auto;
+  margin: 0 !important;
 }
 
 /* Breadcrumbs Bar Override */
@@ -117,10 +121,10 @@ h1, h2, h3, h4, .brand-title {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
   color: #ffffff !important;
 }
 
@@ -186,15 +190,20 @@ h1, h2, h3, h4, .brand-title {
   background: var(--bg-secondary) !important;
   border-right: 1px solid var(--border-color) !important;
   width: 270px !important;
-  flex-shrink: 0 !important;
+  min-width: 270px !important;
+  max-width: 270px !important;
+  flex: 0 0 270px !important;
   padding: 20px 14px !important;
   box-shadow: var(--shadow-sm) !important;
+  box-sizing: border-box !important;
+  overflow-y: auto !important;
 }
 
-#nav-sidebar table, .nav-sidebar table {
-  width: 100% !important;
-  border-collapse: separate !important;
-  border-spacing: 0 4px !important;
+#nav-sidebar .module, .nav-sidebar .module {
+  margin-bottom: 20px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 #nav-sidebar caption, #nav-sidebar th, .nav-sidebar th {
@@ -206,33 +215,50 @@ h1, h2, h3, h4, .brand-title {
   letter-spacing: 0.8px !important;
   padding: 10px 14px !important;
   border-radius: var(--radius-sm) !important;
-  margin-bottom: 6px !important;
+  margin-bottom: 8px !important;
   border: none !important;
   text-align: left !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 #nav-sidebar caption a, #nav-sidebar th a, .nav-sidebar th a {
   color: #ffffff !important;
   text-decoration: none !important;
+  display: block !important;
+}
+
+#nav-sidebar table, .nav-sidebar table {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 4px !important;
+  display: table !important;
+  table-layout: auto !important;
 }
 
 #nav-sidebar tr, .nav-sidebar tr {
+  display: table-row !important;
   background: transparent !important;
-  border-radius: var(--radius-sm) !important;
-  transition: all 0.2s ease !important;
 }
 
-#nav-sidebar td, .nav-sidebar td {
-  padding: 4px 6px !important;
+#nav-sidebar th[scope="row"], .nav-sidebar th[scope="row"] {
   background: transparent !important;
-  border: none !important;
+  padding: 4px 0 !important;
+  font-weight: normal !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
 }
 
-#nav-sidebar a, .nav-sidebar a {
+#nav-sidebar th[scope="row"] a, .nav-sidebar th[scope="row"] a {
   color: var(--text-secondary) !important;
-  font-size: 0.9rem !important;
+  font-size: 0.88rem !important;
   font-weight: 500 !important;
-  padding: 8px 12px !important;
+  padding: 8px 10px !important;
   border-radius: var(--radius-sm) !important;
   text-decoration: none !important;
   display: flex !important;
@@ -241,31 +267,47 @@ h1, h2, h3, h4, .brand-title {
   transition: all 0.2s ease !important;
 }
 
-#nav-sidebar a:hover, .nav-sidebar a:hover {
+#nav-sidebar th[scope="row"] a:hover, .nav-sidebar th[scope="row"] a:hover {
   background: var(--bg-tertiary) !important;
   color: var(--text-primary) !important;
 }
 
 /* OVERRIDE DJANGO DEFAULT YELLOW ACTIVE HIGHLIGHT */
-#nav-sidebar tr.current-model,
-#nav-sidebar .current-model,
-#nav-sidebar td.current-model,
-#nav-sidebar tr:has(.current-model),
-.nav-sidebar tr.current-model,
-.nav-sidebar .current-model,
-.nav-sidebar td.current-model {
-  background: var(--sidebar-active-bg) !important;
-  border-left: 4px solid var(--accent-purple) !important;
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
-}
-
-#nav-sidebar tr.current-model a,
+#nav-sidebar tr.current-model th[scope="row"] a,
+.nav-sidebar tr.current-model th[scope="row"] a,
 #nav-sidebar .current-model a,
-.nav-sidebar tr.current-model a,
 .nav-sidebar .current-model a {
+  background: var(--sidebar-active-bg) !important;
   color: var(--accent-indigo) !important;
   font-weight: 700 !important;
+  border-left: 3px solid var(--accent-purple) !important;
+}
+
+#nav-sidebar td, .nav-sidebar td {
+  padding: 4px 0 !important;
+  text-align: right !important;
+  width: 45px !important;
   background: transparent !important;
+  border: none !important;
+}
+
+#nav-sidebar a.addlink, .nav-sidebar a.addlink {
+  background: rgba(99, 102, 241, 0.12) !important;
+  color: var(--accent-indigo) !important;
+  padding: 4px 8px !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 0.78rem !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+#nav-sidebar a.addlink:hover, .nav-sidebar a.addlink:hover {
+  background: var(--accent-purple) !important;
+  color: #ffffff !important;
 }
 
 /* Filter input in sidebar */
@@ -285,22 +327,6 @@ h1, h2, h3, h4, .brand-title {
   border-color: var(--accent-purple) !important;
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2) !important;
   outline: none !important;
-}
-
-/* Add links in sidebar */
-#nav-sidebar .addlink, .nav-sidebar .addlink {
-  background: rgba(99, 102, 241, 0.12) !important;
-  color: var(--accent-indigo) !important;
-  padding: 4px 10px !important;
-  border-radius: 12px !important;
-  font-weight: 600 !important;
-  font-size: 0.8rem !important;
-  transition: all 0.2s ease !important;
-}
-
-#nav-sidebar .addlink:hover, .nav-sidebar .addlink:hover {
-  background: var(--accent-purple) !important;
-  color: #ffffff !important;
 }
 
 /* Metric Cards Grid */
