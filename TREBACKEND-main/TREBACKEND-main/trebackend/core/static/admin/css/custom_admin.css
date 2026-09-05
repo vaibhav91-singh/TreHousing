@@ -1043,81 +1043,109 @@ input[type="file"]:hover {
   background: var(--bg-card) !important;
   border: 1px solid var(--border-color) !important;
   border-radius: var(--radius-md) !important;
-  padding: 14px 20px !important;
+  padding: 12px 20px !important;
   margin-bottom: 24px !important;
   display: flex !important;
   align-items: center !important;
-  gap: 16px !important;
+  gap: 12px !important;
   box-shadow: var(--shadow-sm) !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
 
-#changelist-form .actions label {
-  display: flex !important;
+#changelist-form .actions label,
+#changelist-form .actions .action-label {
+  display: inline-flex !important;
   align-items: center !important;
-  gap: 10px !important;
-  font-size: 0.9rem !important;
+  gap: 8px !important;
+  font-size: 0.86rem !important;
   font-weight: 600 !important;
   color: var(--text-secondary) !important;
   margin: 0 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.4px !important;
 }
 
 #changelist-form .actions select {
   background: var(--bg-primary) !important;
   color: var(--text-primary) !important;
   border: 1px solid var(--border-color) !important;
-  border-radius: var(--radius-sm) !important;
-  padding: 8px 16px !important;
-  font-size: 0.9rem !important;
+  border-radius: 8px !important;
+  padding: 0 16px !important;
+  font-size: 0.88rem !important;
   font-weight: 500 !important;
   cursor: pointer !important;
-  min-width: 200px !important;
+  min-width: 240px !important;
+  height: 38px !important;
+  line-height: 38px !important;
+  box-sizing: border-box !important;
   transition: all 0.2s ease !important;
+}
+
+#changelist-form .actions select:hover {
+  border-color: var(--accent-indigo) !important;
 }
 
 #changelist-form .actions select:focus {
   border-color: var(--accent-indigo) !important;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+  outline: none !important;
 }
 
+#changelist-form .actions button[name="index"],
 #changelist-form .actions button,
 #changelist-form .actions input[type="submit"],
-#changelist-form .actions .button {
-  background: var(--gradient-accent) !important;
+#changelist-form .actions .button,
+#changelist-form .actions .action-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
   color: #ffffff !important;
   border: none !important;
-  padding: 9px 22px !important;
-  border-radius: var(--radius-sm) !important;
-  font-family: 'Outfit', sans-serif !important;
-  font-weight: 700 !important;
+  padding: 0 22px !important;
+  border-radius: 8px !important;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-weight: 600 !important;
   font-size: 0.88rem !important;
-  letter-spacing: 0.5px !important;
+  letter-spacing: 0.3px !important;
   cursor: pointer !important;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  height: 38px !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25) !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 #changelist-form .actions button:hover,
-#changelist-form .actions input[type="submit"]:hover {
-  transform: translateY(-2px) scale(1.03) !important;
-  box-shadow: 0 8px 22px rgba(139, 92, 246, 0.5) !important;
+#changelist-form .actions input[type="submit"]:hover,
+#changelist-form .actions .action-btn:hover {
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.38) !important;
+  color: #ffffff !important;
 }
 
 #changelist-form .actions button:active,
-#changelist-form .actions input[type="submit"]:active {
-  transform: translateY(0) scale(0.97) !important;
+#changelist-form .actions input[type="submit"]:active,
+#changelist-form .actions .action-btn:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 1px 3px rgba(79, 70, 229, 0.2) !important;
 }
 
 #changelist-form .actions .action-counter {
   margin-left: auto !important;
-  background: rgba(99, 102, 241, 0.12) !important;
+  background: rgba(99, 102, 241, 0.08) !important;
   color: var(--accent-indigo) !important;
   padding: 6px 16px !important;
   border-radius: 20px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   font-size: 0.82rem !important;
-  border: 1px solid rgba(99, 102, 241, 0.2) !important;
+  border: 1px solid rgba(99, 102, 241, 0.18) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 32px !important;
+  box-sizing: border-box !important;
 }
 
 /* Change List Results Table Container */
