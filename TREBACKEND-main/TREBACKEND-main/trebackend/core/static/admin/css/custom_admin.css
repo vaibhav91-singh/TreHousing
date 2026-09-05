@@ -866,6 +866,40 @@ input[type="file"]:hover {
    CHANGE LIST VIEW (MODEL TABLES, SEARCH TOOLBAR, ACTIONS BAR, FILTERS)
    ========================================================================== */
 
+/* Neutralize Django Default changelists.css Floats Completely */
+#changelist #toolbar,
+#toolbar {
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  margin-bottom: 24px !important;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 16px 24px !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+#changelist #changelist-form,
+#changelist-form {
+  float: none !important;
+  width: 100% !important;
+  display: block !important;
+  box-sizing: border-box !important;
+}
+
+.changelist-form-container {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  float: none !important;
+  gap: 20px !important;
+}
+
 /* Change List Top Action Tools (e.g. "ADD STUDY MATERIAL EXAM +") */
 .object-tools {
   display: flex !important;
@@ -912,21 +946,19 @@ input[type="file"]:hover {
   transform: translateY(0) scale(0.98) !important;
 }
 
-/* Search Toolbar (#toolbar, #changelist-search) */
-#toolbar {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--border-color) !important;
-  border-radius: var(--radius-md) !important;
-  padding: 16px 24px !important;
-  margin-bottom: 24px !important;
-  box-shadow: var(--shadow-sm) !important;
-}
-
+/* Search Bar (#changelist-search) */
 #changelist-search {
   width: 100% !important;
   margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
 }
 
+#changelist-search form {
+  width: 100% !important;
+}
+
+#changelist-search form > div,
 #changelist-search > div {
   display: flex !important;
   align-items: center !important;
@@ -936,7 +968,7 @@ input[type="file"]:hover {
 }
 
 #changelist-search label {
-  display: flex !important;
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   margin: 0 !important;
@@ -950,7 +982,6 @@ input[type="file"]:hover {
 
 #changelist-search input[type="text"] {
   flex: 1 !important;
-  max-width: 600px !important;
   background: var(--bg-primary) !important;
   color: var(--text-primary) !important;
   border: 1px solid var(--border-color) !important;
@@ -959,6 +990,7 @@ input[type="file"]:hover {
   font-size: 0.95rem !important;
   box-sizing: border-box !important;
   transition: all 0.25s ease !important;
+  max-width: 100% !important;
 }
 
 #changelist-search input[type="text"]:focus {
@@ -995,6 +1027,7 @@ input[type="file"]:hover {
 /* Change List Layout Wrapper */
 #changelist {
   display: flex !important;
+  flex-direction: row !important;
   align-items: flex-start !important;
   gap: 24px !important;
   width: 100% !important;
@@ -1003,12 +1036,6 @@ input[type="file"]:hover {
   box-shadow: none !important;
   margin: 0 !important;
   padding: 0 !important;
-}
-
-.changelist-form-container {
-  flex: 1 !important;
-  min-width: 0 !important;
-  width: 100% !important;
 }
 
 /* Actions Bar (#changelist-form .actions) */
@@ -1022,6 +1049,8 @@ input[type="file"]:hover {
   align-items: center !important;
   gap: 16px !important;
   box-shadow: var(--shadow-sm) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 #changelist-form .actions label {
@@ -1099,6 +1128,7 @@ input[type="file"]:hover {
   overflow: hidden !important;
   margin-bottom: 24px !important;
   box-shadow: var(--shadow-sm) !important;
+  width: 100% !important;
 }
 
 #result_list {
@@ -1270,6 +1300,8 @@ input[type="file"]:hover {
   box-shadow: var(--shadow-sm) !important;
   margin-top: 20px !important;
   border-top: 1px solid var(--border-color) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .paginator a, .paginator span {
