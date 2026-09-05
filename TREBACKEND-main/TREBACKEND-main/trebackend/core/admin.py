@@ -18,7 +18,7 @@ class SubjectContentInline(admin.TabularInline):
     model = Subject_Content
     extra = 1  
 
-class Sub_Courses(admin.TabularInline):
+class Sub_CoursesInline(admin.TabularInline):
     model = Sub_Courses
     extra = 1
 
@@ -34,7 +34,7 @@ class ExamPatternInline(admin.TabularInline):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('title', 'banner')
     search_fields = ('title',)
-    inlines = [Sub_Courses, SubjectInline]  
+    inlines = [Sub_CoursesInline, SubjectInline]  
     ordering = ['id']
 
 @admin.register(Subject)
