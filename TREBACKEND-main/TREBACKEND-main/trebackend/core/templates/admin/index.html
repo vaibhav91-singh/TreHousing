@@ -1,0 +1,118 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+  <!-- Metric Overview Cards -->
+  <div class="dashboard-metrics-grid">
+    <div class="metric-card purple">
+      <div class="metric-icon"><i class="fa-solid fa-briefcase"></i></div>
+      <div class="metric-info">
+        <h4>Job Vacancies</h4>
+        <div class="value">Active</div>
+      </div>
+    </div>
+    
+    <div class="metric-card emerald">
+      <div class="metric-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+      <div class="metric-info">
+        <h4>Quizzes & MCQs</h4>
+        <div class="value">Live Series</div>
+      </div>
+    </div>
+
+    <div class="metric-card amber">
+      <div class="metric-icon"><i class="fa-solid fa-file-invoice"></i></div>
+      <div class="metric-info">
+        <h4>Solved Papers</h4>
+        <div class="value">PYQ Database</div>
+      </div>
+    </div>
+
+    <div class="metric-card rose">
+      <div class="metric-icon"><i class="fa-solid fa-book-open"></i></div>
+      <div class="metric-info">
+        <h4>Study Materials</h4>
+        <div class="value">Resources</div>
+      </div>
+    </div>
+  </div>
+
+  {% if app_list %}
+    {% for app in app_list %}
+      <div class="app-module-card app-{{ app.app_label }}">
+        <table>
+          <caption>
+            <a href="{{ app.app_url }}" class="section" title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">{{ app.name }}</a>
+          </caption>
+          {% for model in app.models %}
+            <tr class="model-{{ model.object_name|lower }}">
+              {% if model.admin_url %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+              {% else %}
+                <th scope="row">{{ model.name }}</th>
+              {% endif %}
+
+              {% if model.add_url %}
+                <td><a href="{{ model.add_url }}" class="addlink"><i class="fa-solid fa-plus"></i> {% translate 'Add' %}</a></td>
+              {% else %}
+                <td>&nbsp;</td>
+              {% endif %}
+
+              {% if model.admin_url %}
+                {% if model.view_only %}
+                  <td><a href="{{ model.admin_url }}" class="viewlink"><i class="fa-solid fa-eye"></i> {% translate 'View' %}</a></td>
+                {% else %}
+                  <td><a href="{{ model.admin_url }}" class="changelink"><i class="fa-solid fa-pen-to-square"></i> {% translate 'Change' %}</a></td>
+                {% endif %}
+              {% else %}
+                <td>&nbsp;</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px;">
+    <div class="module" id="recent-actions-module">
+        <h2 style="font-family: 'Outfit'; font-size: 1.1rem; color: var(--text-primary); margin-top: 0; margin-bottom: 16px;">
+          <i class="fa-solid fa-clock-rotate-left"></i> {% translate 'Recent actions' %}
+        </h2>
+        {% load log %}
+        {% get_admin_log 10 as admin_log for_user user %}
+        {% if not admin_log %}
+        <p style="color: var(--text-muted);">{% translate 'None available' %}</p>
+        {% else %}
+        <ul class="actionlist" style="padding-left: 0; list-style: none;">
+        {% for entry in admin_log %}
+        <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}" style="margin-bottom: 12px; font-size: 0.85rem; color: var(--text-secondary);">
+            {% if entry.is_deletion %}
+                <span class="quiet">{{ entry.object_repr }}</span>
+            {% else %}
+                <a href="{{ entry.get_admin_url }}" style="color: var(--accent-purple); font-weight: 600;">{{ entry.object_repr }}</a>
+            {% endif %}
+            <br/>
+            <span class="mini quiet" style="color: var(--text-muted); font-size: 0.75rem;">{% filter capfirst %}{{ entry.content_type }}{% endfilter %}</span>
+        </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
