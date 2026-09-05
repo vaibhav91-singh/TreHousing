@@ -1455,3 +1455,24 @@ input[type="file"]:hover {
   color: #ffffff !important;
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3) !important;
 }
+
+/* Smooth Page & AJAX Fade-In Transition */
+@keyframes adminFadeIn {
+  from {
+    opacity: 0.7;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#content-main {
+  animation: adminFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+#changelist {
+  transition: opacity 0.2s ease-in-out !important;
+}
+
