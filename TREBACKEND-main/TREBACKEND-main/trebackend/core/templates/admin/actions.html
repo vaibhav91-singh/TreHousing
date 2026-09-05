@@ -21,7 +21,7 @@
     {% block actions-counter %}
     {% if actions_selection_counter %}
         <span class="action-counter" data-actions-icnt="{{ cl.result_count }}">
-          <i class="fa-regular fa-square-check" style="margin-right: 6px;"></i> {% translate "0 of %(cnt)s selected" %|interpolation:cl.result_count %}
+          <i class="fa-regular fa-square-check" style="margin-right: 6px;"></i> {% blocktranslate with cl.result_count as cnt %}0 of {{ cnt }} selected{% endblocktranslate %}
         </span>
     {% endif %}
     {% endblock %}
