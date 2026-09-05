@@ -1,0 +1,42 @@
+{% load i18n static %}
+{% if cl.search_fields %}
+<div id="toolbar">
+  <h2 id="changelist-search-form" class="visually-hidden">{% blocktranslate with name=cl.opts.verbose_name_plural %}Search {{ name }}{% endblocktranslate %}</h2>
+  <form id="changelist-search" method="get" role="search" aria-labelledby="changelist-search-form">
+    <div class="search-form-inner">
+      <div class="search-input-group">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" size="40" name="{{ search_var }}" value="{{ cl.query }}" id="searchbar" placeholder="{% blocktranslate with name=cl.opts.verbose_name_plural %}Search {{ name }}...{% endblocktranslate %}"{% if cl.search_help_text %} aria-describedby="searchbar_helptext"{% endif %}>
+      </div>
+
+      <button type="submit" class="search-submit-btn">
+        <i class="fa-solid fa-magnifying-glass"></i> {% translate 'Search' %}
+      </button>
+
+      {% if cl.query %}
+        <a href="?" class="clear-search-btn" title="{% translate 'Clear search' %}">
+          <i class="fa-solid fa-xmark"></i> {% translate 'Clear' %}
+        </a>
+      {% endif %}
+
+      {% if show_result_count %}
+        <div class="search-results-badge">
+          <i class="fa-solid fa-list-check" style="margin-right: 4px;"></i>
+          {% blocktranslate count counter=cl.result_count %}{{ counter }} result{% plural %}{{ counter }} results{% endblocktranslate %}
+          {% if cl.show_full_result_count %}
+            <span class="total-count">({% blocktranslate with full_result_count=cl.full_result_count %}{{ full_result_count }} total{% endblocktranslate %})</span>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% for pair in cl.params.items %}
+        {% if pair.0 != search_var %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}">{% endif %}
+      {% endfor %}
+    </div>
+
+    {% if cl.search_help_text %}
+      <div class="help" id="searchbar_helptext">{{ cl.search_help_text }}</div>
+    {% endif %}
+  </form>
+</div>
+{% endif %}
