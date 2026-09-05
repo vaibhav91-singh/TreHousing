@@ -1,10 +1,19 @@
+import axios from 'axios';
+
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend.trehousingpublications.com';
 
-/**
- * Returns the full API URL given an endpoint path.
- * In development, if VITE_API_BASE_URL is relative or proxied, it uses relative routes.
- * In production, it prepends the configured VITE_API_BASE_URL.
- */
+// Set default base URL for axios
+axios.defaults.baseURL = API_BASE_URL;
+
+// Global fetch wrapper to handle relative /api URLs
+const originalFetch = window.fetch;
+window.fetch = function (url, config) {
+  if (typeof url === 'string' && url.startsWith('/api')) {
+    url = `${API_BASE_URL.replace(/\/$/, '')}${url}`;
+  }
+  return originalFetch(url, config);
+};
+
 export const getApiUrl = (endpoint = '') => {
   if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
     return endpoint;
@@ -17,3 +26,4 @@ export default {
   API_BASE_URL,
   getApiUrl,
 };
+
