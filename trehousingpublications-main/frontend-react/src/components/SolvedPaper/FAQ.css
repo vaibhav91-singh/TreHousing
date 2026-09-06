@@ -328,3 +328,53 @@
     }
 }
 
+/* ==========================================================================
+   DARK THEME RICH AESTHETICS FOR FAQ ACCORDION
+   ========================================================================== */
+
+[data-theme='dark'] .faq-title h1 {
+    color: #ffffff !important;
+}
+
+[data-theme='dark'] .accordion-item {
+    background: #111a2e;
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .accordion-header h2 {
+    color: #ffffff !important;
+}
+
+[data-theme='dark'] .expanded-item {
+    border-color: #ffb300;
+    box-shadow: 0 14px 35px rgba(255, 179, 0, 0.2);
+    background: #131f38;
+}
+
+[data-theme='dark'] .expanded-item .accordion-header h2 {
+    color: #ffca28 !important;
+}
+
+[data-theme='dark'] .arrow-icon-wrapper {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme='dark'] .arrow-chevron {
+    color: #cbd5e1;
+}
+
+[data-theme='dark'] .expanded-item .arrow-icon-wrapper {
+    background: linear-gradient(135deg, #ffb300, #ff8f00);
+    border: none;
+}
+
+[data-theme='dark'] .expanded-item .arrow-chevron {
+    color: #0f172a !important;
+}
+
+[data-theme='dark'] .content-inner p {
+    color: #e2e8f0 !important;
+}
+

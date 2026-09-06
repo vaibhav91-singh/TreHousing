@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import JobCard from './JobCard';
-import Loader from '../common/Loader.jsx'; 
-import { extractArrayData } from '../../apiConfig.js';
+import SkeletonCard from '../common/SkeletonCard.jsx';
 import './MainPage.css';
 
 const JobPage = () => {
@@ -59,7 +58,6 @@ const JobPage = () => {
     return () => { isMounted = false; };
   }, []);
 
-  if (loading) return <Loader fullPage={true} text="Loading Job Vacancies..." />;
   if (error) return (
     <div style={{
       textAlign: 'center',
@@ -101,15 +99,19 @@ const JobPage = () => {
           </div>
         </div>
 
-        <div className="job-grid">
-          {govtJobs.length > 0 ? (
-            govtJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))
-          ) : (
-            <p className="no-jobs">No government job vacancies available at the moment.</p>
-          )}
-        </div>
+        {loading ? (
+          <SkeletonCard count={6} />
+        ) : (
+          <div className="job-grid">
+            {govtJobs.length > 0 ? (
+              govtJobs.map((job) => (
+                <JobCard key={job.id} job={job} />
+              ))
+            ) : (
+              <p className="no-jobs">No government job vacancies available at the moment.</p>
+            )}
+          </div>
+        )}
 
         {/* Private Jobs Section (Conditionally Rendered) */}
         {privateJobs.length > 0 && (

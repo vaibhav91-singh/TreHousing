@@ -6,23 +6,19 @@ import os
 class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    banner = models.ImageField(
-        upload_to='banners/',
-        validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])]
-    )
 
     def __str__(self):
         return self.title
 
 class Sub_Courses(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="sub_courses")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="sub_courses", db_index=True)
     title = models.CharField(max_length=255)
 
     def __str__(self):
         return f"{self.title}"
 
 class Subject(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='subjects')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='subjects', db_index=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     pdf_link = models.FileField(
@@ -37,7 +33,7 @@ class Subject(models.Model):
 
 
 class Exam_Pattern(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='exam_patterns')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='exam_patterns', db_index=True)
     topics = models.CharField(max_length=50)  
     sub_topics = models.TextField(blank=False, null=False)
     no_of_questions = models.TextField(blank=False, null=False)
@@ -65,7 +61,7 @@ class Exam_Pattern(models.Model):
     
 
 class Subject_Content(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="subject_contents")
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="subject_contents", db_index=True)
     title = models.CharField(max_length=255) 
     description = models.TextField()  
     reference_links = models.TextField(blank=True, null=True)
@@ -78,7 +74,7 @@ class Subject_Content(models.Model):
 
 
 class PYQ(models.Model):
-    subject = models.ForeignKey(Subject, related_name="pyqs", on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, related_name="pyqs", on_delete=models.CASCADE, db_index=True)
     file = models.FileField(
         upload_to="pyqs/",
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])]
@@ -92,7 +88,7 @@ class PYQ(models.Model):
         return os.path.basename(self.file.name)
     
 class Syllabus(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="syllabus_files")
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="syllabus_files", db_index=True)
     file = models.FileField(
         upload_to="syllabus/",
         validators=[FileExtensionValidator(allowed_extensions=['pdf'])]
@@ -120,11 +116,13 @@ class Quiz(models.Model):
         on_delete=models.CASCADE, 
         related_name='quizzes',
         null=True, 
-        blank=True
+        blank=True,
+        db_index=True
     )
     title = models.CharField(max_length=200) 
     description = models.TextField(blank=True)
     display_questions_limit = models.IntegerField(blank=True, null=True, help_text="Number of questions to show to the user (e.g. 50). Leave blank to show all.")
+    duration_minutes = models.IntegerField(default=60, help_text="Total duration of test in minutes (e.g. 60 for 1 hour, 120 for 2 hours).")
     bulk_upload_json = models.TextField(
         blank=True, 
         null=True, 
@@ -164,14 +162,14 @@ class Quiz(models.Model):
                 print(f"Error processing Quiz bulk upload JSON: {e}")
 
 class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions', db_index=True)
     text = models.CharField(max_length=500) 
 
     def __str__(self):
         return f"{self.quiz.title} - {self.text[:50]}..."
 
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices', db_index=True)
     text = models.CharField(max_length=200) 
     is_correct = models.BooleanField(default=False)
 
@@ -183,7 +181,7 @@ class Choice(models.Model):
 # ==========================================================================
 
 class SolvedPaper(models.Model):
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="solved_papers")
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="solved_papers", db_index=True)
     title = models.CharField(max_length=255, help_text="e.g. UPSC 2024 Prelims GS Paper")
     year = models.IntegerField(help_text="e.g. 2024") 
     paper_link = models.URLField(max_length=1000, verbose_name="Paper Link", help_text="Google Drive or AWS S3 link for the Question Paper.")
@@ -211,10 +209,10 @@ class JobVacancy(models.Model):
     organization = models.CharField(max_length=200)
     eligibility = models.CharField(max_length=255)
     form_fee = models.IntegerField()
-    apply_date = models.DateField()
+    apply_date = models.DateField(db_index=True)
     last_date = models.DateField()
     official_website = models.URLField()
-    status = models.BooleanField(default=True) # Active/Inactive
+    status = models.BooleanField(default=True, db_index=True) # Active/Inactive
     apply_link= models.URLField()
     
     category_badge = models.CharField(max_length=50, blank=True, null=True, help_text="e.g., BPSC, SSC, UPSC")
@@ -237,7 +235,7 @@ class RecentUpdate(models.Model):
     title = models.CharField(max_length=255, help_text="e.g. BPSC 68th Mains Result Declared")
     description = models.CharField(max_length=500, blank=True, null=True, help_text="Check your merit list and cut-off marks")
     link = models.URLField(max_length=1000, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
     class Meta:
         ordering = ['-created_at']
@@ -260,7 +258,7 @@ class TopicExam(models.Model):
         return self.name
 
 class TopicSubject(models.Model):
-    exam = models.ForeignKey(TopicExam, on_delete=models.CASCADE, related_name='subjects')
+    exam = models.ForeignKey(TopicExam, on_delete=models.CASCADE, related_name='subjects', db_index=True)
     name = models.CharField(max_length=200, help_text='e.g., History, Geography')
     
     class Meta:
@@ -271,7 +269,7 @@ class TopicSubject(models.Model):
         return f'{self.exam.name} - {self.name}'
 
 class TopicName(models.Model):
-    subject = models.ForeignKey(TopicSubject, on_delete=models.CASCADE, related_name='topics')
+    subject = models.ForeignKey(TopicSubject, on_delete=models.CASCADE, related_name='topics', db_index=True)
     name = models.CharField(max_length=200, help_text='e.g., Ancient History, Indian Geography')
     bulk_upload_json = models.TextField(
         blank=True, 
@@ -325,7 +323,7 @@ class TopicName(models.Model):
                 print(f"Error processing bulk upload JSON: {e}")
 
 class TopicQuestion(models.Model):
-    topic = models.ForeignKey(TopicName, on_delete=models.CASCADE, related_name='questions')
+    topic = models.ForeignKey(TopicName, on_delete=models.CASCADE, related_name='questions', db_index=True)
     text = models.TextField(help_text='The MCQ Question text')
     option_a = models.CharField(max_length=200)
     option_b = models.CharField(max_length=200)
@@ -363,7 +361,7 @@ class StudyMaterialExam(models.Model):
         return self.name
 
 class StudyMaterialSubject(models.Model):
-    exam = models.ForeignKey(StudyMaterialExam, on_delete=models.CASCADE, related_name='materials_subjects')
+    exam = models.ForeignKey(StudyMaterialExam, on_delete=models.CASCADE, related_name='materials_subjects', db_index=True)
     name = models.CharField(max_length=200, help_text='e.g., Modern History, Indian Polity')
     
     class Meta:
@@ -374,7 +372,7 @@ class StudyMaterialSubject(models.Model):
         return f'{self.exam.name} - {self.name}'
 
 class StudyMaterialDocument(models.Model):
-    subject = models.ForeignKey(StudyMaterialSubject, on_delete=models.CASCADE, related_name='documents')
+    subject = models.ForeignKey(StudyMaterialSubject, on_delete=models.CASCADE, related_name='documents', db_index=True)
     title = models.CharField(max_length=255, help_text='e.g., Chapter 1 Notes')
     file_link = models.URLField(max_length=1000, help_text='Google Drive or AWS S3 link to the PDF or Image')
     created_at = models.DateTimeField(auto_now_add=True)

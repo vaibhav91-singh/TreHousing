@@ -1,6 +1,5 @@
-// src/components/Header/HeaderSec.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.jpeg';
 import ThemeToggle from '../ThemeToggle';
 import './HeaderSec.css';
@@ -11,15 +10,16 @@ export default function HeaderSec() {
   const [activeSubDropdown, setActiveSubDropdown] = useState(null);
   
   const [menuItems, setMenuItems] = useState([
-    { name: "Home", path: "/" },
-    { name: "Syllabus", submenu: [], path: "/syllabus" },
-    { name: "Solved Paper", path: "/solvedpaper" },
-    { name: "Mock Test", path: "/testseries" },
-    { name: "Job Vacancy", path: "/job" },
-    { name: "Performance", path: "/performance" }
+    { name: "Home", icon: "bi-house-door-fill", path: "/" },
+    { name: "Syllabus", icon: "bi-journal-bookmark-fill", submenu: [], path: "/syllabus" },
+    { name: "Solved Paper", icon: "bi-file-earmark-text-fill", path: "/solvedpaper" },
+    { name: "Mock Test", icon: "bi-pencil-square", path: "/testseries" },
+    { name: "Job Vacancy", icon: "bi-briefcase-fill", path: "/job" },
+    { name: "Performance", icon: "bi-bar-chart-line-fill", path: "/performance" }
   ]);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuActive(!isMenuActive);
@@ -154,58 +154,66 @@ export default function HeaderSec() {
           </div>
 
         <ul className={`nav-links ${isMenuActive ? 'active' : ''}`}>
-          {menuItems.map((item, index) => (
-            <li key={index} className="nav-item-root">
-              <a
-                href="#"
-                className="nav-link-anchor"
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleDropdown(index);
-                }}
-              >
-                {item.name}
-                {item.submenu && item.submenu.length > 0 && (
-                  <span className={`dropdown-icon ${activeDropdown === index ? 'rotated' : ''}`}>
-                    <i className="bi bi-caret-down-fill"></i>
-                  </span>
+          {menuItems.map((item, index) => {
+            const isCurrentRoute = location.pathname === item.path;
+            return (
+              <li key={index} className="nav-item-root">
+                <a
+                  href="#"
+                  className={`nav-link-anchor ${isCurrentRoute ? 'active-route' : ''}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleDropdown(index);
+                  }}
+                >
+                  <div className="nav-link-left">
+                    {item.icon && <i className={`bi ${item.icon} nav-item-icon`}></i>}
+                    <span>{item.name}</span>
+                  </div>
+                  {item.submenu && item.submenu.length > 0 ? (
+                    <span className={`dropdown-icon ${activeDropdown === index ? 'rotated' : ''}`}>
+                      <i className="bi bi-caret-down-fill"></i>
+                    </span>
+                  ) : (
+                    <i className="bi bi-chevron-right mobile-arrow-hint"></i>
+                  )}
+                </a>
+
+                {item.submenu && item.submenu.length > 0 && activeDropdown === index && (
+                  <div className="mega-menu-container">
+                    <div className="mega-sidebar">
+                      {item.submenu.map((subItem, subIndex) => (
+                        <div
+                          key={subIndex}
+                          className={`sidebar-item ${activeSubDropdown === subIndex ? 'active' : ''}`}
+                          onMouseEnter={() => setActiveSubDropdown(subIndex)}
+                        >
+                          {subItem.name}
+                          <i className="bi bi-chevron-right"></i>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mega-grid">
+                      {item.submenu[activeSubDropdown]?.submenu?.map((subSubItem, subSubIndex) => (
+                        <div
+                          key={subSubIndex}
+                          className="grid-cell"
+                          onClick={() => handleItemClick(item.submenu[activeSubDropdown].courseId, subSubItem.id)}
+                        >
+                          {subSubItem.name}
+                        </div>
+                      ))}
+                      {(!item.submenu[activeSubDropdown]?.submenu || item.submenu[activeSubDropdown]?.submenu.length === 0) && (
+                        <div className="mega-menu-empty">No exams available found for this stream.</div>
+                      )}
+                    </div>
+                  </div>
                 )}
-              </a>
-
-              {item.submenu && item.submenu.length > 0 && activeDropdown === index && (
-                <div className="mega-menu-container">
-                  <div className="mega-sidebar">
-                    {item.submenu.map((subItem, subIndex) => (
-                      <div
-                        key={subIndex}
-                        className={`sidebar-item ${activeSubDropdown === subIndex ? 'active' : ''}`}
-                        onMouseEnter={() => setActiveSubDropdown(subIndex)}
-                      >
-                        {subItem.name}
-                        <i className="bi bi-chevron-right"></i>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mega-grid">
-                    {item.submenu[activeSubDropdown]?.submenu?.map((subSubItem, subSubIndex) => (
-                      <div
-                        key={subSubIndex}
-                        className="grid-cell"
-                        onClick={() => handleItemClick(item.submenu[activeSubDropdown].courseId, subSubItem.id)}
-                      >
-                        {subSubItem.name}
-                      </div>
-                    ))}
-                    {(!item.submenu[activeSubDropdown]?.submenu || item.submenu[activeSubDropdown]?.submenu.length === 0) && (
-                      <div className="mega-menu-empty">No exams available found for this stream.</div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </li>
-          ))}
-          </ul>
+              </li>
+            );
+          })}
+        </ul>
 
           <ThemeToggle />
         </div>

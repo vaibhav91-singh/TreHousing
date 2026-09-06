@@ -19,13 +19,13 @@
 }
 
 .hub-header-section {
-  background: linear-gradient(-45deg, var(--secondary), #0f172a, var(--secondary-hover), var(--secondary));
+  background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #111a2e);
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
   padding: 50px 40px;
   border-radius: 20px;
   margin-bottom: 40px;
-  box-shadow: 0 15px 35px -10px rgba(30, 41, 59, 0.5);
+  box-shadow: 0 15px 35px -10px rgba(15, 23, 42, 0.5);
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -45,7 +45,7 @@
 
 .hub-subtitle {
   font-size: 18px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   max-width: 700px;
   margin: 0;
   line-height: 1.6;
@@ -231,4 +231,39 @@
   .hub-title {
     font-size: 24px;
   }
+}
+
+/* Dark Mode Rich Aesthetics Overrides */
+[data-theme='dark'] .hub-header-section {
+  background: linear-gradient(-45deg, #080d1a, #111a2e, #1e293b, #080d1a);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  border-left: 6px solid #ffb300;
+  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.7);
+}
+
+[data-theme='dark'] .hub-title {
+  color: #ffca28 !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='dark'] .hub-subtitle {
+  color: #f1f5f9 !important;
+}
+
+[data-theme='dark'] .stat-card,
+[data-theme='dark'] .update-item {
+  background: #111a2e;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='dark'] .stat-label,
+[data-theme='dark'] .update-desc {
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .update-icon-wrapper {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffca28;
 }

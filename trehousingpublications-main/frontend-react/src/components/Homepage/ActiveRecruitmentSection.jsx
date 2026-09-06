@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { extractArrayData } from '../../apiConfig.js';
 
+import SkeletonCard from '../common/SkeletonCard.jsx';
+
 export default function ActiveRecruitmentSection() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,33 +13,7 @@ export default function ActiveRecruitmentSection() {
     let isMounted = true;
     const fetchJobs = async () => {
       try {
-        let response = null;
-        let fetchSuccess = false;
-        const endpoints = ['/api/job/', '/api/v1/job/', '/api/jobs/'];
-
-        for (const ep of endpoints) {
-          try {
-            response = await axios.get(ep);
-            fetchSuccess = true;
-            break;
-          } catch (e) {
-            // If backend returned 404 for this route, try next route
-            if (e.response && e.response.status === 404) {
-              continue;
-            }
-            // Backend offline or server error, throw to outer catch
-            throw e;
-          }
-        }
-
-        if (!fetchSuccess || !response) {
-          // If all endpoints returned 404
-          if (!isMounted) return;
-          setJobs([]);
-          setError(null);
-          return;
-        }
-
+        const response = await axios.get('/api/job/');
         if (!isMounted) return;
         const list = extractArrayData(response.data);
         setJobs(list.slice(0, 3));
@@ -63,7 +39,7 @@ export default function ActiveRecruitmentSection() {
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--hp-text-muted)' }}>Loading jobs...</div>
+        <SkeletonCard count={3} />
       ) : error ? (
         <div style={{ 
           textAlign: 'center', 

@@ -123,9 +123,6 @@ export default function BctsExam() {
           <>
             <h1 className="course-title">{course.title}</h1>
             <p className="course-description">{course.description}</p>
-            <div className="image-section">
-              <img src={getFullUrl(course.banner)} alt="Course Banner" className="course-banner" />
-            </div>
             <div className="download-section">
               <h2>{subject.title}</h2>
               <p>{subject.description}</p>

@@ -37,6 +37,26 @@
     margin-bottom: 20px;
 }
 
+.btn-export, .btn-import {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    color: var(--text-dark);
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-export:hover, .btn-import:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
 /* ==========================
    Stats Cards
 ========================== */
@@ -398,45 +418,164 @@
 }
 
 /* ==========================
-   Responsive
+   Responsive & Mobile Fine-Tuning
 ========================== */
 
 @media (max-width: 768px) {
 
     .performance-container {
-        margin: 20px;
+        width: 95%;
+        margin: 20px auto;
         padding: 20px;
+        border-radius: 20px;
     }
 
     .performance-container h2 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
 
     .stats-cards {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .card h2 {
+        font-size: 1.6rem;
     }
 
     .performance-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
     }
 
     .trend-bars {
-        gap: 10px;
+        gap: 8px;
         height: 180px;
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 10px;
     }
 
     .trend-bar {
-        width: 28px;
+        width: 24px;
     }
 
     .history-table th,
     .history-table td {
-        padding: 12px;
-        font-size: 0.9rem;
+        padding: 10px 12px;
+        font-size: 0.85rem;
     }
 
     .btn-clear {
         width: 100%;
     }
+}
+
+@media (max-width: 480px) {
+    .stats-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .performance-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   DARK THEME RICH AESTHETICS FOR DASHBOARD
+   ========================================================================== */
+
+[data-theme='dark'] .performance-container {
+    background: linear-gradient(
+        145deg,
+        rgba(255, 179, 0, 0.08) 0%,
+        #111a2e 40%,
+        #080d1a 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme='dark'] .performance-container h2,
+[data-theme='dark'] .performance-container h3 {
+    color: #ffffff !important;
+}
+
+[data-theme='dark'] .card {
+    background: #111a2e;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .card h4 {
+    color: #cbd5e1 !important;
+}
+
+[data-theme='dark'] .card h2 {
+    background: linear-gradient(135deg, #ffca28, #ffb300);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+[data-theme='dark'] .analytics-card {
+    background: #111a2e;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .metric-box {
+    background: linear-gradient(135deg, rgba(255, 179, 0, 0.1), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .metric-box span {
+    color: #94a3b8;
+}
+
+[data-theme='dark'] .metric-box strong {
+    color: #ffffff;
+}
+
+[data-theme='dark'] .progress-bar {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .progress-wrapper span {
+    color: #ffca28;
+}
+
+[data-theme='dark'] .trend-item span {
+    color: #cbd5e1;
+}
+
+[data-theme='dark'] .performance-container p {
+    color: #e2e8f0;
+}
+
+[data-theme='dark'] .history-table {
+    background: #111a2e;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+[data-theme='dark'] .history-table thead {
+    background: linear-gradient(135deg, #ffb300, #ff8f00);
+}
+
+[data-theme='dark'] .history-table th {
+    color: #0f172a !important;
+    font-weight: 800;
+}
+
+[data-theme='dark'] .history-table td {
+    color: #f1f5f9;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .history-table tbody tr:hover {
+    background: rgba(255, 179, 0, 0.1);
 }
 

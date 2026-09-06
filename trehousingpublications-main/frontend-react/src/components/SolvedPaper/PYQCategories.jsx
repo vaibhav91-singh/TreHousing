@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Loader from '../common/Loader.jsx';
+import SkeletonCard from '../common/SkeletonCard.jsx';
 import './PYQCategories.css';
 import { extractArrayData } from '../../apiConfig.js';
 
@@ -53,8 +53,6 @@ export default function PYQCategories() {
     return result;
   }, [activeCategory, searchTerm, papers]);
 
-  if (loading) return <Loader fullPage={true} text="Loading Previous Year Papers..." />;
-
   return (
     <div className="pyq-categories">
       <div className="pyq-head-section">
@@ -83,7 +81,9 @@ export default function PYQCategories() {
 
         {/* PYQ Cards Grid */}
         <div className="pyq-cards-portion">
-          {filteredPapers.length === 0 ? (
+          {loading ? (
+            <SkeletonCard count={6} />
+          ) : filteredPapers.length === 0 ? (
             <div style={{ padding: '2rem', textAlign: 'center', width: '100%' }}>
               No papers found for this selection.
             </div>

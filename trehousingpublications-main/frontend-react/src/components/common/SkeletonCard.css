@@ -1,0 +1,122 @@
+/* ==========================================================================
+   GLOWING SKELETON CARDS - SHIMMER WAVE LOADING SYSTEM
+   ========================================================================== */
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+.skeleton-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.skeleton-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.skeleton-block {
+  background-color: var(--border-color);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0.6;
+}
+
+.skeleton-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.skeleton-badge {
+  width: 85px;
+  height: 24px;
+  border-radius: 20px;
+}
+
+.skeleton-title {
+  width: 85%;
+  height: 22px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+
+.skeleton-text-line {
+  width: 95%;
+  height: 14px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
+
+.skeleton-text-short {
+  width: 60%;
+  height: 14px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+
+.skeleton-footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-color);
+}
+
+.skeleton-button {
+  width: 90px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+/* Shimmer Wave Sweeping Animation */
+@keyframes skeletonShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  animation: skeletonShimmer 1.5s infinite;
+  pointer-events: none;
+}
+
+[data-theme='dark'] .skeleton-card::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 202, 40, 0.15) 50%,
+    transparent 100%
+  );
+}

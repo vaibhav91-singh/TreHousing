@@ -236,3 +236,28 @@
         max-width: 100%;
     }
 }
+
+/* Dark Theme High Contrast Typography & Aesthetics */
+[data-theme='dark'] .head-title {
+    color: #ffffff !important;
+}
+
+[data-theme='dark'] .cardDesign .views {
+    background-color: rgba(19, 28, 49, 0.85);
+    border-color: rgba(255, 179, 0, 0.3);
+}
+
+[data-theme='dark'] .cardDesign #heading {
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .cardDesign #lang {
+    color: #cbd5e1 !important;
+}
+
+[data-theme='dark'] .cardDesign .btn-view {
+    color: #0f172a !important;
+    font-weight: 800;
+    box-shadow: 0 4px 14px rgba(255, 179, 0, 0.35);
+}

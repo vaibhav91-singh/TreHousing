@@ -1,9 +1,10 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Course, Subject, Syllabus, PYQ, Sub_Courses
 from django.http import FileResponse, JsonResponse, Http404
 from django.conf import settings
+from django.views.decorators.cache import cache_page
 # For Quiz
 from .models import Quiz, Question, Choice
 from .serializers import QuizSerializer
@@ -52,8 +53,8 @@ def course_api(request):
         if not subject.pdf_link:
             return Response({"error": "No PDF available for this subject"}, status=404)
 
-        if subject.pdf_link and os.path.exists(subject.pdf_link.path):
-            return FileResponse(subject.pdf_link.open('rb'), content_type='application/pdf')
+        if subject.pdf_link:
+            return redirect(subject.pdf_link.url)
         else:
             return Response({"error": "File not found"}, status=404)
 
@@ -66,8 +67,8 @@ def course_api(request):
         syllabus_qs = Syllabus.objects.filter(subject=subject)
         for syllabus in syllabus_qs:
             if os.path.basename(syllabus.file.name) == syllabus_name:
-                if syllabus.file and os.path.exists(syllabus.file.path):
-                    return FileResponse(syllabus.file.open('rb'), content_type='application/pdf')
+                if syllabus.file:
+                    return redirect(syllabus.file.url)
                 else:
                     return Response({"error": "File not found"}, status=404)
         return Response({"error": "Syllabus file not found for this subject"}, status=404)
@@ -78,7 +79,6 @@ def course_api(request):
             "id": course.id,
             "title": course.title,
             "description": course.description,
-            "banner": course.banner.url if course.banner else None,
             "subjects": [
                 {
                     "id": subject.id,
@@ -172,8 +172,8 @@ def pyq_api(request):
             pyq = subject.pyqs.get(file__icontains=file_name)
             file_path = pyq.file.path
 
-            if pyq.file and os.path.exists(pyq.file.path):
-                return FileResponse(pyq.file.open('rb'), content_type='application/pdf')
+            if pyq.file:
+                return redirect(pyq.file.url)
             else:
                 raise Http404("File not found")
 
@@ -274,15 +274,10 @@ def job_detail_api(request, pk):
     serializer = JobVacancySerializer(job)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def get_user_performance(request):
-    performance = UserPerformance.objects.all()
-    serializer = UserPerformanceSerializer(performance, many=True)
-    return Response(serializer.data)
-
 # ==========================================================================
 # RECENT UPDATES
 #=====================================================================
+@cache_page(60 * 5)
 @api_view(['GET'])
 def recent_updates_list(request):
     updates = RecentUpdate.objects.all()[:10]  # Only fetch latest 10 updates
@@ -292,6 +287,7 @@ def recent_updates_list(request):
 # ==========================================================================
 # NEW FEATURE: TOPIC-WISE MCQ SYSTEM ENDPOINT
 # ==========================================================================
+@cache_page(60 * 10)
 @api_view(['GET'])
 def topic_wise_mcq_api(request):
     """
@@ -314,6 +310,7 @@ def topic_wise_mcq_api(request):
 # ==========================================================================
 # NEW FEATURE: STUDY MATERIAL SYSTEM ENDPOINT
 # ==========================================================================
+@cache_page(60 * 10)
 @api_view(['GET'])
 def study_materials_api(request):
     """

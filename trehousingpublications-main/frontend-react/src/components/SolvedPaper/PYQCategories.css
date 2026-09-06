@@ -143,6 +143,7 @@
     color: var(--primary-dark);
     border-radius: 30px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 2;
 }
 
 .pyq-cardDesign #heading {
@@ -151,6 +152,8 @@
     color: var(--secondary);
     margin: 10px 0 15px;
     line-height: 1.4;
+    padding-right: 85px;
+    word-break: break-word;
 }
 
 .pyq-actions {
@@ -281,4 +284,56 @@
     .pyq-head-section h1 {
         font-size: 1.4rem;
     }
+}
+
+/* Dark Theme Rich Aesthetics & High Contrast Typography */
+[data-theme='dark'] .pyq-head-section h1 {
+    color: #ffffff !important;
+}
+
+[data-theme='dark'] .pyq-head-section input {
+    background-color: #131c31;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme='dark'] .pyq-cardDesign {
+    background: linear-gradient(165deg, rgba(255, 179, 0, 0.12) 0%, #131c31 40%, #0d1527 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme='dark'] .pyq-cardDesign:hover {
+    border-color: var(--primary);
+    box-shadow: 0 14px 35px rgba(255, 179, 0, 0.25), 0 0 20px rgba(255, 179, 0, 0.15);
+}
+
+[data-theme='dark'] .pyq-cardDesign #heading {
+    color: #ffffff !important;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .pyq-cardDesign .year-badge {
+    background-color: rgba(255, 179, 0, 0.2);
+    color: #ffca28;
+    border: 1px solid rgba(255, 202, 40, 0.3);
+}
+
+[data-theme='dark'] .btn-pyq-paper {
+    color: #0f172a !important;
+    font-weight: 800;
+    box-shadow: 0 4px 14px rgba(255, 179, 0, 0.35);
+}
+
+[data-theme='dark'] .btn-pyq-answer {
+    background: rgba(255, 255, 255, 0.06);
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme='dark'] .btn-pyq-answer:hover {
+    background: rgba(255, 179, 0, 0.15);
+    color: #ffca28;
+    border-color: #ffb300;
 }

@@ -136,3 +136,27 @@
   color: var(--primary-dark);
   border-color: var(--primary);
 }
+
+/* Dark Mode Overrides */
+[data-theme='dark'] .govt-job-card {
+  background: #111a2e;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .job-tag {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+
+[data-theme='dark'] .btn-apply-now {
+  color: #0f172a !important;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(255, 179, 0, 0.35);
+}
+
+[data-theme='dark'] .btn-apply-now:hover {
+  color: #000000 !important;
+  background-color: #ffca28;
+}

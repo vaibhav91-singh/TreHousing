@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend.trehousingpublications.com';
+export const API_BASE_URL = import.meta.env.DEV
+  ? (import.meta.env.VITE_DEV_BACKEND_URL || 'http://127.0.0.1:8000')
+  : (import.meta.env.VITE_API_BASE_URL || 'https://backend.trehousingpublications.com');
 
 // Set default base URL for axios
 axios.defaults.baseURL = API_BASE_URL;

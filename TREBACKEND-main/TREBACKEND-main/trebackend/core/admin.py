@@ -32,7 +32,7 @@ class ExamPatternInline(admin.TabularInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('title', 'banner')
+    list_display = ('title',)
     search_fields = ('title',)
     inlines = [Sub_CoursesInline, SubjectInline]  
     ordering = ['id']
@@ -114,8 +114,8 @@ class QuizJSONUploadForm(forms.Form):
 # 2. Update your QuizAdmin to include the bul   k upload URL & view
 @admin.register(Quiz)
 class QuizAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'category', 'display_questions_limit') 
-    fields = ('subject', 'category', 'title', 'description', 'display_questions_limit', 'bulk_upload_json') 
+    list_display = ('title', 'subject', 'category', 'duration_minutes', 'display_questions_limit') 
+    fields = ('subject', 'category', 'title', 'description', 'duration_minutes', 'display_questions_limit', 'bulk_upload_json') 
     list_filter = ('subject', 'category') 
     search_fields = ('title', 'subject__title', 'category')
     inlines = [QuestionInline]

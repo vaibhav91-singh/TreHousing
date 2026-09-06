@@ -1,10 +1,15 @@
 .hp-footer {
-  background-color: var(--secondary);
+  background-color: #0f172a;
   color: #ffffff;
   padding: 4rem 1.5rem 2rem;
-  border-top: 1px solid var(--secondary-hover);
+  border-top: 1px solid #1e293b;
   font-family: var(--font-main);
   margin-top: auto;
+}
+
+[data-theme='dark'] .hp-footer {
+  background-color: #060a14 !important;
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Fail-safe: Automatically hide footer when taking a quiz or solving MCQs */

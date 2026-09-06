@@ -318,3 +318,41 @@
         font-size: 1.4rem;
     }
 }
+
+/* Dark Theme Rich Aesthetics & High Contrast Typography */
+[data-theme='dark'] .head-section h1 {
+    color: #ffffff !important;
+}
+
+[data-theme='dark'] .head-section input {
+    background-color: #131c31;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme='dark'] .cardDesign {
+    background: linear-gradient(165deg, rgba(255, 179, 0, 0.12) 0%, #131c31 40%, #0d1527 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme='dark'] .cardDesign:hover {
+    border-color: var(--primary);
+    box-shadow: 0 14px 35px rgba(255, 179, 0, 0.25), 0 0 20px rgba(255, 179, 0, 0.15);
+}
+
+[data-theme='dark'] .cardDesign #heading {
+    color: #ffffff !important;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .cardDesign #lang {
+    color: #cbd5e1 !important;
+}
+
+[data-theme='dark'] .cardDesign .btn-view {
+    color: #0f172a !important;
+    font-weight: 800;
+    box-shadow: 0 4px 14px rgba(255, 179, 0, 0.35);
+}
