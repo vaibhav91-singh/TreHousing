@@ -21,14 +21,14 @@ function App() {
   // Initialize Lenis Smooth Scroll
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1,
+      wheelMultiplier: 1.15,
       smoothTouch: false,
-      touchMultiplier: 2,
+      touchMultiplier: 1.5,
       infinite: false,
     });
 
