@@ -52,9 +52,8 @@ def course_api(request):
         if not subject.pdf_link:
             return Response({"error": "No PDF available for this subject"}, status=404)
 
-        pdf_path = os.path.join(settings.MEDIA_ROOT, subject.pdf_link.name)
-        if os.path.exists(pdf_path):
-            return FileResponse(open(pdf_path, 'rb'), content_type='application/pdf')
+        if subject.pdf_link and os.path.exists(subject.pdf_link.path):
+            return FileResponse(subject.pdf_link.open('rb'), content_type='application/pdf')
         else:
             return Response({"error": "File not found"}, status=404)
 
@@ -67,9 +66,8 @@ def course_api(request):
         syllabus_qs = Syllabus.objects.filter(subject=subject)
         for syllabus in syllabus_qs:
             if os.path.basename(syllabus.file.name) == syllabus_name:
-                file_path = syllabus.file.path
-                if os.path.exists(file_path):
-                    return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+                if syllabus.file and os.path.exists(syllabus.file.path):
+                    return FileResponse(syllabus.file.open('rb'), content_type='application/pdf')
                 else:
                     return Response({"error": "File not found"}, status=404)
         return Response({"error": "Syllabus file not found for this subject"}, status=404)
@@ -174,8 +172,8 @@ def pyq_api(request):
             pyq = subject.pyqs.get(file__icontains=file_name)
             file_path = pyq.file.path
 
-            if os.path.exists(file_path):
-                return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+            if pyq.file and os.path.exists(pyq.file.path):
+                return FileResponse(pyq.file.open('rb'), content_type='application/pdf')
             else:
                 raise Http404("File not found")
 

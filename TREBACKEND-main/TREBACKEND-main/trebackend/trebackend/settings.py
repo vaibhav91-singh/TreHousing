@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-e8ttk-rb*48gp-wza%jz=(kqi5kq)rr&4was+sn54r@3at3tm$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['trehousingpublications.com', 'api.trehousingpublications.com', 'backend.trehousingpublications.com', 'localhost', '127.0.0.1']
 
@@ -61,7 +61,7 @@ ROOT_URLCONF = 'trebackend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'core' / 'templates'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,7 +84,7 @@ import dj_database_url
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600
+        conn_max_age=0
     )
 }
 

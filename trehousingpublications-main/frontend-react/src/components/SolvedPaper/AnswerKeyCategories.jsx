@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../common/Loader.jsx';
 import './PYQCategories.css'; // Reusing the same CSS for identical layout
 
 export default function AnswerKeyCategories() {
   const [keys, setKeys] = useState([]);
-  const [filteredKeys, setFilteredKeys] = useState([]);
   const [examTypes, setExamTypes] = useState(['All']);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    let isMounted = true;
     // API Call to fetch Papers (which contain answer keys)
     fetch(`/api/v1/solved-papers/`)
       .then((res) => res.json())
       .then((data) => {
+        if (!isMounted) return;
         // Filter out papers that do NOT have an answer key
         const responseData = (data.data || []).filter(item => item.answer_key_link);
         
         setKeys(responseData);
-        setFilteredKeys(responseData);
 
         // Extract unique subjects/categories
         const uniqueCategories = ['All', ...new Set(responseData.map(item => item.subject_title || 'General'))];
@@ -29,13 +29,15 @@ export default function AnswerKeyCategories() {
         setLoading(false);
       })
       .catch((err) => {
+        if (!isMounted) return;
         console.error("Error fetching answer keys:", err);
         setLoading(false);
       });
+    return () => { isMounted = false; };
   }, []);
 
-  // Filter Logic: Category or Search changes
-  useEffect(() => {
+  // Filter Logic computed cleanly via useMemo
+  const filteredKeys = useMemo(() => {
     let result = keys;
 
     if (activeCategory !== 'All') {
@@ -47,17 +49,10 @@ export default function AnswerKeyCategories() {
         p.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
         (p.subject_title && p.subject_title.toLowerCase().includes(searchTerm.toLowerCase()))
       );
-      
-      const matchedCategory = examTypes.find(
-        type => type.toLowerCase() === searchTerm.toLowerCase() && type !== 'All'
-      );
-      if (matchedCategory && activeCategory !== matchedCategory) {
-         setActiveCategory(matchedCategory);
-      }
     }
 
-    setFilteredKeys(result);
-  }, [activeCategory, searchTerm, keys, examTypes]);
+    return result;
+  }, [activeCategory, searchTerm, keys]);
 
   if (loading) return <Loader fullPage={true} text="Loading Answer Keys..." />;
 

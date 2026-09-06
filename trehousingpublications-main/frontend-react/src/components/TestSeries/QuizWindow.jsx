@@ -13,17 +13,21 @@ const QuizWindow = ({ subject, onBack }) => {
   const [timeLeft, setTimeLeft] = useState(120);
 
   useEffect(() => {
+    let isMounted = true;
     fetch('/api/v1/quiz/')
       .then((res) => res.json())
       .then((data) => {
+        if (!isMounted) return;
         const matchedQuiz = data.find(q => q.title === subject);
         setQuizDetails(matchedQuiz || null);
         setLoading(false);
       })
       .catch((err) => {
+        if (!isMounted) return;
         console.error("Lookup filter failed:", err);
         setLoading(false);
       });
+    return () => { isMounted = false; };
   }, [subject]);
 
   // Timer logic
@@ -33,9 +37,11 @@ const QuizWindow = ({ subject, onBack }) => {
       handleNext();
       return;
     }
-    const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
+    const timer = setInterval(() => {
+      setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
     return () => clearInterval(timer);
-  }, [timeLeft, completed, selectedChoice, quizDetails]);
+  }, [completed, selectedChoice, quizDetails, timeLeft === 0]);
 
   // Function to save result to localStorage (Anonymous tracking)
   const saveToHistory = (quizTitle, finalScore, total) => {

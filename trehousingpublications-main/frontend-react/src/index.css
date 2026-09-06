@@ -34,12 +34,19 @@
 [data-theme='dark'] {
   --bg-color: #0b0f19; /* Ultra dark background */
   --bg-white: #111827; /* Dark container */
+  --primary-light: rgba(255, 179, 0, 0.15);
+  
+  --secondary: #f8fafc;
+  --secondary-hover: #e2e8f0;
   
   --text-dark: #f8fafc; /* Invert text to light */
   --text-muted: #94a3b8; /* Muted light gray */
   --text-heading: #f8fafc; /* Light headings */
   
   --border-color: #1f2937;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
 }
 
 *, *::before, *::after {

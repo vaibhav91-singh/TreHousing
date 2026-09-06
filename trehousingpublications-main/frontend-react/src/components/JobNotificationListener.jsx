@@ -3,14 +3,17 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 
 const JobNotificationListener = () => {
-  const [lastJobId, setLastJobId] = useState(null);
+  const lastJobIdRef = useRef(null);
   const isFirstLoad = useRef(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     // Polling function
     const checkNewJobs = async () => {
       try {
         const response = await axios.get('/api/job/');
+        if (!isMounted) return;
         const jobs = response.data;
         
         if (Array.isArray(jobs) && jobs.length > 0) {
@@ -19,9 +22,9 @@ const JobNotificationListener = () => {
           
           if (isFirstLoad.current) {
             // First load, just record the max ID, don't show notification
-            setLastJobId(maxId);
+            lastJobIdRef.current = maxId;
             isFirstLoad.current = false;
-          } else if (lastJobId !== null && maxId > lastJobId) {
+          } else if (lastJobIdRef.current !== null && maxId > lastJobIdRef.current) {
             // New job detected!
             toast.success(
               <div>
@@ -30,11 +33,13 @@ const JobNotificationListener = () => {
               </div>, 
               { duration: 5000, position: 'top-right' }
             );
-            setLastJobId(maxId);
+            lastJobIdRef.current = maxId;
           }
         }
       } catch (error) {
-        console.error("Error checking for new jobs", error);
+        if (isMounted) {
+          console.error("Error checking for new jobs", error);
+        }
       }
     };
 
@@ -43,8 +48,11 @@ const JobNotificationListener = () => {
 
     // Then poll every 15 seconds
     const interval = setInterval(checkNewJobs, 15000);
-    return () => clearInterval(interval);
-  }, [lastJobId]);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   return <Toaster />;
 };

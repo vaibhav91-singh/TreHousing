@@ -20,19 +20,18 @@ export default function HeaderDropdown() {
     });
   };
 
-  const closeDropdowns = (event) => {
-    if (!event.target.closest(".dropdown")) {
-      setDropdowns({
-        previousYearPaper: false,
-        exams: false,
-        onlineCourse: false,
-        mockTest: false,
-        allCourses: false,
-      });
-    }
-  };
-
   useEffect(() => {
+    const closeDropdowns = (event) => {
+      if (!event.target.closest(".dropdown")) {
+        setDropdowns({
+          previousYearPaper: false,
+          exams: false,
+          onlineCourse: false,
+          mockTest: false,
+          allCourses: false,
+        });
+      }
+    };
     document.addEventListener("click", closeDropdowns);
     return () => document.removeEventListener("click", closeDropdowns);
   }, []);

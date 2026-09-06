@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../common/Loader.jsx';
 import './PYQCategories.css';
 
 export default function PYQCategories() {
   const [papers, setPapers] = useState([]);
-  const [filteredPapers, setFilteredPapers] = useState([]);
   const [examTypes, setExamTypes] = useState(['All']);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    let isMounted = true;
     // API Call to fetch PYQ Papers
     fetch(`/api/v1/solved-papers/`)
       .then((res) => res.json())
       .then((data) => {
+        if (!isMounted) return;
         const responseData = data.data || [];
         setPapers(responseData);
-        setFilteredPapers(responseData);
 
         // Extract unique subjects/categories from the papers
         const uniqueCategories = ['All', ...new Set(responseData.map(item => item.subject_title || 'General'))];
@@ -27,13 +27,15 @@ export default function PYQCategories() {
         setLoading(false);
       })
       .catch((err) => {
+        if (!isMounted) return;
         console.error("Error fetching solved papers:", err);
         setLoading(false);
       });
+    return () => { isMounted = false; };
   }, []);
 
-  // Filter Logic: Category or Search changes
-  useEffect(() => {
+  // Filter Logic computed cleanly via useMemo
+  const filteredPapers = useMemo(() => {
     let result = papers;
 
     if (activeCategory !== 'All') {
@@ -45,18 +47,10 @@ export default function PYQCategories() {
         p.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
         (p.subject_title && p.subject_title.toLowerCase().includes(searchTerm.toLowerCase()))
       );
-      
-      // Auto-select category if search term matches a subject exactly
-      const matchedCategory = examTypes.find(
-        type => type.toLowerCase() === searchTerm.toLowerCase() && type !== 'All'
-      );
-      if (matchedCategory && activeCategory !== matchedCategory) {
-         setActiveCategory(matchedCategory);
-      }
     }
 
-    setFilteredPapers(result);
-  }, [activeCategory, searchTerm, papers, examTypes]);
+    return result;
+  }, [activeCategory, searchTerm, papers]);
 
   if (loading) return <Loader fullPage={true} text="Loading Previous Year Papers..." />;
 

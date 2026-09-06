@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../common/Loader.jsx';
 import './SeriesCategories.css';
@@ -6,19 +6,19 @@ import irbLogo from '../../assets/TestSeries/IRB.png';
 
 export default function SeriesCategories({ onSelectTest }) {
   const [quizzes, setQuizzes] = useState([]);
-  const [filteredQuizzes, setFilteredQuizzes] = useState([]);
   const [examTypes, setExamTypes] = useState(['All']);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
+    let isMounted = true;
     // API Call
     fetch(`/api/v1/quiz/`)
       .then((res) => res.json())
       .then((data) => {
+        if (!isMounted) return;
         setQuizzes(data);
-        setFilteredQuizzes(data);
 
         // Backend se aayi hui har quiz ki category ko nikaal kar unique list banao
         const uniqueCategories = ['All', ...new Set(data.map(item => item.category || 'General'))];
@@ -27,13 +27,15 @@ export default function SeriesCategories({ onSelectTest }) {
         setLoading(false);
       })
       .catch((err) => {
+        if (!isMounted) return;
         console.error("Error fetching quizzes:", err);
         setLoading(false);
       });
+    return () => { isMounted = false; };
   }, []);
 
-  // Filter Logic: Category ya Search badalne par data update hoga
-  useEffect(() => {
+  // Filter Logic computed cleanly via useMemo
+  const filteredQuizzes = useMemo(() => {
     let result = quizzes;
 
     if (activeCategory !== 'All') {
@@ -46,7 +48,7 @@ export default function SeriesCategories({ onSelectTest }) {
       );
     }
 
-    setFilteredQuizzes(result);
+    return result;
   }, [activeCategory, searchTerm, quizzes]);
 
   if (loading) return <Loader fullPage={true} text="Loading Test Series..." />;

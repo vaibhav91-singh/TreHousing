@@ -10,6 +10,11 @@
   position: sticky;
   top: 0;
   z-index: 99999; /* Keeps nav anchored above everything else on page scroll */
+  transition: background-color 0.3s ease;
+}
+
+[data-theme='dark'] .header-container {
+  background-color: rgba(17, 24, 39, 0.85);
 }
 
 nav.navbar-main {
