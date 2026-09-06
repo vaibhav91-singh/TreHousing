@@ -1,6 +1,6 @@
 .hp-footer {
   background-color: var(--secondary);
-  color: var(--bg-white);
+  color: #ffffff;
   padding: 4rem 1.5rem 2rem;
   border-top: 1px solid var(--secondary-hover);
   font-family: var(--font-main);
@@ -25,7 +25,7 @@ body:has(.mcq-question-card) .hp-footer {
 .hp-footer-links h4 {
   font-size: 0.875rem;
   text-transform: uppercase;
-  color: var(--bg-white);
+  color: #ffffff;
   margin-bottom: 1.5rem;
   font-weight: 700;
   letter-spacing: 0.05em;

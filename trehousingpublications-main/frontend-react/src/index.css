@@ -36,8 +36,8 @@
   --bg-white: #111827; /* Dark container */
   --primary-light: rgba(255, 179, 0, 0.15);
   
-  --secondary: #f8fafc;
-  --secondary-hover: #e2e8f0;
+  --secondary: #1e293b;
+  --secondary-hover: #334155;
   
   --text-dark: #f8fafc; /* Invert text to light */
   --text-muted: #94a3b8; /* Muted light gray */

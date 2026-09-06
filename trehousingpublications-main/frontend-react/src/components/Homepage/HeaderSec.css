@@ -3,18 +3,14 @@
    ========================================================================== */
 .header-container {
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent for glass effect */
+  background-color: var(--bg-white);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 99999; /* Keeps nav anchored above everything else on page scroll */
-  transition: background-color 0.3s ease;
-}
-
-[data-theme='dark'] .header-container {
-  background-color: rgba(17, 24, 39, 0.85);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 nav.navbar-main {
