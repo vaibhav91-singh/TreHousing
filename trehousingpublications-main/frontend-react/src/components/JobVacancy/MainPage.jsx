@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import JobCard from './JobCard';
 import Loader from '../common/Loader.jsx'; 
+import { extractArrayData } from '../../apiConfig.js';
 import './MainPage.css';
 
 const JobPage = () => {
@@ -12,28 +13,45 @@ const JobPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [jobsRes, updatesRes] = await Promise.all([
-          axios.get(`/api/job/`),
-          axios.get(`/api/recent-updates/`)
-        ]);
-        
-        const allJobs = Array.isArray(jobsRes.data) ? jobsRes.data : [];
-        setGovtJobs(allJobs.filter(job => !job.job_type || job.job_type === 'GOVT'));
-        setPrivateJobs(allJobs.filter(job => job.job_type === 'PRIVATE'));
-        
-        setUpdates(Array.isArray(updatesRes.data) ? updatesRes.data : []);
+        let jobsData = [];
+        try {
+          const res = await axios.get('/api/job/');
+          jobsData = extractArrayData(res.data);
+        } catch (e1) {
+          try {
+            const res = await axios.get('/api/v1/job/');
+            jobsData = extractArrayData(res.data);
+          } catch (e2) {
+            console.warn("Could not fetch jobs list:", e2);
+          }
+        }
+
+        let updatesData = [];
+        try {
+          const res = await axios.get('/api/recent-updates/');
+          updatesData = extractArrayData(res.data);
+        } catch (e3) {
+          console.warn("Could not fetch updates list:", e3);
+        }
+
+        if (!isMounted) return;
+        setGovtJobs(jobsData.filter(job => !job.job_type || job.job_type === 'GOVT'));
+        setPrivateJobs(jobsData.filter(job => job.job_type === 'PRIVATE'));
+        setUpdates(updatesData);
       } catch (err) {
+        if (!isMounted) return;
         console.error("Error fetching data:", err);
-        setError("Failed to load data. Please try again later.");
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     fetchData();
+    return () => { isMounted = false; };
   }, []);
 
   if (loading) return <Loader fullPage={true} text="Loading Job Vacancies..." />;

@@ -1,29 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { extractArrayData } from '../../apiConfig.js';
 
 export default function ActiveRecruitmentSection() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchJobs = async () => {
       try {
-        const response = await axios.get('/api/job/');
-        if (response.data && Array.isArray(response.data)) {
-          setJobs(response.data.slice(0, 3));
-        } else {
-          setJobs([]);
+        let response;
+        try {
+          response = await axios.get('/api/job/');
+        } catch (e1) {
+          try {
+            response = await axios.get('/api/v1/job/');
+          } catch (e2) {
+            response = await axios.get('/api/jobs/');
+          }
         }
-        setLoading(false);
+        
+        if (!isMounted) return;
+        const list = extractArrayData(response.data);
+        setJobs(list.slice(0, 3));
       } catch (err) {
-        console.error("Error fetching jobs:", err);
-        setError("Failed to load jobs");
-        setLoading(false);
+        if (!isMounted) return;
+        console.warn("Error fetching jobs:", err);
+        setJobs([]);
+      } finally {
+        if (isMounted) setLoading(false);
       }
     };
 
     fetchJobs();
+    return () => { isMounted = false; };
   }, []);
 
   return (
@@ -35,8 +46,6 @@ export default function ActiveRecruitmentSection() {
 
       {loading ? (
         <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--hp-text-muted)' }}>Loading jobs...</div>
-      ) : error ? (
-        <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>{error}</div>
       ) : jobs.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--hp-text-muted)' }}>No active recruitments at the moment.</div>
       ) : (
