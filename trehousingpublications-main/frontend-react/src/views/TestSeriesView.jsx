@@ -28,18 +28,15 @@ export default function TestSeriesView() {
       <Header />
 
       {selectedSubject ? (
-        // Agar subject selected hai toh use window mein bhej do
+        // Agar subject selected hai toh quiz window dikhao (bina footer ke)
         <QuizWindow subject={selectedSubject} onBack={() => setSelectedSubject(null)} />
       ) : (
         <>
-          {/* Dono components mein click handler prop pass kar di */}
-          
           <SeriesCategories onSelectTest={handleStartTest} />
           <PopularTest onSelectTest={handleStartTest} />
+          <Footer />
         </>
       )}
-
-      <Footer />
     </div>
   );
 }
