@@ -5,29 +5,47 @@ import { extractArrayData } from '../../apiConfig.js';
 export default function ActiveRecruitmentSection() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
     const fetchJobs = async () => {
       try {
-        let response;
-        try {
-          response = await axios.get('/api/job/');
-        } catch (e1) {
+        let response = null;
+        let fetchSuccess = false;
+        const endpoints = ['/api/job/', '/api/v1/job/', '/api/jobs/'];
+
+        for (const ep of endpoints) {
           try {
-            response = await axios.get('/api/v1/job/');
-          } catch (e2) {
-            response = await axios.get('/api/jobs/');
+            response = await axios.get(ep);
+            fetchSuccess = true;
+            break;
+          } catch (e) {
+            // If backend returned 404 for this route, try next route
+            if (e.response && e.response.status === 404) {
+              continue;
+            }
+            // Backend offline or server error, throw to outer catch
+            throw e;
           }
         }
-        
+
+        if (!fetchSuccess || !response) {
+          // If all endpoints returned 404
+          if (!isMounted) return;
+          setJobs([]);
+          setError(null);
+          return;
+        }
+
         if (!isMounted) return;
         const list = extractArrayData(response.data);
         setJobs(list.slice(0, 3));
+        setError(null);
       } catch (err) {
         if (!isMounted) return;
-        console.warn("Error fetching jobs:", err);
-        setJobs([]);
+        console.error("Jobs Fetch Error:", err);
+        setError("Failed to connect to backend server / database");
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -46,6 +64,26 @@ export default function ActiveRecruitmentSection() {
 
       {loading ? (
         <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--hp-text-muted)' }}>Loading jobs...</div>
+      ) : error ? (
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '1.25rem', 
+          color: '#ef4444', 
+          backgroundColor: 'rgba(239, 68, 68, 0.1)', 
+          border: '1px solid rgba(239, 68, 68, 0.25)', 
+          borderRadius: '12px',
+          maxWidth: '500px',
+          margin: '1rem auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.75rem',
+          fontSize: '0.95rem',
+          fontWeight: '500'
+        }}>
+          <i className="bi bi-exclamation-triangle-fill" style={{ fontSize: '1.2rem' }}></i>
+          <span>{error}</span>
+        </div>
       ) : jobs.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--hp-text-muted)' }}>No active recruitments at the moment.</div>
       ) : (

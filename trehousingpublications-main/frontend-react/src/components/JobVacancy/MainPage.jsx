@@ -18,15 +18,18 @@ const JobPage = () => {
       try {
         setLoading(true);
         let jobsData = [];
-        try {
-          const res = await axios.get('/api/job/');
-          jobsData = extractArrayData(res.data);
-        } catch (e1) {
+        let fetchedAny = false;
+
+        const endpoints = ['/api/job/', '/api/v1/job/'];
+        for (const ep of endpoints) {
           try {
-            const res = await axios.get('/api/v1/job/');
+            const res = await axios.get(ep);
             jobsData = extractArrayData(res.data);
-          } catch (e2) {
-            console.warn("Could not fetch jobs list:", e2);
+            fetchedAny = true;
+            break;
+          } catch (e1) {
+            if (e1.response && e1.response.status === 404) continue;
+            throw e1;
           }
         }
 
@@ -35,16 +38,18 @@ const JobPage = () => {
           const res = await axios.get('/api/recent-updates/');
           updatesData = extractArrayData(res.data);
         } catch (e3) {
-          console.warn("Could not fetch updates list:", e3);
+          // ignore updates error
         }
 
         if (!isMounted) return;
         setGovtJobs(jobsData.filter(job => !job.job_type || job.job_type === 'GOVT'));
         setPrivateJobs(jobsData.filter(job => job.job_type === 'PRIVATE'));
         setUpdates(updatesData);
+        setError(null);
       } catch (err) {
         if (!isMounted) return;
         console.error("Error fetching data:", err);
+        setError("Failed to connect to backend server / database");
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -55,7 +60,27 @@ const JobPage = () => {
   }, []);
 
   if (loading) return <Loader fullPage={true} text="Loading Job Vacancies..." />;
-  if (error) return <div className="status-message error">{error}</div>;
+  if (error) return (
+    <div style={{
+      textAlign: 'center',
+      padding: '1.5rem',
+      color: '#ef4444',
+      backgroundColor: 'rgba(239, 68, 68, 0.1)',
+      border: '1px solid rgba(239, 68, 68, 0.25)',
+      borderRadius: '12px',
+      margin: '3rem auto',
+      maxWidth: '550px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '0.75rem',
+      fontSize: '1rem',
+      fontWeight: '500'
+    }}>
+      <i className="bi bi-exclamation-triangle-fill" style={{ fontSize: '1.25rem' }}></i>
+      <span>{error}</span>
+    </div>
+  );
 
   return (
     <div className="job-page-wrapper">
