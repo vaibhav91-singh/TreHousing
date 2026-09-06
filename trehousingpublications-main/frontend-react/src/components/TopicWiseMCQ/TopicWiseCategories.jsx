@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './TopicWiseCategories.css';
 import Loader from '../common/Loader.jsx';
+import { extractArrayData } from '../../apiConfig.js';
 
 export default function TopicWiseCategories() {
   const [data, setData] = useState([]);
@@ -19,9 +20,7 @@ export default function TopicWiseCategories() {
     fetch(`/api/v1/topic-wise-mcq/`)
       .then(res => res.json())
       .then(resData => {
-        if (resData.success) {
-          setData(resData.data);
-        }
+        setData(extractArrayData(resData));
         setLoading(false);
       })
       .catch(err => {

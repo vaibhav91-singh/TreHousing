@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './StudyMaterialCategories.css';
 import Loader from '../common/Loader.jsx';
+import { extractArrayData } from '../../apiConfig.js';
 
 export default function StudyMaterialCategories() {
   const [data, setData] = useState([]);
@@ -15,9 +16,7 @@ export default function StudyMaterialCategories() {
     fetch(`/api/v1/study-materials/`)
       .then(res => res.json())
       .then(resData => {
-        if (resData.success) {
-          setData(resData.data);
-        }
+        setData(extractArrayData(resData));
         setLoading(false);
       })
       .catch(err => {

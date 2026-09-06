@@ -1,7 +1,7 @@
-// src/components/TestSeries/PopularTest.jsx
 import React, { useState, useEffect } from 'react';
 import './PopularTest.css';
 import Loader from '../common/Loader.jsx';
+import { extractArrayData } from '../../apiConfig.js';
 
 export default function PopularTest({ onSelectTest }) {
   const [quizzes, setQuizzes] = useState([]);
@@ -9,10 +9,10 @@ export default function PopularTest({ onSelectTest }) {
 
   // Live backend data call
   useEffect(() => {
-    fetch(`api/v1/quiz/`) // Aapka dynamic Quiz List endpoint
+    fetch('/api/v1/quiz/')
       .then((res) => res.json())
       .then((data) => {
-        setQuizzes(Array.isArray(data) ? data : []);
+        setQuizzes(extractArrayData(data));
         setLoading(false);
       })
       .catch((err) => {

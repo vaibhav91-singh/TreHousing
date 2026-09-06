@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Loader from '../common/Loader.jsx';
 import './SeriesCategories.css';
 import irbLogo from '../../assets/TestSeries/IRB.png';
+import { extractArrayData } from '../../apiConfig.js';
 
 export default function SeriesCategories({ onSelectTest }) {
   const [quizzes, setQuizzes] = useState([]);
@@ -18,10 +19,11 @@ export default function SeriesCategories({ onSelectTest }) {
       .then((res) => res.json())
       .then((data) => {
         if (!isMounted) return;
-        setQuizzes(data);
+        const list = extractArrayData(data);
+        setQuizzes(list);
 
         // Backend se aayi hui har quiz ki category ko nikaal kar unique list banao
-        const uniqueCategories = ['All', ...new Set(data.map(item => item.category || 'General'))];
+        const uniqueCategories = ['All', ...new Set(list.map(item => item.category || 'General'))];
         setExamTypes(uniqueCategories);
         
         setLoading(false);

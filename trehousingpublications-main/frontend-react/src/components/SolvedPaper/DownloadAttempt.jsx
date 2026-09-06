@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './DownloadAttempt.css';
+import { extractArrayData } from '../../apiConfig.js';
 
 export default function DownloadAttempt() {
   const [papers, setPapers] = useState([]);
@@ -11,20 +12,15 @@ export default function DownloadAttempt() {
 
     fetch(API_URL)
       .then((res) => {
-        // Agar response JSON nahi hai (HTML hai), toh ye error dega
-        const contentType = res.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          throw new TypeError("Oops! Server ne JSON nahi, HTML bheja hai. URL check karo.");
+        if (!res.ok) {
+          throw new Error(`Server returned status ${res.status}`);
         }
         return res.json();
       })
       .then((res) => {
-        if (res.success) {
-          setPapers(res.data);
-          setErrorMsg(null);
-        } else {
-          setErrorMsg("Backend status false hai.");
-        }
+        const list = extractArrayData(res);
+        setPapers(list);
+        setErrorMsg(null);
         setLoading(false);
       })
       .catch((err) => {

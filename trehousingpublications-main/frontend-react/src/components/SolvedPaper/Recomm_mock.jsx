@@ -1,9 +1,8 @@
-// src/components/TestSeries/Recomm_mock.jsx
-// not working when i clicked at button reslove it-: 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loader from '../common/Loader.jsx';
 import "./Recomm_mock.css";
+import { extractArrayData } from '../../apiConfig.js';
 
 export default function Recomm_mock({ onSelectTest }) {
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ export default function Recomm_mock({ onSelectTest }) {
         return res.json();
       })
       .then((data) => {
-        setQuizzes(data || []);
+        setQuizzes(extractArrayData(data));
         setLoading(false);
       })
       .catch((error) => {

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Loader from '../common/Loader.jsx';
 import './QuizWindow.css';
+import { extractArrayData } from '../../apiConfig.js';
 
 const QuizWindow = ({ subject, onBack }) => {
   const [quizDetails, setQuizDetails] = useState(null);
@@ -18,7 +19,8 @@ const QuizWindow = ({ subject, onBack }) => {
       .then((res) => res.json())
       .then((data) => {
         if (!isMounted) return;
-        const matchedQuiz = data.find(q => q.title === subject);
+        const list = extractArrayData(data);
+        const matchedQuiz = list.find(q => q.title === subject);
         setQuizDetails(matchedQuiz || null);
         setLoading(false);
       })

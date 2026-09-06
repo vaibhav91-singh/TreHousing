@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../common/Loader.jsx';
 import './PYQCategories.css'; // Reusing the same CSS for identical layout
+import { extractArrayData } from '../../apiConfig.js';
 
 export default function AnswerKeyCategories() {
   const [keys, setKeys] = useState([]);
@@ -18,7 +19,7 @@ export default function AnswerKeyCategories() {
       .then((data) => {
         if (!isMounted) return;
         // Filter out papers that do NOT have an answer key
-        const responseData = (data.data || []).filter(item => item.answer_key_link);
+        const responseData = extractArrayData(data).filter(item => item.answer_key_link);
         
         setKeys(responseData);
 

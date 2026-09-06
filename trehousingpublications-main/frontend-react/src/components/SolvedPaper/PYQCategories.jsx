@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../common/Loader.jsx';
 import './PYQCategories.css';
+import { extractArrayData } from '../../apiConfig.js';
 
 export default function PYQCategories() {
   const [papers, setPapers] = useState([]);
@@ -17,7 +18,7 @@ export default function PYQCategories() {
       .then((res) => res.json())
       .then((data) => {
         if (!isMounted) return;
-        const responseData = data.data || [];
+        const responseData = extractArrayData(data);
         setPapers(responseData);
 
         // Extract unique subjects/categories from the papers
