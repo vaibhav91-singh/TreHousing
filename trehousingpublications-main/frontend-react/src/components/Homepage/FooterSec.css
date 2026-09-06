@@ -7,6 +7,12 @@
   margin-top: auto;
 }
 
+/* Fail-safe: Automatically hide footer when taking a quiz or solving MCQs */
+body:has(.quiz-container) .hp-footer,
+body:has(.mcq-question-card) .hp-footer {
+  display: none !important;
+}
+
 .hp-footer-content {
   max-width: 1200px;
   margin: 0 auto;
