@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from "../components/Homepage/HeaderSec.jsx";
-import Footer from "../components/Homepage/FooterSec.jsx";
 import PopularTest from '../components/TestSeries/PopularTest.jsx';
 import SeriesCategories from '../components/TestSeries/SeriesCategories.jsx';
 import QuizWindow from '../components/TestSeries/QuizWindow.jsx';
@@ -28,13 +27,11 @@ export default function TestSeriesView() {
       <Header />
 
       {selectedSubject ? (
-        // Agar subject selected hai toh quiz window dikhao (bina footer ke)
         <QuizWindow subject={selectedSubject} onBack={() => setSelectedSubject(null)} />
       ) : (
         <>
           <SeriesCategories onSelectTest={handleStartTest} />
           <PopularTest onSelectTest={handleStartTest} />
-          <Footer />
         </>
       )}
     </div>
