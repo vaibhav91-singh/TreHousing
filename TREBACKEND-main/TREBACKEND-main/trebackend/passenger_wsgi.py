@@ -1,5 +1,6 @@
 import os
 import sys
+import glob
 import traceback
 
 # Ensure current app directory is in sys.path
@@ -7,10 +8,12 @@ cwd = os.path.dirname(os.path.abspath(__file__))
 if cwd not in sys.path:
     sys.path.insert(0, cwd)
 
-# Virtualenv site-packages path
-virtualenv_site_packages = "/home1/agratas1/virtualenv/TreHousing-main/TREBACKEND-main/TREBACKEND-main/trebackend/3.10/lib/python3.10/site-packages"
-if os.path.exists(virtualenv_site_packages) and virtualenv_site_packages not in sys.path:
-    sys.path.insert(0, virtualenv_site_packages)
+# Auto-detect virtualenv site-packages path (supports 3.10, 3.9, etc.)
+venv_base = "/home1/agratas1/virtualenv/TreHousing-main/TREBACKEND-main/TREBACKEND-main/trebackend"
+site_packages_pattern = os.path.join(venv_base, "*", "lib", "python*", "site-packages")
+for sp in glob.glob(site_packages_pattern):
+    if sp not in sys.path:
+        sys.path.insert(0, sp)
 
 # Set DJANGO_SETTINGS_MODULE environment variable
 os.environ['DJANGO_SETTINGS_MODULE'] = 'trebackend.settings'
