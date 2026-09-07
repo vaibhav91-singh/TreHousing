@@ -49,7 +49,7 @@ const JobPage = () => {
       } catch (err) {
         if (!isMounted) return;
         console.error("Error fetching data:", err);
-        setError("Unable to connect to backend server / database");
+        setError("Failed to connect with server");
       } finally {
         if (isMounted) setLoading(false);
       }

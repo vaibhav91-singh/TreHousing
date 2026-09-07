@@ -20,7 +20,7 @@ export default function ActiveRecruitmentSection() {
       } catch (err) {
         if (!isMounted) return;
         console.error("Jobs Fetch Error:", err);
-        setError("Unable to load active recruitments from server.");
+        setError("Failed to connect with server");
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -39,6 +39,26 @@ export default function ActiveRecruitmentSection() {
 
       {loading ? (
         <SkeletonCard count={3} />
+      ) : error ? (
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '1.25rem', 
+          color: '#ef4444', 
+          backgroundColor: 'rgba(239, 68, 68, 0.1)', 
+          border: '1px solid rgba(239, 68, 68, 0.25)', 
+          borderRadius: '12px',
+          maxWidth: '500px',
+          margin: '1rem auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '0.75rem',
+          fontSize: '0.95rem',
+          fontWeight: '500'
+        }}>
+          <i className="bi bi-exclamation-triangle-fill" style={{ fontSize: '1.2rem' }}></i>
+          <span>{error}</span>
+        </div>
       ) : jobs.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--hp-text-muted)' }}>No active recruitments at the moment.</div>
       ) : (
