@@ -5,51 +5,12 @@ import JobCard from './JobCard';
 import SkeletonCard from '../common/SkeletonCard.jsx';
 import './MainPage.css';
 
-const DEFAULT_GOVT_JOBS = [
-  {
-    id: 'bpsc-tre-4',
-    title: 'BPSC TRE 4.0 Teacher Recruitment 2026',
-    description: 'Official notification for Primary, Middle, and Secondary teacher vacancies in Bihar.',
-    last_date: '2026-10-15',
-    vacancies: '87,000+',
-    job_type: 'GOVT'
-  },
-  {
-    id: 'upsc-cse-2026',
-    title: 'UPSC Civil Services Exam (IAS/IPS) 2026',
-    description: 'Union Public Service Commission civil services preliminary examination opening.',
-    last_date: '2026-09-30',
-    vacancies: '1,056',
-    job_type: 'GOVT'
-  },
-  {
-    id: 'ssc-cgl-2026',
-    title: 'SSC CGL Tier-1 Examination 2026',
-    description: 'Staff Selection Commission combined graduate level exam for Group B & C posts.',
-    last_date: '2026-10-05',
-    vacancies: '17,727',
-    job_type: 'GOVT'
-  }
-];
-
-const DEFAULT_UPDATES = [
-  {
-    title: 'BPSC TRE 3.0 Final Answer Key & Scorecard Released',
-    description: 'Check official subject-wise cut-off marks and download answer keys.',
-    link: '/answer-keys'
-  },
-  {
-    title: 'UPSC CSE 2026 Detailed Notification Published',
-    description: 'Complete syllabus and online application submission guidelines.',
-    link: '/syllabus'
-  }
-];
-
 const JobPage = () => {
   const [govtJobs, setGovtJobs] = useState([]);
   const [privateJobs, setPrivateJobs] = useState([]);
   const [updates, setUpdates] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -72,10 +33,6 @@ const JobPage = () => {
           }
         }
 
-        if (jobsData.length === 0) {
-          jobsData = DEFAULT_GOVT_JOBS;
-        }
-
         let updatesData = [];
         try {
           const res = await axios.get('/api/recent-updates/');
@@ -84,19 +41,15 @@ const JobPage = () => {
           // ignore updates error
         }
 
-        if (updatesData.length === 0) {
-          updatesData = DEFAULT_UPDATES;
-        }
-
         if (!isMounted) return;
         setGovtJobs(jobsData.filter(job => !job.job_type || job.job_type === 'GOVT'));
         setPrivateJobs(jobsData.filter(job => job.job_type === 'PRIVATE'));
         setUpdates(updatesData);
+        setError(null);
       } catch (err) {
         if (!isMounted) return;
-        console.warn("Error fetching job data (using fallbacks):", err);
-        setGovtJobs(DEFAULT_GOVT_JOBS);
-        setUpdates(DEFAULT_UPDATES);
+        console.error("Error fetching data:", err);
+        setError("Unable to connect to backend server / database");
       } finally {
         if (isMounted) setLoading(false);
       }

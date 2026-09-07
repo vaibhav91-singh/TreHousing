@@ -3,36 +3,10 @@ import axios from 'axios';
 import { extractArrayData } from '../../apiConfig.js';
 import SkeletonCard from '../common/SkeletonCard.jsx';
 
-const DEFAULT_JOBS = [
-  {
-    id: 'bpsc-tre-4',
-    title: 'BPSC TRE 4.0 Teacher Recruitment 2026',
-    description: 'Official notification for Primary, Middle, and Secondary teacher vacancies in Bihar.',
-    last_date: '2026-10-15',
-    vacancies: '87,000+',
-    job_type: 'GOVT'
-  },
-  {
-    id: 'upsc-cse-2026',
-    title: 'UPSC Civil Services Exam (IAS/IPS) 2026',
-    description: 'Union Public Service Commission civil services preliminary examination opening.',
-    last_date: '2026-09-30',
-    vacancies: '1,056',
-    job_type: 'GOVT'
-  },
-  {
-    id: 'ssc-cgl-2026',
-    title: 'SSC CGL Tier-1 Examination 2026',
-    description: 'Staff Selection Commission combined graduate level exam for Group B & C posts.',
-    last_date: '2026-10-05',
-    vacancies: '17,727',
-    job_type: 'GOVT'
-  }
-];
-
 export default function ActiveRecruitmentSection() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -41,15 +15,12 @@ export default function ActiveRecruitmentSection() {
         const response = await axios.get('/api/job/');
         if (!isMounted) return;
         const list = extractArrayData(response.data);
-        if (list && list.length > 0) {
-          setJobs(list.slice(0, 3));
-        } else {
-          setJobs(DEFAULT_JOBS);
-        }
+        setJobs(list.slice(0, 3));
+        setError(null);
       } catch (err) {
         if (!isMounted) return;
-        console.warn("Jobs Fetch Error (using fallback openings):", err);
-        setJobs(DEFAULT_JOBS);
+        console.error("Jobs Fetch Error:", err);
+        setError("Unable to load active recruitments from server.");
       } finally {
         if (isMounted) setLoading(false);
       }
