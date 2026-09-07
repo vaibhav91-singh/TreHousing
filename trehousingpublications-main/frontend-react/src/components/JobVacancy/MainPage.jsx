@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { extractArrayData } from '../../apiConfig.js';
 import JobCard from './JobCard';
 import SkeletonCard from '../common/SkeletonCard.jsx';
 import './MainPage.css';
