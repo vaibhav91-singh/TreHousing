@@ -1,6 +1,5 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-
 const DEFAULT_SEO = {
   title: 'TRE Housing Publications - BPSC TRE Exam Notes, PYQs & Test Series',
   description: 'Free study materials, BPSC TRE previous year papers, syllabus PDFs, job vacancy updates, and interactive mock test series for teaching recruitment exams.',
