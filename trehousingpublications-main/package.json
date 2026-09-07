@@ -5,8 +5,9 @@
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
+    "build": "npm --prefix frontend-react run build",
+    "dev": "npm --prefix frontend-react run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
-    
   }, 
   "author": "",
   "license": "ISC"

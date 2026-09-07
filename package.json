@@ -1,0 +1,9 @@
+{
+  "name": "trehousingpublications-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix trehousingpublications-main/frontend-react run build",
+    "dev": "npm --prefix trehousingpublications-main/frontend-react run dev"
+  }
+}
