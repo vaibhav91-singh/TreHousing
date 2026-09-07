@@ -145,8 +145,7 @@ class Quiz(models.Model):
                     data = data.get('questions') or data.get('mcqs') or data.get('data') or data.get('items') or [data]
                 
                 if isinstance(data, list):
-                    questions_to_create = []
-                    choices_data_map = []
+                    parsed_questions = []
                     
                     for q_item in data:
                         if not isinstance(q_item, dict):
@@ -163,7 +162,7 @@ class Quiz(models.Model):
                         if not q_text or not str(q_text).strip():
                             continue
                         
-                        questions_to_create.append(Question(quiz=self, text=str(q_text).strip()))
+                        q_text = str(q_text).strip()
                         
                         # Extract choices / options for this question
                         raw_choices = q_item.get('choices') or q_item.get('options') or q_item.get('answers')
@@ -215,30 +214,23 @@ class Quiz(models.Model):
                                     is_corr = (correct_marker == letter) or (correct_marker == str(idx)) or (correct_marker == str(opt_val).strip().upper())
                                     q_choices_list.append((str(opt_val).strip(), is_corr))
                         
-                        choices_data_map.append(q_choices_list)
+                        parsed_questions.append((q_text, q_choices_list))
 
-                    if questions_to_create:
+                    if parsed_questions:
                         with transaction.atomic():
-                            created_questions = Question.objects.bulk_create(questions_to_create)
-                            
-                            # On some production database engines (like MySQL or older Postgres setups),
-                            # bulk_create does not populate .id on in-memory instances. Re-fetch if needed:
-                            if created_questions and not created_questions[0].pk:
-                                created_questions = list(Question.objects.filter(quiz=self).order_by('id'))[-len(questions_to_create):]
-
                             choices_to_create = []
-                            for question_obj, choices_list in zip(created_questions, choices_data_map):
+                            for q_text, choices_list in parsed_questions:
+                                q_obj = Question.objects.create(quiz=self, text=q_text)
                                 for c_text, is_corr in choices_list:
                                     choices_to_create.append(
                                         Choice(
-                                            question_id=question_obj.id,
+                                            question_id=q_obj.id,
                                             text=c_text,
                                             is_correct=is_corr
                                         )
                                     )
                             if choices_to_create:
                                 Choice.objects.bulk_create(choices_to_create, batch_size=1000)
-
 
                 # Clear the field after successful processing
                 Quiz.objects.filter(id=self.id).update(bulk_upload_json="")

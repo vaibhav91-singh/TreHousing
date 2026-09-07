@@ -137,45 +137,106 @@ class QuizAdmin(admin.ModelAdmin):
             if form.is_valid():
                 raw_data = form.cleaned_data['json_file_or_text']
                 try:
-                    questions_data = json.loads(raw_data)
+                    raw_json = raw_data.strip()
+                    data = json.loads(raw_json)
+                    if isinstance(data, dict):
+                        data = data.get('questions') or data.get('mcqs') or data.get('data') or data.get('items') or [data]
+
                     q_count = 0
                     c_count = 0
 
-                    with transaction.atomic():
-                        questions_to_create = []
-                        choices_data_map = []
+                    if isinstance(data, list):
+                        parsed_questions = []
 
-                        for q_item in questions_data:
-                            question_text = q_item.get('text') or q_item.get('question_text') or q_item.get('question')
-                            if question_text:
-                                questions_to_create.append(Question(quiz=quiz, text=question_text))
-                                choices_data_map.append(q_item.get('choices', []))
+                        for q_item in data:
+                            if not isinstance(q_item, dict):
+                                continue
 
-                        if questions_to_create:
-                            created_questions = Question.objects.bulk_create(questions_to_create)
-                            q_count = len(created_questions)
+                            q_text = (
+                                q_item.get('text') or 
+                                q_item.get('question_text') or 
+                                q_item.get('question') or 
+                                q_item.get('title') or 
+                                q_item.get('q')
+                            )
+                            if not q_text or not str(q_text).strip():
+                                continue
 
-                            choices_to_create = []
-                            for question_obj, choices in zip(created_questions, choices_data_map):
-                                for c_item in choices:
-                                    c_text = c_item.get('text') or c_item.get('option')
-                                    if c_text:
+                            q_text = str(q_text).strip()
+
+                            raw_choices = q_item.get('choices') or q_item.get('options') or q_item.get('answers')
+                            q_choices_list = []
+
+                            if isinstance(raw_choices, list) and len(raw_choices) > 0:
+                                answer_val = q_item.get('answer') or q_item.get('correct_answer') or q_item.get('correct_option') or q_item.get('correct')
+                                for idx, c_item in enumerate(raw_choices):
+                                    if isinstance(c_item, dict):
+                                        c_text = c_item.get('text') or c_item.get('option') or c_item.get('choice') or c_item.get('val')
+                                        is_corr = bool(
+                                            c_item.get('is_correct') or 
+                                            c_item.get('correct') or 
+                                            c_item.get('isCorrect') or 
+                                            c_item.get('right')
+                                        )
+                                    else:
+                                        c_text = str(c_item)
+                                        is_corr = False
+                                        if answer_val is not None:
+                                            if str(answer_val).strip() == c_text.strip():
+                                                is_corr = True
+                                            elif isinstance(answer_val, int) and answer_val == idx:
+                                                is_corr = True
+                                            elif str(answer_val).strip().upper() == chr(65 + idx):
+                                                is_corr = True
+
+                                    if c_text and str(c_text).strip():
+                                        q_choices_list.append((str(c_text).strip(), is_corr))
+
+                            elif any(k in q_item for k in ['option_a', 'optionA', 'a', 'A']):
+                                opt_keys = [
+                                    ('option_a', 'optionA', 'a', 'A'),
+                                    ('option_b', 'optionB', 'b', 'B'),
+                                    ('option_c', 'optionC', 'c', 'C'),
+                                    ('option_d', 'optionD', 'd', 'D'),
+                                ]
+                                correct_marker = str(q_item.get('correct') or q_item.get('correct_option') or q_item.get('answer') or '').strip().upper()
+                                for idx, key_tuple in enumerate(opt_keys):
+                                    opt_val = None
+                                    for k in key_tuple:
+                                        if k in q_item:
+                                            opt_val = q_item[k]
+                                            break
+                                    if opt_val and str(opt_val).strip():
+                                        letter = chr(65 + idx)
+                                        is_corr = (correct_marker == letter) or (correct_marker == str(idx)) or (correct_marker == str(opt_val).strip().upper())
+                                        q_choices_list.append((str(opt_val).strip(), is_corr))
+
+                            parsed_questions.append((q_text, q_choices_list))
+
+                        if parsed_questions:
+                            with transaction.atomic():
+                                choices_to_create = []
+                                for q_text, choices_list in parsed_questions:
+                                    q_obj = Question.objects.create(quiz=quiz, text=q_text)
+                                    q_count += 1
+                                    for c_text, is_corr in choices_list:
                                         choices_to_create.append(
                                             Choice(
-                                                question=question_obj,
+                                                question_id=q_obj.id,
                                                 text=c_text,
-                                                is_correct=bool(c_item.get('is_correct', False) or c_item.get('correct', False))
+                                                is_correct=is_corr
                                             )
                                         )
 
-                            if choices_to_create:
-                                Choice.objects.bulk_create(choices_to_create, batch_size=500)
-                                c_count = len(choices_to_create)
+                                if choices_to_create:
+                                    Choice.objects.bulk_create(choices_to_create, batch_size=1000)
+                                    c_count = len(choices_to_create)
 
                     messages.success(request, f"Successfully added {q_count} questions with {c_count} choices!")
                     return redirect(f'/admin/core/quiz/{quiz.id}/change/')
                 except Exception as e:
                     messages.error(request, f"JSON parsing error: {e}")
+
         else:
             form = QuizJSONUploadForm()
 
