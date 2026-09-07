@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import logo from '../../assets/logo.jpeg';
+import logo from '../../assets/trelogo.jpg';
 import ThemeToggle from '../ThemeToggle';
 import './HeaderSec.css';
 
