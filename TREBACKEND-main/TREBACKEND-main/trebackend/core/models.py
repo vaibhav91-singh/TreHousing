@@ -220,18 +220,25 @@ class Quiz(models.Model):
                     if questions_to_create:
                         with transaction.atomic():
                             created_questions = Question.objects.bulk_create(questions_to_create)
+                            
+                            # On some production database engines (like MySQL or older Postgres setups),
+                            # bulk_create does not populate .id on in-memory instances. Re-fetch if needed:
+                            if created_questions and not created_questions[0].pk:
+                                created_questions = list(Question.objects.filter(quiz=self).order_by('id'))[-len(questions_to_create):]
+
                             choices_to_create = []
                             for question_obj, choices_list in zip(created_questions, choices_data_map):
                                 for c_text, is_corr in choices_list:
                                     choices_to_create.append(
                                         Choice(
-                                            question=question_obj,
+                                            question_id=question_obj.id,
                                             text=c_text,
                                             is_correct=is_corr
                                         )
                                     )
                             if choices_to_create:
                                 Choice.objects.bulk_create(choices_to_create, batch_size=1000)
+
 
                 # Clear the field after successful processing
                 Quiz.objects.filter(id=self.id).update(bulk_upload_json="")
