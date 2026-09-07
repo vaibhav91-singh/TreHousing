@@ -29,40 +29,53 @@ export default function PastPapersAndMocks() {
     }
   };
 
-  if (loading) return <div className="loading-spinner"></div>;
+  if (loading) {
+    return (
+      <div className="past-papers-container">
+        <div className="papers-loading">
+          <div className="spinner"></div>
+          <span>Loading past year papers...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="past-papers-container box">
-      <h3 className="table-head">Past Year Papers, Answer Keys & Mocks</h3>
-      <hr className="horiz-line" />
+    <div className="past-papers-container">
+      <div className="section-header-wrap">
+        <h3 className="table-head">Past Year Papers, Answer Keys & Mocks</h3>
+        <div className="horiz-line" />
+      </div>
       
       {(!papers || papers.length === 0) ? (
-        <div style={{ padding: '30px', textAlign: 'center', color: '#666', fontStyle: 'italic' }}>
-          No past papers, answer keys, or mock tests have been uploaded for this subject yet. Please check back later.
+        <div className="past-papers-empty">
+          <div className="empty-icon">📂</div>
+          <h4>No Past Papers Uploaded Yet</h4>
+          <p>Past papers, answer keys, and mock tests for this subject will be updated soon.</p>
         </div>
       ) : (
         <div className="papers-grid">
           {papers.map((paper, index) => (
-            <div key={index} className="paper-card">
+            <div key={index} className="paper-card pyq-cardDesign">
               <div className="paper-card-header">
-                <span className="paper-year-badge">{paper.year}</span>
+                <span className="paper-year-badge">Exam Year: {paper.year}</span>
                 <h4 className="paper-title">{paper.title}</h4>
               </div>
               
               <div className="paper-actions">
                 <a href={paper.paper_link} target="_blank" rel="noopener noreferrer" className="btn-past-action btn-view-paper">
-                  📄 View Paper
+                  📄 View Question Paper
                 </a>
                 
                 {paper.answer_key_link && (
                   <a href={paper.answer_key_link} target="_blank" rel="noopener noreferrer" className="btn-past-action btn-answer-key">
-                    ✅ Answer Key
+                    ✅ Official Answer Key
                   </a>
                 )}
                 
                 {paper.linked_mock_title && (
                   <button onClick={() => navigate(`/testseries?quiz_title=${encodeURIComponent(paper.linked_mock_title)}`)} className="btn-past-action btn-start-mock">
-                    🎯 Start Mock
+                    🎯 Start Practice Mock
                   </button>
                 )}
               </div>
@@ -73,3 +86,4 @@ export default function PastPapersAndMocks() {
     </div>
   );
 }
+

@@ -44,32 +44,38 @@ export default function RedTable() {
   if (!examPatterns.length) return null;
 
   return (
-    <div className="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>Subject</th>
-            <th>Total Questions</th>
-            <th>Total Marks</th>
-            <th>Duration</th>
-          </tr>
-        </thead>
-        <tbody>
-          {examPatterns.map((pattern, index) => {
-            const parsed = parsePattern(pattern);
-            return parsed.map((item, i) => (
-              <tr key={`${index}-${i}`}>
-                {i === 0 && <td rowSpan={parsed.length}>{pattern.topics}</td>}
-                <td>{item.sub_topic}</td>
-                <td>{item.no_of_questions}</td>
-                <td>{item.maximum_marks}</td>
-                {i === 0 && <td rowSpan={parsed.length}>{pattern.duration}hr</td>}
-              </tr>
-            ));
-          })}
-        </tbody>
-      </table>
+    <div className="table-container-wrap">
+      <div className="section-header-wrap">
+        <h3 className="table-head">Exam Pattern & Weightage Breakdown</h3>
+        <div className="horiz-line" />
+      </div>
+      <div className="table-responsive-box">
+        <table className="exam-pattern-table">
+          <thead>
+            <tr>
+              <th>Topic / Section</th>
+              <th>Subject / Sub-Topic</th>
+              <th>Total Questions</th>
+              <th>Total Marks</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {examPatterns.map((pattern, index) => {
+              const parsed = parsePattern(pattern);
+              return parsed.map((item, i) => (
+                <tr key={`${index}-${i}`}>
+                  {i === 0 && <td rowSpan={parsed.length} className="topic-cell">{pattern.topics}</td>}
+                  <td>{item.sub_topic}</td>
+                  <td>{item.no_of_questions}</td>
+                  <td>{item.maximum_marks}</td>
+                  {i === 0 && <td rowSpan={parsed.length} className="duration-cell">{pattern.duration} hr</td>}
+                </tr>
+              ));
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
-}
+}

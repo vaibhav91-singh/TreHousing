@@ -89,26 +89,28 @@ export default function SyllabusPdf() {
   };
 
   return (
-    <div className="box syllabus-pdf-container">
+    <div className="syllabus-pdf-container">
       {pdfContent.length > 0 ? (
         <>
-          <h3 className="table-head">Syllabus Documents</h3>
-          <hr className="horiz-line" />
+          <div className="section-header-wrap">
+            <h3 className="table-head">Syllabus PDF Documents</h3>
+            <div className="horiz-line" />
+          </div>
           <div className="syllabus-grid">
             {pdfContent.map((pdf, index) => (
-              <div key={index} className="syllabus-card">
+              <div key={index} className="syllabus-card pyq-cardDesign">
                 <div className="syllabus-card-header">
-                  <span className="syllabus-badge">PDF Document</span>
+                  <span className="syllabus-badge">📄 Official PDF</span>
                   <h4 className="syllabus-title">{pdf.filename}</h4>
                 </div>
                 
                 <div className="syllabus-actions">
                   <a href={pdf.link} target="_blank" rel="noopener noreferrer" className="btn-syllabus-action btn-view-syllabus">
-                    👁️ View Syllabus
+                    👁️ View Syllabus PDF
                   </a>
                   
                   <a href={pdf.link} download target="_blank" rel="noopener noreferrer" className="btn-syllabus-action btn-download-syllabus">
-                    📥 Download Syllabus
+                    📥 Download PDF
                   </a>
                 </div>
               </div>
@@ -116,20 +118,29 @@ export default function SyllabusPdf() {
           </div>
         </>
       ) : (
-        <div>
-          {error ? (
-            <p style={{ color: 'red', textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>
-              {error}
-            </p>
-          ) : (
-            loading && (
-              <div className="spinner-container">
-                <div className="spinner"></div>
-              </div>
-            )
-          )}
+        <div className="syllabus-pdf-status-wrap">
+          {loading ? (
+            <div className="spinner-container">
+              <div className="spinner"></div>
+              <span>Fetching syllabus documents...</span>
+            </div>
+          ) : error ? (
+            <div className="syllabus-empty-card">
+              <div className="syllabus-empty-icon">📄</div>
+              <h4 className="syllabus-empty-title">
+                {error === "Missing course_id or subject_id in URL" 
+                  ? "Select a Course & Subject" 
+                  : "No Syllabus PDF Available"}
+              </h4>
+              <p className="syllabus-empty-text">
+                {error === "Missing course_id or subject_id in URL"
+                  ? "Use the Syllabus navigation menu at the top to choose a specific subject and view its downloadable syllabus PDF."
+                  : error}
+              </p>
+            </div>
+          ) : null}
         </div>
       )}
     </div>
   );
-}
+}

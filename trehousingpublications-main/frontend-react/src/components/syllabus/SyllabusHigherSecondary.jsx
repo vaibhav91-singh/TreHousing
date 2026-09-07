@@ -41,25 +41,31 @@ export default function SyllabusHigherSecondary() {
   if (!syllabusData) return null;
 
   return (
-    <div className="container">
-      <div className="header">
-        <h4>{syllabusData.title}</h4>
+    <div className="syllabus-detail-card">
+      <div className="syllabus-detail-header">
+        <h4 className="syllabus-detail-title">{syllabusData.title}</h4>
       </div>
-      <div className="content">
-        <ul>
+      <div className="syllabus-detail-content">
+        <ul className="syllabus-bullet-list">
           {parsedDescription.map((point, index) => (
-            <li key={index}>{point}</li>
+            <li key={index} className="syllabus-bullet-item">
+              <span className="bullet-dot">•</span>
+              <span className="bullet-text">{point}</span>
+            </li>
           ))}
           {syllabusData.reference_links && (
-            <li>
-              Read more at:
-              <a href={syllabusData.reference_links} target="_blank" rel="noopener noreferrer">
-                {syllabusData.reference_links}
-              </a>
+            <li className="syllabus-bullet-item ref-link-item">
+              <span className="bullet-dot">🔗</span>
+              <span className="bullet-text">
+                Read official reference:{" "}
+                <a href={syllabusData.reference_links} target="_blank" rel="noopener noreferrer">
+                  {syllabusData.reference_links}
+                </a>
+              </span>
             </li>
           )}
         </ul>
       </div>
     </div>
   );
-}
+}
