@@ -8,14 +8,13 @@ cwd = os.path.dirname(os.path.abspath(__file__))
 if cwd not in sys.path:
     sys.path.insert(0, cwd)
 
-# Auto-detect virtualenv site-packages path (supports 3.10, 3.9, etc.)
+# Auto-detect virtualenv site-packages path
 venv_base = "/home1/agratas1/virtualenv/TreHousing-main/TREBACKEND-main/TREBACKEND-main/trebackend"
 site_packages_pattern = os.path.join(venv_base, "*", "lib", "python*", "site-packages")
 for sp in glob.glob(site_packages_pattern):
     if sp not in sys.path:
         sys.path.insert(0, sp)
 
-# Set DJANGO_SETTINGS_MODULE environment variable
 os.environ['DJANGO_SETTINGS_MODULE'] = 'trebackend.settings'
 
 try:
@@ -29,4 +28,5 @@ except Exception:
         response_headers = [('Content-Type', 'text/html; charset=utf-8'), ('Content-Length', str(len(output)))]
         start_response(status, response_headers)
         return [output]
+
 
