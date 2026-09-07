@@ -175,10 +175,29 @@ const QuizWindow = ({ subject, onBack }) => {
   if (!quizDetails) return <div className="quiz-container">Test configuration not found.</div>;
 
   const questions = quizDetails.questions || [];
-  const currentQuestion = questions[currentQuestionIdx];
+  
+  if (questions.length === 0) {
+    return (
+      <div className="exam-window-wrapper" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', padding: '20px' }}>
+        <div style={{ textAlign: 'center', background: 'var(--bg-white)', padding: '40px', borderRadius: '16px', border: '1px solid var(--border-color)', maxWidth: '500px' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '15px' }}>📝</div>
+          <h3 style={{ fontSize: '1.4rem', color: 'var(--text-heading)', marginBottom: '10px' }}>No Questions Found</h3>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '25px', fontSize: '0.95rem' }}>
+            This test currently does not have any questions. Please check back later or select another test.
+          </p>
+          <button onClick={onBack} className="btn-back-series" style={{ padding: '10px 24px', background: 'var(--primary)', color: '#0F172A', fontWeight: '700', borderRadius: '8px', border: 'none', cursor: 'pointer' }}>
+            ← Back to Test Series
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const currentQuestion = questions[currentQuestionIdx] || questions[0];
 
   // Helper to determine question palette button status
   const getQuestionStatus = (q) => {
+    if (!q || !q.id) return 'unvisited';
     const qId = q.id;
     const isAnswered = userAnswers[qId] !== undefined;
     const isReview = !!reviewFlags[qId];
@@ -190,6 +209,7 @@ const QuizWindow = ({ subject, onBack }) => {
     if (isVisited) return 'unanswered';
     return 'unvisited';
   };
+
 
   // Render Graphical Result Analytics Dashboard
   if (completed) {
@@ -394,28 +414,35 @@ const QuizWindow = ({ subject, onBack }) => {
         <div className="question-content-box">
           <div className="question-meta-bar">
             <span className="question-num-tag">Question {currentQuestionIdx + 1} of {questions.length}</span>
-            <button onClick={handleToggleReview} className={`btn-review-flag ${reviewFlags[currentQuestion.id] ? 'active' : ''}`}>
-              {reviewFlags[currentQuestion.id] ? '🚩 Marked for Review' : '🏳️ Mark for Review'}
+            <button onClick={handleToggleReview} className={`btn-review-flag ${currentQuestion && reviewFlags[currentQuestion.id] ? 'active' : ''}`}>
+              {currentQuestion && reviewFlags[currentQuestion.id] ? '🚩 Marked for Review' : '🏳️ Mark for Review'}
             </button>
           </div>
 
-          <h3 className="question-prompt">{currentQuestion.text}</h3>
+          <h3 className="question-prompt">{currentQuestion?.text || "Question Text Unavailable"}</h3>
 
           <div className="choices-vertical-group">
-            {currentQuestion.choices?.map((choice) => {
-              const isSelected = userAnswers[currentQuestion.id] === choice.id;
-              return (
-                <button
-                  key={choice.id}
-                  onClick={() => handleOptionSelect(choice.id)}
-                  className={`exam-choice-card ${isSelected ? 'selected' : ''}`}
-                >
-                  <span className="choice-indicator">{isSelected ? '●' : '○'}</span>
-                  <span className="choice-label-text">{choice.text}</span>
-                </button>
-              );
-            })}
+            {(!currentQuestion?.choices || currentQuestion.choices.length === 0) ? (
+              <div style={{ padding: '15px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                No option choices found for this question.
+              </div>
+            ) : (
+              currentQuestion.choices.map((choice) => {
+                const isSelected = userAnswers[currentQuestion.id] === choice.id;
+                return (
+                  <button
+                    key={choice.id}
+                    onClick={() => handleOptionSelect(choice.id)}
+                    className={`exam-choice-card ${isSelected ? 'selected' : ''}`}
+                  >
+                    <span className="choice-indicator">{isSelected ? '●' : '○'}</span>
+                    <span className="choice-label-text">{choice.text}</span>
+                  </button>
+                );
+              })
+            )}
           </div>
+
         </div>
 
         {/* Action Footer */}
