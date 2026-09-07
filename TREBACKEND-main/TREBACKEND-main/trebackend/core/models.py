@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.core.validators import FileExtensionValidator
 from django.core.exceptions import ValidationError
 import os
@@ -140,22 +140,32 @@ class Quiz(models.Model):
             import json
             try:
                 data = json.loads(self.bulk_upload_json)
-                for q_item in data:
-                    q_text = q_item.get('text') or q_item.get('question_text') or q_item.get('question')
-                    if q_text:
-                        question = Question.objects.create(quiz=self, text=q_text)
-                        choices = q_item.get('choices', [])
-                        choices_objs = [
-                            Choice(
-                                question=question,
-                                text=c_item.get('text') or c_item.get('option'),
-                                is_correct=bool(c_item.get('is_correct', False) or c_item.get('correct', False))
-                            )
-                            for c_item in choices
-                            if (c_item.get('text') or c_item.get('option'))
-                        ]
-                        if choices_objs:
-                            Choice.objects.bulk_create(choices_objs)
+                with transaction.atomic():
+                    questions_to_create = []
+                    choices_data_map = []
+                    for q_item in data:
+                        q_text = q_item.get('text') or q_item.get('question_text') or q_item.get('question')
+                        if q_text:
+                            questions_to_create.append(Question(quiz=self, text=q_text))
+                            choices_data_map.append(q_item.get('choices', []))
+
+                    if questions_to_create:
+                        created_questions = Question.objects.bulk_create(questions_to_create)
+                        choices_to_create = []
+                        for question_obj, choices in zip(created_questions, choices_data_map):
+                            for c_item in choices:
+                                c_text = c_item.get('text') or c_item.get('option')
+                                if c_text:
+                                    choices_to_create.append(
+                                        Choice(
+                                            question=question_obj,
+                                            text=c_text,
+                                            is_correct=bool(c_item.get('is_correct', False) or c_item.get('correct', False))
+                                        )
+                                    )
+                        if choices_to_create:
+                            Choice.objects.bulk_create(choices_to_create, batch_size=500)
+
                 # Clear the field after successful upload
                 Quiz.objects.filter(id=self.id).update(bulk_upload_json="")
             except Exception as e:
@@ -212,7 +222,7 @@ class JobVacancy(models.Model):
     apply_date = models.DateField(db_index=True)
     last_date = models.DateField()
     official_website = models.URLField()
-    status = models.BooleanField(default=True, db_index=True) # Active/Inactive
+    status = models.BooleanField(default=True, db_index=True)
     apply_link= models.URLField()
     
     category_badge = models.CharField(max_length=50, blank=True, null=True, help_text="e.g., BPSC, SSC, UPSC")
@@ -316,7 +326,8 @@ class TopicName(models.Model):
                             correct_option=correct_opt
                         ))
                 if questions_objs:
-                    TopicQuestion.objects.bulk_create(questions_objs)
+                    with transaction.atomic():
+                        TopicQuestion.objects.bulk_create(questions_objs, batch_size=500)
                 # Clear the field after successful upload
                 TopicName.objects.filter(id=self.id).update(bulk_upload_json="")
             except Exception as e:

@@ -16,7 +16,7 @@ if (!fs.existsSync(distDir)) {
 }
 
 // Files to copy directly to root
-const rootFiles = ['index.html', 'favicon.svg', 'icons.svg', 'robots.txt', 'sitemap.xml', '.htaccess', 'trelogo.jpg'];
+const rootFiles = ['index.html', 'favicon.svg', 'icons.svg', 'robots.txt', 'sitemap.xml', '.htaccess', 'trelogo.png'];
 
 rootFiles.forEach(file => {
   const srcPath = path.join(distDir, file);

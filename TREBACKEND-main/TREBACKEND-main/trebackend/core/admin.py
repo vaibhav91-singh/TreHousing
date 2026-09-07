@@ -1,6 +1,12 @@
+import json
 from django.contrib import admin
 from django import forms
-from .models import Course, Subject, Exam_Pattern, Subject_Content, PYQ, Syllabus, Sub_Courses,SolvedPaper
+from django.urls import path
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db import transaction
+
+from .models import Course, Subject, Exam_Pattern, Subject_Content, PYQ, Syllabus, Sub_Courses, SolvedPaper
 from .models import Quiz, Question, Choice
 from .models import JobVacancy, RecentUpdate
 from .models import TopicExam, TopicSubject, TopicName, TopicQuestion
@@ -34,7 +40,7 @@ class ExamPatternInline(admin.TabularInline):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ('title',)
     search_fields = ('title',)
-    inlines = [Sub_CoursesInline, SubjectInline]  
+    inlines = [Sub_CoursesInline, SubjectInline]
     ordering = ['id']
 
 @admin.register(Subject)
@@ -55,29 +61,27 @@ class ExamPatternAdminForm(forms.ModelForm):
     maximum_marks = forms.JSONField(widget=forms.Textarea, required=False)
 
 # ==========================================================================
-# NEW: QUIZ SYSTEM ADMIN INTEGRATION (WITH INLINES)
+# QUIZ SYSTEM ADMIN INTEGRATION (WITH INLINES & TIMER DURATION)
 # ==========================================================================
 
 class ChoiceInline(admin.TabularInline):
     model = Choice
-    extra = 4  # Default standard 4 options ready-made milenge form mein
-    max_num = 10 # Aap maximum 10 options tak add kar sakte hain
+    extra = 4  
+    max_num = 10 
 
 class QuestionInline(admin.TabularInline):
     model = Question
-    extra = 1  # Quiz page par hi question add karne ka option milega
-
-
+    extra = 1  
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('text', 'quiz')
     list_filter = ('quiz__subject', 'quiz')
     search_fields = ('text', 'quiz__title')
-    inlines = [ChoiceInline]  # Question kholte hi uski saari choices niche dikhengi
+    inlines = [ChoiceInline]  
 
 #==============================================================
-#JOB VACANCY
+# JOB VACANCY
 #==============================================================
 @admin.register(JobVacancy)
 class JobVacancyAdmin(admin.ModelAdmin):
@@ -87,33 +91,24 @@ class JobVacancyAdmin(admin.ModelAdmin):
     list_editable = ('status',)
 
 # Solved Paper Section
-
-
 @admin.register(SolvedPaper)
 class SolvedPaperAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'year','paper_link') # Admin table mein ye dikhega
-    search_fields = ('title', 'subject__title') # Title aur Subject se search kar sakoge
-    list_filter = ('subject', 'year') # Filter karne ke liye asaan hoga
+    list_display = ('title', 'subject', 'year','paper_link') 
+    search_fields = ('title', 'subject__title') 
+    list_filter = ('subject', 'year') 
 
 #==============================================================
-# Part 2 of Code Upload Bulk MCQ Question
+# Bulk MCQ Question Upload & Quiz Admin
 #==============================================================
-import json
-from django.urls import path
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django import forms
-
-# 1. Form for JSON upload inside Quiz admin
 class QuizJSONUploadForm(forms.Form):
     json_file_or_text = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 10, 'cols': 80, 'placeholder': 'Paste your JSON array of questions here...'}),
         label="Paste Questions JSON"
     )
 
-# 2. Update your QuizAdmin to include the bul   k upload URL & view
 @admin.register(Quiz)
 class QuizAdmin(admin.ModelAdmin):
+    # 'duration_minutes' added for test timer control
     list_display = ('title', 'subject', 'category', 'duration_minutes', 'display_questions_limit') 
     fields = ('subject', 'category', 'title', 'description', 'duration_minutes', 'display_questions_limit', 'bulk_upload_json') 
     list_filter = ('subject', 'category') 
@@ -125,6 +120,7 @@ class QuizAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
+            path('<int:quiz_id>/bulk-count-questions/', self.admin_site.admin_view(self.quiz_bulk_upload_view), name='quiz_bulk_upload_count'),
             path('<int:quiz_id>/bulk-upload-questions/', self.admin_site.admin_view(self.quiz_bulk_upload_view), name='quiz_bulk_upload'),
         ]
         return custom_urls + urls
@@ -145,21 +141,36 @@ class QuizAdmin(admin.ModelAdmin):
                     q_count = 0
                     c_count = 0
 
-                    for q_item in questions_data:
-                        # Question create karna
-                        question_text = q_item.get('text') or q_item.get('question_text')
-                        question = Question.objects.create(quiz=quiz, text=question_text)
-                        q_count += 1
+                    with transaction.atomic():
+                        questions_to_create = []
+                        choices_data_map = []
 
-                        # Choices create karna
-                        choices = q_item.get('choices', [])
-                        for c_item in choices:
-                            Choice.objects.create(
-                                question=question,
-                                text=c_item.get('text'),
-                                is_correct=c_item.get('is_correct', False)
-                            )
-                            c_count += 1
+                        for q_item in questions_data:
+                            question_text = q_item.get('text') or q_item.get('question_text') or q_item.get('question')
+                            if question_text:
+                                questions_to_create.append(Question(quiz=quiz, text=question_text))
+                                choices_data_map.append(q_item.get('choices', []))
+
+                        if questions_to_create:
+                            created_questions = Question.objects.bulk_create(questions_to_create)
+                            q_count = len(created_questions)
+
+                            choices_to_create = []
+                            for question_obj, choices in zip(created_questions, choices_data_map):
+                                for c_item in choices:
+                                    c_text = c_item.get('text') or c_item.get('option')
+                                    if c_text:
+                                        choices_to_create.append(
+                                            Choice(
+                                                question=question_obj,
+                                                text=c_text,
+                                                is_correct=bool(c_item.get('is_correct', False) or c_item.get('correct', False))
+                                            )
+                                        )
+
+                            if choices_to_create:
+                                Choice.objects.bulk_create(choices_to_create, batch_size=500)
+                                c_count = len(choices_to_create)
 
                     messages.success(request, f"Successfully added {q_count} questions with {c_count} choices!")
                     return redirect(f'/admin/core/quiz/{quiz.id}/change/')
@@ -183,7 +194,7 @@ class RecentUpdateAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
 
 # ==========================================================================
-# NEW FEATURE: TOPIC-WISE MCQ SYSTEM ADMIN
+# TOPIC-WISE MCQ SYSTEM ADMIN
 # ==========================================================================
 
 class TopicQuestionInline(admin.StackedInline):
@@ -209,7 +220,7 @@ class TopicExamAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 # ==========================================================================
-# NEW FEATURE: STUDY MATERIAL SYSTEM ADMIN
+# STUDY MATERIAL SYSTEM ADMIN
 # ==========================================================================
 
 class StudyMaterialDocumentInline(admin.TabularInline):

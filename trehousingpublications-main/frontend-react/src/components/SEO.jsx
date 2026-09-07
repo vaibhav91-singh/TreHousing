@@ -4,7 +4,7 @@ const DEFAULT_SEO = {
   title: 'TRE Housing Publications - BPSC TRE Exam Notes, PYQs & Test Series',
   description: 'Free study materials, BPSC TRE previous year papers, syllabus PDFs, job vacancy updates, and interactive mock test series for teaching recruitment exams.',
   keywords: 'BPSC TRE, Teacher Recruitment Exam, Bihar Teacher Vacancy, PYQ, Solved Papers, Mock Test Series, Answer Keys, Study Material',
-  image: '/trelogo.jpg',
+  image: '/trelogo.png',
   type: 'website'
 };
 
