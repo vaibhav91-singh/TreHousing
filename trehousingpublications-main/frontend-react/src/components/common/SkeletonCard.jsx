@@ -1,11 +1,11 @@
 import React from 'react';
 import './SkeletonCard.css';
 
-export default function SkeletonCard({ count = 3 }) {
+export default function SkeletonCard({ count = 3, gridClassName = '' }) {
   const items = Array.from({ length: count });
 
   return (
-    <div className="skeleton-grid">
+    <div className={`skeleton-grid ${gridClassName}`}>
       {items.map((_, index) => (
         <div key={index} className="skeleton-card">
           <div>

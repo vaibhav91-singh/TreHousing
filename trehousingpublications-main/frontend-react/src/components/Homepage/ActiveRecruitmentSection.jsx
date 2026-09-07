@@ -38,7 +38,7 @@ export default function ActiveRecruitmentSection() {
       </div>
 
       {loading ? (
-        <SkeletonCard count={3} />
+        <SkeletonCard count={3} gridClassName="hp-jobs-grid" />
       ) : error ? (
         <div style={{ 
           textAlign: 'center', 
