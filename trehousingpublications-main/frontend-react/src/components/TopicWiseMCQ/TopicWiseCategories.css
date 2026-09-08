@@ -236,15 +236,77 @@
 }
 
 @media screen and (max-width: 768px) {
+    .topic-wise-container {
+        padding: 14px 10px;
+        min-height: auto;
+    }
+    .topic-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+    .topic-header h1 {
+        width: 100%;
+        font-size: 1.4rem;
+    }
+    .topic-header input {
+        width: 100%;
+        min-width: 0;
+        padding: 10px 16px 10px 40px;
+    }
+    .topic-breadcrumbs {
+        font-size: 0.8rem;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+    }
     .topic-layout {
         flex-direction: column;
+        padding: 0;
+        gap: 12px;
+        background: transparent;
+        box-shadow: none;
     }
     .topic-sidebar {
         width: 100%;
+    }
+    .topic-main {
+        padding: 0;
+        background: transparent;
+        box-shadow: none;
+        border-radius: 0;
+    }
+    .mcq-question-card {
+        padding: 16px 14px;
+        border-radius: 12px;
+        margin-bottom: 14px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+    }
+    .mcq-question-text {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 14px;
+    }
+    .mcq-options {
+        gap: 10px;
+    }
+    .mcq-option {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+        min-height: 48px;
+        border-radius: 10px;
+    }
+    .mcq-explanation {
+        padding: 12px;
+        font-size: 0.9rem;
     }
     .topic-pagination {
         flex-direction: column;
         align-items: center;
         text-align: center;
+        gap: 12px;
+        padding-top: 16px;
     }
 }
