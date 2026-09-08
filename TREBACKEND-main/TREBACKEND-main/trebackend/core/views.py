@@ -257,7 +257,6 @@ def get_solved_papers(request):
 #   JOB VACANCY
 #=====================================================================
 
-@cache_page(60 * 5)
 @api_view(['GET', 'POST'])
 def job_list_create(request):
     if request.method == 'GET':
