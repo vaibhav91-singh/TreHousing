@@ -32,6 +32,7 @@ def course_api(request):
             {
                 "id": course.id,
                 "title": course.title,
+                "banner": course.banner.url if hasattr(course, 'banner') and course.banner else None,
                 "subjects": [
                     {"id": subject.id, "title": subject.title}
                     for subject in course.subjects.all()
@@ -81,6 +82,7 @@ def course_api(request):
             "id": course.id,
             "title": course.title,
             "description": course.description,
+            "banner": course.banner.url if hasattr(course, 'banner') and course.banner else None,
             "subjects": [
                 {
                     "id": subject.id,
