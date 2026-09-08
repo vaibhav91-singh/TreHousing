@@ -50,6 +50,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
+    'django.middleware.http.ConditionalGetMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -87,13 +89,14 @@ WSGI_APPLICATION = 'trebackend.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 import dj_database_url
 
-# Connection pooling enabled (conn_max_age=600) for 10k user scalability
+# Connection pooling enabled (conn_max_age=60) for 10k user scalability
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-        conn_max_age=600,
+        conn_max_age=60,
     )
 }
+DATABASES['default']['CONN_MAX_AGE'] = 60
 
 # Cache Configuration (Uses Redis if REDIS_URL is provided, else in-memory PyMemcache/LocMem)
 REDIS_URL = os.getenv('REDIS_URL')
@@ -122,6 +125,14 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '120/minute',
+        'user': '300/minute',
+    },
 }
 
 

@@ -32,7 +32,7 @@ export default function PopularTest({ onSelectTest }) {
         {quizzes.map((item) => (
           <div className="cardDesign" key={item.id}>
             {/* Banner/Logo image load loop */}
-            <img src={item.subject_banner || "https://via.placeholder.com/53"} alt="Logo" />
+            <img src={item.subject_banner || "https://via.placeholder.com/53"} alt="Logo" loading="lazy" decoding="async" />
 
             <p className="views">
               <svg xmlns="http://www.w3.org/2000/svg" fill="#FFCB00" viewBox="0 0 24 24" width="16" height="16">

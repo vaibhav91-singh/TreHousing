@@ -122,14 +122,31 @@ class TopicNameSerializer(serializers.ModelSerializer):
         model = TopicName
         fields = ['id', 'name', 'questions']
 
+class TopicNameLightSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TopicName
+        fields = ['id', 'name']
+
 class TopicSubjectSerializer(serializers.ModelSerializer):
     topics = TopicNameSerializer(many=True, read_only=True)
     class Meta:
         model = TopicSubject
         fields = ['id', 'name', 'topics']
 
+class TopicSubjectLightSerializer(serializers.ModelSerializer):
+    topics = TopicNameLightSerializer(many=True, read_only=True)
+    class Meta:
+        model = TopicSubject
+        fields = ['id', 'name', 'topics']
+
 class TopicExamSerializer(serializers.ModelSerializer):
     subjects = TopicSubjectSerializer(many=True, read_only=True)
+    class Meta:
+        model = TopicExam
+        fields = ['id', 'name', 'subjects']
+
+class TopicExamLightSerializer(serializers.ModelSerializer):
+    subjects = TopicSubjectLightSerializer(many=True, read_only=True)
     class Meta:
         model = TopicExam
         fields = ['id', 'name', 'subjects']

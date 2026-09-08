@@ -156,6 +156,7 @@
   align-items: center;
   gap: 16px;
   padding: 1.2rem 1.6rem;
+  min-height: 48px;
   border-radius: 14px;
   border: 1.5px solid #e2e8f0;
   background: #ffffff;
@@ -165,6 +166,12 @@
   transition: all 0.2s ease;
   text-align: left;
   width: 100%;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.exam-choice-card:active {
+  transform: scale(0.985);
 }
 
 .exam-choice-card:hover {

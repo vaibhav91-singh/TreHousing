@@ -16,7 +16,7 @@ export default function TestSeriesHeroSection({ onSearchChange, searchValue }) {
         </div>
 
         <div className="illustration">
-          <img src={testImg} alt="Illustration" />
+          <img src={testImg} alt="Illustration" loading="lazy" decoding="async" />
         </div>
       </div>
 

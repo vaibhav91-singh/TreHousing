@@ -4,14 +4,30 @@ import Loader from '../common/Loader.jsx';
 import './PYQCategories.css'; // Reusing the same CSS for identical layout
 import { extractArrayData } from '../../apiConfig.js';
 
+let answerKeysCache = null;
+
 export default function AnswerKeyCategories() {
   const [keys, setKeys] = useState([]);
   const [examTypes, setExamTypes] = useState(['All']);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (answerKeysCache) {
+      setKeys(answerKeysCache);
+      setExamTypes(['All', ...new Set(answerKeysCache.map(item => item.subject_title || 'General'))]);
+      setLoading(false);
+      return;
+    }
     let isMounted = true;
     // API Call to fetch Papers (which contain answer keys)
     fetch(`/api/v1/solved-papers/`)
@@ -20,6 +36,7 @@ export default function AnswerKeyCategories() {
         if (!isMounted) return;
         // Filter out papers that do NOT have an answer key
         const responseData = extractArrayData(data).filter(item => item.answer_key_link);
+        answerKeysCache = responseData;
         
         setKeys(responseData);
 
@@ -45,15 +62,15 @@ export default function AnswerKeyCategories() {
       result = result.filter(p => p.subject_title === activeCategory);
     }
 
-    if (searchTerm.trim() !== '') {
+    if (debouncedSearchTerm.trim() !== '') {
       result = result.filter(p => 
-        p.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        (p.subject_title && p.subject_title.toLowerCase().includes(searchTerm.toLowerCase()))
+        p.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) || 
+        (p.subject_title && p.subject_title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
       );
     }
 
     return result;
-  }, [activeCategory, searchTerm, keys]);
+  }, [activeCategory, debouncedSearchTerm, keys]);
 
   if (loading) return <Loader fullPage={true} text="Loading Answer Keys..." />;
 

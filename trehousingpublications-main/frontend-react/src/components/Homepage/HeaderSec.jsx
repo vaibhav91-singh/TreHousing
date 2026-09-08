@@ -37,10 +37,14 @@ export default function HeaderSec() {
 
   const fetchSyllabusData = async () => {
     try {
+      const cached = sessionStorage.getItem('syllabus_menu_cache');
+      if (cached) {
+        return JSON.parse(cached);
+      }
       const response = await fetch("/api/v1/");
       const apiData = await response.json();
       if (!Array.isArray(apiData)) return [];
-      return apiData.map((item) => ({
+      const result = apiData.map((item) => ({
         name: item.title,
         courseId: item.id,
         submenu: Array.isArray(item.subjects) ? item.subjects.map((subject) => ({
@@ -48,6 +52,8 @@ export default function HeaderSec() {
           id: subject.id,
         })) : [],
       }));
+      sessionStorage.setItem('syllabus_menu_cache', JSON.stringify(result));
+      return result;
     } catch (e) {
       console.error(e);
       return [];
@@ -56,6 +62,10 @@ export default function HeaderSec() {
 
   const fetchPyqpData = async () => {
     try {
+      const cached = sessionStorage.getItem('pyqp_menu_cache');
+      if (cached) {
+        return JSON.parse(cached);
+      }
       const response = await fetch("/api/v2/?course_id=1");
       const apiData = await response.json();
       const formatted = [];
@@ -71,6 +81,7 @@ export default function HeaderSec() {
           });
         }
       }
+      sessionStorage.setItem('pyqp_menu_cache', JSON.stringify(formatted));
       return formatted;
     } catch (e) {
       console.error(e);
@@ -143,7 +154,7 @@ export default function HeaderSec() {
      
       <nav className="navbar-main">
         <div className="logo" onClick={() => { navigate("/"); closeMenu(); }}>
-          <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo" decoding="async" />
         </div>
 
         <div className="navbar-controls" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>

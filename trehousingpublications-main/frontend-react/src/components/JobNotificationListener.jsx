@@ -46,8 +46,8 @@ const JobNotificationListener = () => {
     // Check immediately on mount
     checkNewJobs();
 
-    // Then poll every 15 seconds
-    const interval = setInterval(checkNewJobs, 15000);
+    // Then poll every 60 seconds (optimized to reduce server requests)
+    const interval = setInterval(checkNewJobs, 60000);
     return () => {
       isMounted = false;
       clearInterval(interval);

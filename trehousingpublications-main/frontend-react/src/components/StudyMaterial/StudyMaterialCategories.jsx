@@ -3,20 +3,37 @@ import './StudyMaterialCategories.css';
 import Loader from '../common/Loader.jsx';
 import { extractArrayData } from '../../apiConfig.js';
 
+let studyMaterialsCache = null;
+
 export default function StudyMaterialCategories() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   
   const [searchTerm, setSearchTerm] = useState('');
-  
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
   const [selectedExam, setSelectedExam] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
 
   useEffect(() => {
+    if (studyMaterialsCache) {
+      setData(studyMaterialsCache);
+      setLoading(false);
+      return;
+    }
     fetch(`/api/v1/study-materials/`)
       .then(res => res.json())
       .then(resData => {
-        setData(extractArrayData(resData));
+        const list = extractArrayData(resData);
+        studyMaterialsCache = list;
+        setData(list);
         setLoading(false);
       })
       .catch(err => {
@@ -26,9 +43,9 @@ export default function StudyMaterialCategories() {
   }, []);
 
   const handleSearch = (items, key = 'name') => {
-    if (!searchTerm) return items;
+    if (!debouncedSearchTerm) return items;
     return items.filter(item => 
-      item[key].toLowerCase().includes(searchTerm.toLowerCase())
+      item[key].toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     );
   };
 

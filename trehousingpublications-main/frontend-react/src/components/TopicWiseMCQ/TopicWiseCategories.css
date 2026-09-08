@@ -130,14 +130,22 @@
     gap: 10px;
 }
 .mcq-option {
-    padding: 12px 15px;
+    padding: 14px 18px;
+    min-height: 46px;
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     background: var(--bg-color);
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     font-weight: 500;
     color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+.mcq-option:active {
+    transform: scale(0.985);
 }
 .mcq-option:hover {
     border-color: var(--primary);
@@ -170,11 +178,73 @@
     background-color: #1e293b;
 }
 
+/* Pagination Controls */
+.topic-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.pagination-info {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.pagination-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    color: var(--secondary);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-btn.active {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    color: #fff;
+}
+
 @media screen and (max-width: 768px) {
     .topic-layout {
         flex-direction: column;
     }
     .topic-sidebar {
         width: 100%;
+    }
+    .topic-pagination {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 }

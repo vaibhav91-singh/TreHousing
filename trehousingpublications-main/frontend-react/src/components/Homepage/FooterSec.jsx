@@ -16,6 +16,8 @@ export default function FooterSec() {
             alt="Logo"
             onClick={redirectHome}
             className="modern-logo"
+            loading="lazy"
+            decoding="async"
           />
           <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.875rem', lineHeight: '1.6', marginBottom: '1.5rem' }}>
             <p style={{ marginBottom: '0.5rem' }}>

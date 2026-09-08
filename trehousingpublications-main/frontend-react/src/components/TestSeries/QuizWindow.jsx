@@ -107,7 +107,16 @@ const QuizWindow = ({ subject, onBack }) => {
     }));
   };
 
+  const triggerHapticFeedback = () => {
+    if (typeof window !== 'undefined' && 'navigator' in window && typeof window.navigator.vibrate === 'function') {
+      try {
+        window.navigator.vibrate(20);
+      } catch (e) {}
+    }
+  };
+
   const handleOptionSelect = (choiceId) => {
+    triggerHapticFeedback();
     const qId = currentQuestion.id;
     const updatedAnswers = { ...userAnswers, [qId]: choiceId };
     setUserAnswers(updatedAnswers);

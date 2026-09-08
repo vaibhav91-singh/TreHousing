@@ -5,14 +5,30 @@ import './SeriesCategories.css';
 import irbLogo from '../../assets/TestSeries/IRB.png';
 import { extractArrayData } from '../../apiConfig.js';
 
+let seriesCache = null;
+
 export default function SeriesCategories({ onSelectTest }) {
   const [quizzes, setQuizzes] = useState([]);
   const [examTypes, setExamTypes] = useState(['All']);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (seriesCache) {
+      setQuizzes(seriesCache);
+      setExamTypes(['All', ...new Set(seriesCache.map(item => item.category || 'General'))]);
+      setLoading(false);
+      return;
+    }
     let isMounted = true;
     // API Call
     fetch(`/api/v1/quiz/`)
@@ -20,6 +36,7 @@ export default function SeriesCategories({ onSelectTest }) {
       .then((data) => {
         if (!isMounted) return;
         const list = extractArrayData(data);
+        seriesCache = list;
         setQuizzes(list);
 
         // Backend se aayi hui har quiz ki category ko nikaal kar unique list banao
@@ -44,14 +61,14 @@ export default function SeriesCategories({ onSelectTest }) {
       result = result.filter(q => q.category === activeCategory);
     }
 
-    if (searchTerm.trim() !== '') {
+    if (debouncedSearchTerm.trim() !== '') {
       result = result.filter(q => 
-        q.title.toLowerCase().includes(searchTerm.toLowerCase())
+        q.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
       );
     }
 
     return result;
-  }, [activeCategory, searchTerm, quizzes]);
+  }, [activeCategory, debouncedSearchTerm, quizzes]);
 
   if (loading) return <Loader fullPage={true} text="Loading Test Series..." />;
 
@@ -90,7 +107,7 @@ export default function SeriesCategories({ onSelectTest }) {
           ) : (
             filteredQuizzes.map((item) => (
               <div className="cardDesign" key={item.id}>
-                <img src={item.subject_banner || irbLogo} alt="Logo" />
+                <img src={item.subject_banner || irbLogo} alt="Logo" loading="lazy" decoding="async" />
                 <p className="views"><span id="user">900K+ Users</span></p>
                 <p id="heading">{item.title}</p>
                 <button 

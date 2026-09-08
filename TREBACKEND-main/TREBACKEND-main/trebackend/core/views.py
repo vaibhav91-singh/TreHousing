@@ -9,12 +9,14 @@ from django.views.decorators.cache import cache_page
 from .models import Quiz, Question, Choice
 from .serializers import QuizSerializer
 # For Solved Paper
+from django.db.models import Prefetch
 from rest_framework import status
-from .models import SolvedPaper,JobVacancy, RecentUpdate, TopicExam, StudyMaterialExam
-from .serializers import SolvedPaperSerializer,JobVacancySerializer, RecentUpdateSerializer, TopicExamSerializer, StudyMaterialExamSerializer
+from .models import SolvedPaper,JobVacancy, RecentUpdate, TopicExam, TopicSubject, TopicName, TopicQuestion, StudyMaterialExam
+from .serializers import SolvedPaperSerializer,JobVacancySerializer, RecentUpdateSerializer, TopicExamSerializer, TopicExamLightSerializer, TopicQuestionSerializer, StudyMaterialExamSerializer
 import os
 
 
+@cache_page(60 * 5)
 @api_view(['GET'])
 def course_api(request):
 
@@ -214,7 +216,7 @@ def quiz_api(request):
 
     if quiz_id:
         try:
-            quiz = Quiz.objects.prefetch_related('questions__choices').get(id=quiz_id)
+            quiz = Quiz.objects.defer('bulk_upload_json').prefetch_related('questions__choices').get(id=quiz_id)
             serializer = QuizSerializer(quiz)
             # Shuffle response data before returning
             shuffled_data = shuffle_quiz_data(serializer.data)
@@ -224,9 +226,9 @@ def quiz_api(request):
 
     # Subject filter ya All quizzes ke liye
     if subject_id:
-        quizzes = Quiz.objects.filter(subject_id=subject_id).prefetch_related('questions__choices')
+        quizzes = Quiz.objects.defer('bulk_upload_json').filter(subject_id=subject_id).prefetch_related('questions__choices')
     else:
-        quizzes = Quiz.objects.prefetch_related('questions__choices').all()
+        quizzes = Quiz.objects.defer('bulk_upload_json').prefetch_related('questions__choices').all()
     
     serializer = QuizSerializer(quizzes, many=True)
     shuffled_data = shuffle_quiz_data(serializer.data)
@@ -235,6 +237,7 @@ def quiz_api(request):
 # NEW: Solved Papers API ENDPOINT
 # ==========================================================================
 
+@cache_page(60 * 5)
 @api_view(['GET'])
 def get_solved_papers(request):
     """Sare solved papers fetch karne ke liye API endpoint"""
@@ -254,6 +257,7 @@ def get_solved_papers(request):
 #   JOB VACANCY
 #=====================================================================
 
+@cache_page(60 * 5)
 @api_view(['GET', 'POST'])
 def job_list_create(request):
     if request.method == 'GET':
@@ -287,16 +291,58 @@ def recent_updates_list(request):
 # ==========================================================================
 # NEW FEATURE: TOPIC-WISE MCQ SYSTEM ENDPOINT
 # ==========================================================================
-@cache_page(60 * 10)
 @api_view(['GET'])
 def topic_wise_mcq_api(request):
     """
     Returns a nested hierarchy of Topic-wise MCQs:
-    Exam -> Subject -> Topic -> Questions
+    If topic_id is provided, returns paginated Questions for that topic (default 30 per page).
+    Otherwise returns Exam -> Subject -> Topic lightweight hierarchy (lazy loaded).
     """
     try:
-        exams = TopicExam.objects.all().prefetch_related('subjects__topics__questions')
-        serializer = TopicExamSerializer(exams, many=True)
+        topic_id = request.GET.get('topic_id')
+        if topic_id:
+            try:
+                page = int(request.GET.get('page', 1))
+            except ValueError:
+                page = 1
+
+            try:
+                limit = int(request.GET.get('limit', 30))
+            except ValueError:
+                limit = 30
+
+            if page < 1:
+                page = 1
+            if limit < 1:
+                limit = 30
+
+            qs = TopicQuestion.objects.filter(topic_id=topic_id).order_by('id')
+            total_questions = qs.count()
+
+            import math
+            total_pages = math.ceil(total_questions / limit) if total_questions > 0 else 1
+
+            start_idx = (page - 1) * limit
+            end_idx = start_idx + limit
+
+            questions_page = qs[start_idx:end_idx]
+            serializer = TopicQuestionSerializer(questions_page, many=True)
+
+            return Response({
+                "success": True,
+                "questions": serializer.data,
+                "total_questions": total_questions,
+                "total_pages": total_pages,
+                "current_page": page,
+                "limit": limit,
+                "has_next": page < total_pages,
+                "has_previous": page > 1
+            }, status=status.HTTP_200_OK)
+
+        exams = TopicExam.objects.all().prefetch_related(
+            Prefetch('subjects__topics', queryset=TopicName.objects.defer('bulk_upload_json'))
+        )
+        serializer = TopicExamLightSerializer(exams, many=True)
         return Response({
             "success": True,
             "data": serializer.data

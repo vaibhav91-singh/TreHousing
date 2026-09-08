@@ -4,14 +4,30 @@ import SkeletonCard from '../common/SkeletonCard.jsx';
 import './PYQCategories.css';
 import { extractArrayData } from '../../apiConfig.js';
 
+let pyqCache = null;
+
 export default function PYQCategories() {
   const [papers, setPapers] = useState([]);
   const [examTypes, setExamTypes] = useState(['All']);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 300);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (pyqCache) {
+      setPapers(pyqCache);
+      setExamTypes(['All', ...new Set(pyqCache.map(item => item.subject_title || 'General'))]);
+      setLoading(false);
+      return;
+    }
     let isMounted = true;
     // API Call to fetch PYQ Papers
     fetch(`/api/v1/solved-papers/`)
@@ -19,6 +35,7 @@ export default function PYQCategories() {
       .then((data) => {
         if (!isMounted) return;
         const responseData = extractArrayData(data);
+        pyqCache = responseData;
         setPapers(responseData);
 
         // Extract unique subjects/categories from the papers
@@ -43,15 +60,15 @@ export default function PYQCategories() {
       result = result.filter(p => p.subject_title === activeCategory);
     }
 
-    if (searchTerm.trim() !== '') {
+    if (debouncedSearchTerm.trim() !== '') {
       result = result.filter(p => 
-        p.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        (p.subject_title && p.subject_title.toLowerCase().includes(searchTerm.toLowerCase()))
+        p.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) || 
+        (p.subject_title && p.subject_title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
       );
     }
 
     return result;
-  }, [activeCategory, searchTerm, papers]);
+  }, [activeCategory, debouncedSearchTerm, papers]);
 
   return (
     <div className="pyq-categories">

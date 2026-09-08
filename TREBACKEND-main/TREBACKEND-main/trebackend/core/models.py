@@ -263,7 +263,7 @@ class SolvedPaper(models.Model):
     paper_link = models.URLField(max_length=1000, verbose_name="Paper Link", help_text="Google Drive or AWS S3 link for the Question Paper.")
     answer_key_link = models.URLField(max_length=1000, verbose_name="Answer Key Link", help_text="Google Drive or AWS S3 link for the Answer Key.", blank=True, null=True)
     linked_mock = models.ForeignKey('Quiz', on_delete=models.SET_NULL, null=True, blank=True, related_name="linked_papers", verbose_name="Linked Mock Test", help_text="Select a Mock Test to link with this paper.")
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     
     def __str__(self):
         return f"{self.title} ({self.year})"
@@ -271,6 +271,9 @@ class SolvedPaper(models.Model):
     class Meta:
         verbose_name = "Past Paper / Answer Key"
         verbose_name_plural = "Past Papers & Answer Keys"
+        indexes = [
+            models.Index(fields=['subject', '-created_at']),
+        ]
 
 #==============================================================
 # JOB VACANCY
@@ -448,6 +451,9 @@ class TopicQuestion(models.Model):
     class Meta:
         verbose_name = 'Topic-wise Question'
         verbose_name_plural = '4. Topic-wise Questions'
+        indexes = [
+            models.Index(fields=['topic', 'id']),
+        ]
         
     def __str__(self):
         return f'[{self.topic.name}] {self.text[:50]}...'
@@ -481,11 +487,14 @@ class StudyMaterialDocument(models.Model):
     subject = models.ForeignKey(StudyMaterialSubject, on_delete=models.CASCADE, related_name='documents', db_index=True)
     title = models.CharField(max_length=255, help_text='e.g., Chapter 1 Notes')
     file_link = models.URLField(max_length=1000, help_text='Google Drive or AWS S3 link to the PDF or Image')
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     
     class Meta:
         verbose_name = 'Study Material Document'
         verbose_name_plural = '3. Study Material Documents'
+        indexes = [
+            models.Index(fields=['subject', '-created_at']),
+        ]
         
     def __str__(self):
         return f'{self.subject.name} - {self.title}'
