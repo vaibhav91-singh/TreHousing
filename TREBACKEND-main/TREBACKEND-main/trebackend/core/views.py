@@ -257,18 +257,25 @@ def get_solved_papers(request):
 #   JOB VACANCY
 #=====================================================================
 
+from django.core.cache import cache
+
 @api_view(['GET', 'POST'])
 def job_list_create(request):
     if request.method == 'GET':
-        # Sirf active jobs dikhane ke liye filter
+        cached_data = cache.get('active_jobs_list')
+        if cached_data is not None:
+            return Response(cached_data)
+
         jobs = JobVacancy.objects.filter(status=True) 
         serializer = JobVacancySerializer(jobs, many=True)
+        cache.set('active_jobs_list', serializer.data, 300)
         return Response(serializer.data)
     
     elif request.method == 'POST':
         serializer = JobVacancySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            cache.delete('active_jobs_list')
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
 @api_view(['GET'])

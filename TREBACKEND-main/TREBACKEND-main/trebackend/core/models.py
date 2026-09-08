@@ -307,6 +307,16 @@ class JobVacancy(models.Model):
     def __str__(self):
         return f"{self.title} - {self.organization}"
 
+    def save(self, *args, **kwargs):
+        from django.core.cache import cache
+        cache.delete('active_jobs_list')
+        super().save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        from django.core.cache import cache
+        cache.delete('active_jobs_list')
+        super().delete(*args, **kwargs)
+
 #==============================================================
 # RECENT UPDATES (For Job Vacancy Hub)
 #==============================================================
