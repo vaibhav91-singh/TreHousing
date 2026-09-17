@@ -74,7 +74,7 @@ ROOT_URLCONF = 'trebackend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'core' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,20 +87,52 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'trebackend.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-try:
-    import dj_database_url
+# Database Configuration
+# Supports MySQL (for Hostinger/cPanel production) with fallback to SQLite for local development
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_PORT = os.getenv('DB_PORT', '3306')
+
+if DB_NAME and DB_USER:
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.getenv('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-            conn_max_age=60,
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': DB_NAME,
+            'USER': DB_USER,
+            'PASSWORD': DB_PASSWORD or '',
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            },
+            'CONN_MAX_AGE': 60,
+        }
     }
-except ImportError:
+elif os.getenv('DATABASE_URL'):
+    try:
+        import dj_database_url
+        DATABASES = {
+            'default': dj_database_url.config(
+                default=os.getenv('DATABASE_URL'),
+                conn_max_age=60,
+            )
+        }
+    except ImportError:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+                'CONN_MAX_AGE': 60,
+            }
+        }
+else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -108,7 +140,7 @@ except ImportError:
             'CONN_MAX_AGE': 60,
         }
     }
-DATABASES['default']['CONN_MAX_AGE'] = 60
+
 
 # Cache Configuration (Uses Redis if REDIS_URL is provided, else in-memory PyMemcache/LocMem)
 REDIS_URL = os.getenv('REDIS_URL')

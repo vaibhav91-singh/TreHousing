@@ -31,6 +31,8 @@ class Sub_CoursesInline(admin.TabularInline):
 class SubjectInline(admin.TabularInline): 
     model = Subject
     extra = 1  
+    fields = ('title', 'description')
+    exclude = ('pdf_link', 'total_questions', 'total_marks')
 
 class ExamPatternInline(admin.TabularInline): 
     model = Exam_Pattern
@@ -49,7 +51,12 @@ class SubjectAdmin(admin.ModelAdmin):
     search_fields = ('title', 'course__title')
     list_filter = ('course',)
     ordering = ['id']
+    fields = ('course', 'title', 'description')
+    exclude = ('pdf_link', 'total_questions', 'total_marks')
     inlines = [ExamPatternInline, SubjectContentInline, SyllabusInline, PYQInline] 
+
+
+
 
 class ExamPatternAdminForm(forms.ModelForm):
     class Meta:
@@ -162,7 +169,9 @@ class QuizAdmin(admin.ModelAdmin):
                             if not q_text or not str(q_text).strip():
                                 continue
 
-                            q_text = str(q_text).strip()
+                            # Normalize unicode arrows and quotes
+                            q_text = str(q_text).replace('→', '->').replace('←', '<-').replace('↔', '<->')
+                            q_text = q_text.replace('’', "'").replace('‘', "'").replace('“', '"').replace('”', '"').strip()
 
                             raw_choices = q_item.get('choices') or q_item.get('options') or q_item.get('answers')
                             q_choices_list = []
@@ -190,7 +199,8 @@ class QuizAdmin(admin.ModelAdmin):
                                                 is_corr = True
 
                                     if c_text and str(c_text).strip():
-                                        q_choices_list.append((str(c_text).strip(), is_corr))
+                                        c_clean = str(c_text).replace('→', '->').replace('←', '<-').replace('’', "'").replace('“', '"').replace('”', '"').strip()
+                                        q_choices_list.append((c_clean, is_corr))
 
                             elif any(k in q_item for k in ['option_a', 'optionA', 'a', 'A']):
                                 opt_keys = [
@@ -209,7 +219,8 @@ class QuizAdmin(admin.ModelAdmin):
                                     if opt_val and str(opt_val).strip():
                                         letter = chr(65 + idx)
                                         is_corr = (correct_marker == letter) or (correct_marker == str(idx)) or (correct_marker == str(opt_val).strip().upper())
-                                        q_choices_list.append((str(opt_val).strip(), is_corr))
+                                        c_clean = str(opt_val).replace('→', '->').replace('←', '<-').replace('’', "'").replace('“', '"').replace('”', '"').strip()
+                                        q_choices_list.append((c_clean, is_corr))
 
                             parsed_questions.append((q_text, q_choices_list))
 

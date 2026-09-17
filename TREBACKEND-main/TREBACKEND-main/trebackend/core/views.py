@@ -1,25 +1,36 @@
 from django.shortcuts import get_object_or_404, redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Course, Subject, Syllabus, PYQ, Sub_Courses
 from django.http import FileResponse, JsonResponse, Http404
 from django.conf import settings
 from django.views.decorators.cache import cache_page
-# For Quiz
-from .models import Quiz, Question, Choice
-from .serializers import QuizSerializer
-# For Solved Paper
-from django.db.models import Prefetch
 from rest_framework import status
-from .models import SolvedPaper,JobVacancy, RecentUpdate, TopicExam, TopicSubject, TopicName, TopicQuestion, StudyMaterialExam
-from .serializers import SolvedPaperSerializer,JobVacancySerializer, RecentUpdateSerializer, TopicExamSerializer, TopicExamLightSerializer, TopicQuestionSerializer, StudyMaterialExamSerializer
+from django.db.models import Prefetch
+from django.core.cache import cache
 import os
+import random
+import copy
+import math
+
+# Models Import
+from .models import (
+    Course, Subject, Syllabus, PYQ, Sub_Courses,
+    Quiz, Question, Choice, SolvedPaper, JobVacancy, 
+    RecentUpdate, TopicExam, TopicSubject, TopicName, TopicQuestion,
+    StudyMaterialExam, StudyMaterialSubject, StudyMaterialDocument
+)
+
+# Serializers Import
+from .serializers import (
+    QuizSerializer, SolvedPaperSerializer, JobVacancySerializer, 
+    RecentUpdateSerializer, TopicExamSerializer, TopicExamLightSerializer,
+    TopicQuestionSerializer, StudyMaterialExamSerializer
+)
 
 
 @cache_page(60 * 5)
 @api_view(['GET'])
 def course_api(request):
-
     course_id = request.GET.get('course_id')
     subject_id = request.GET.get('subject_id')
     pdf_request = request.GET.get('pdf') == "true"
@@ -42,7 +53,6 @@ def course_api(request):
         ]
         return Response(response_data)
 
-
     try:
         course = Course.objects.prefetch_related('subjects').get(id=course_id)
         subject = Subject.objects.prefetch_related('exam_patterns', 'subject_contents').get(id=subject_id, course=course)
@@ -51,14 +61,17 @@ def course_api(request):
     except Subject.DoesNotExist:
         return Response({"error": "Subject not found"}, status=404)
 
-    
     if pdf_request:
         if not subject.pdf_link:
             return Response({"error": "No PDF available for this subject"}, status=404)
 
-        if subject.pdf_link:
-            return redirect(subject.pdf_link.url)
-        else:
+        try:
+            response = FileResponse(subject.pdf_link.open('rb'), content_type='application/pdf')
+            response['Content-Disposition'] = f'inline; filename="{os.path.basename(subject.pdf_link.name)}"'
+            return response
+        except Exception:
+            if subject.pdf_link:
+                return redirect(subject.pdf_link.url)
             return Response({"error": "File not found"}, status=404)
 
     if syllabus_list:
@@ -71,11 +84,15 @@ def course_api(request):
         for syllabus in syllabus_qs:
             if os.path.basename(syllabus.file.name) == syllabus_name:
                 if syllabus.file:
-                    return redirect(syllabus.file.url)
+                    try:
+                        response = FileResponse(syllabus.file.open('rb'), content_type='application/pdf')
+                        response['Content-Disposition'] = f'inline; filename="{os.path.basename(syllabus.file.name)}"'
+                        return response
+                    except Exception:
+                        return redirect(syllabus.file.url)
                 else:
                     return Response({"error": "File not found"}, status=404)
         return Response({"error": "Syllabus file not found for this subject"}, status=404)
-
 
     response_data = {
         "course": {
@@ -89,8 +106,8 @@ def course_api(request):
                     "title": subject.title,
                     "description": subject.description,
                     "pdf_link": subject.pdf_link.url if subject.pdf_link else None,
-                    "total_questions": subject.total_questions,
-                    "total_marks": subject.total_marks,
+                    "total_questions": subject.total_questions or 0,
+                    "total_marks": subject.total_marks or 0,
                     "exam_patterns": [
                         {
                             "topics": ep.topics,
@@ -124,7 +141,7 @@ def pyq_api(request):
     subject_id = request.GET.get('subject_id')
     file_name = request.GET.get('file')
 
-    # ✅ Case 1: Return Sub-Courses with IDs and Titles
+    # Case 1: Return Sub-Courses with IDs and Titles
     if course_id and not sub_courses_id and not subject_id:
         try:
             course = Course.objects.get(id=course_id)
@@ -138,13 +155,13 @@ def pyq_api(request):
                 sub_course_data.append({
                     "id": sc.id,
                     "title": sc.title,
-                    "subjects": subject_data  # all course subjects (shared)
+                    "subjects": subject_data
                 })
             return JsonResponse({course.title: sub_course_data})
         except Course.DoesNotExist:
             return JsonResponse({"error": "Course not found"}, status=404)
 
-    # ✅ Case 2: Return PYQs grouped under subjects and sub-course
+    # Case 2: Return PYQs grouped under subjects and sub-course
     if course_id and sub_courses_id and not file_name and not subject_id:
         try:
             course = Course.objects.get(id=course_id)
@@ -167,17 +184,21 @@ def pyq_api(request):
 
         return JsonResponse(result)
 
-    # ✅ Case 3: Serve a specific file
+    # Case 3: Serve a specific file
     if course_id and sub_courses_id and subject_id and file_name:
         try:
             course = Course.objects.get(id=course_id)
             sub_course = course.sub_courses.get(id=sub_courses_id)
             subject = course.subjects.get(id=subject_id)
             pyq = subject.pyqs.get(file__icontains=file_name)
-            file_path = pyq.file.path
 
             if pyq.file:
-                return redirect(pyq.file.url)
+                try:
+                    response = FileResponse(pyq.file.open('rb'), content_type='application/pdf')
+                    response['Content-Disposition'] = f'inline; filename="{os.path.basename(pyq.file.name)}"'
+                    return response
+                except Exception:
+                    return redirect(pyq.file.url)
             else:
                 raise Http404("File not found")
 
@@ -186,12 +207,6 @@ def pyq_api(request):
 
     return JsonResponse({"error": "Invalid query parameters"}, status=400)
 
-    # ==========================================================================
-# NEW: QUIZ AND MOCK TEST API ENDPOINT
-# ==========================================================================
-import random
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 
 @api_view(['GET'])
 def quiz_api(request):
@@ -199,50 +214,57 @@ def quiz_api(request):
     subject_id = request.GET.get('subject_id')
     
     def shuffle_quiz_data(data):
-        # Agar data list hai (multiple quizzes), toh har quiz ke questions shuffle karo
+        data = copy.deepcopy(data)
         if isinstance(data, list):
             for quiz in data:
-                random.shuffle(quiz['questions'])
-                for q in quiz['questions']:
-                    random.shuffle(q['choices'])
-                if quiz.get('display_questions_limit'):
-                    quiz['questions'] = quiz['questions'][:quiz['display_questions_limit']]
-        # Agar single object hai
+                if 'questions' in quiz and isinstance(quiz['questions'], list):
+                    random.shuffle(quiz['questions'])
+                    for q in quiz['questions']:
+                        if 'choices' in q and isinstance(q['choices'], list):
+                            random.shuffle(q['choices'])
+                    if quiz.get('display_questions_limit'):
+                        quiz['questions'] = quiz['questions'][:quiz['display_questions_limit']]
         else:
-            random.shuffle(data['questions'])
-            for q in data['questions']:
-                random.shuffle(q['choices'])
-            if data.get('display_questions_limit'):
-                data['questions'] = data['questions'][:data['display_questions_limit']]
+            if 'questions' in data and isinstance(data['questions'], list):
+                random.shuffle(data['questions'])
+                for q in data['questions']:
+                    if 'choices' in q and isinstance(q['choices'], list):
+                        random.shuffle(q['choices'])
+                if data.get('display_questions_limit'):
+                    data['questions'] = data['questions'][:data['display_questions_limit']]
         return data
 
     if quiz_id:
-        try:
-            quiz = Quiz.objects.defer('bulk_upload_json').prefetch_related('questions__choices').get(id=quiz_id)
-            serializer = QuizSerializer(quiz)
-            # Shuffle response data before returning
-            shuffled_data = shuffle_quiz_data(serializer.data)
-            return Response(shuffled_data)
-        except Quiz.DoesNotExist:
-            return Response({"error": "Quiz not found"}, status=404)
+        cache_key = f"quiz_api_data_{quiz_id}"
+        cached_payload = cache.get(cache_key)
+        if not cached_payload:
+            try:
+                quiz = Quiz.objects.defer('bulk_upload_json').prefetch_related('questions__choices').get(id=quiz_id)
+                cached_payload = QuizSerializer(quiz).data
+                cache.set(cache_key, cached_payload, 300)
+            except Quiz.DoesNotExist:
+                return Response({"error": "Quiz not found"}, status=404)
+        
+        shuffled_data = shuffle_quiz_data(cached_payload)
+        return Response(shuffled_data)
 
-    # Subject filter ya All quizzes ke liye
-    if subject_id:
-        quizzes = Quiz.objects.defer('bulk_upload_json').filter(subject_id=subject_id).prefetch_related('questions__choices')
-    else:
-        quizzes = Quiz.objects.defer('bulk_upload_json').prefetch_related('questions__choices').all()
-    
-    serializer = QuizSerializer(quizzes, many=True)
-    shuffled_data = shuffle_quiz_data(serializer.data)
+    cache_key = f"quiz_api_list_sub_{subject_id}" if subject_id else "quiz_api_list_all"
+    cached_payload = cache.get(cache_key)
+    if not cached_payload:
+        if subject_id:
+            quizzes = Quiz.objects.defer('bulk_upload_json').filter(subject_id=subject_id).prefetch_related('questions__choices')
+        else:
+            quizzes = Quiz.objects.defer('bulk_upload_json').prefetch_related('questions__choices').all()
+        cached_payload = QuizSerializer(quizzes, many=True).data
+        cache.set(cache_key, cached_payload, 300)
+
+    shuffled_data = shuffle_quiz_data(cached_payload)
     return Response(shuffled_data)
-    # ==========================================================================
-# NEW: Solved Papers API ENDPOINT
-# ==========================================================================
+
 
 @cache_page(60 * 5)
 @api_view(['GET'])
 def get_solved_papers(request):
-    """Sare solved papers fetch karne ke liye API endpoint"""
     try:
         papers = SolvedPaper.objects.all().order_by('-created_at')
         
@@ -255,11 +277,6 @@ def get_solved_papers(request):
     except Exception as e:
         return Response({"success": False, "error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# ==========================================================================
-#   JOB VACANCY
-#=====================================================================
-
-from django.core.cache import cache
 
 @api_view(['GET', 'POST'])
 def job_list_create(request):
@@ -280,32 +297,25 @@ def job_list_create(request):
             cache.delete('active_jobs_list')
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
+
+
 @api_view(['GET'])
 def job_detail_api(request, pk):
     job = get_object_or_404(JobVacancy, pk=pk)
     serializer = JobVacancySerializer(job)
     return Response(serializer.data)
 
-# ==========================================================================
-# RECENT UPDATES
-#=====================================================================
+
 @cache_page(60 * 5)
 @api_view(['GET'])
 def recent_updates_list(request):
-    updates = RecentUpdate.objects.all()[:10]  # Only fetch latest 10 updates
+    updates = RecentUpdate.objects.all()[:10]
     serializer = RecentUpdateSerializer(updates, many=True)
     return Response(serializer.data)
 
-# ==========================================================================
-# NEW FEATURE: TOPIC-WISE MCQ SYSTEM ENDPOINT
-# ==========================================================================
+
 @api_view(['GET'])
 def topic_wise_mcq_api(request):
-    """
-    Returns a nested hierarchy of Topic-wise MCQs:
-    If topic_id is provided, returns paginated Questions for that topic (default 30 per page).
-    Otherwise returns Exam -> Subject -> Topic lightweight hierarchy (lazy loaded).
-    """
     try:
         topic_id = request.GET.get('topic_id')
         if topic_id:
@@ -324,10 +334,14 @@ def topic_wise_mcq_api(request):
             if limit < 1:
                 limit = 30
 
+            cache_key = f"topic_mcq_{topic_id}_p{page}_l{limit}"
+            cached_res = cache.get(cache_key)
+            if cached_res:
+                return Response(cached_res, status=status.HTTP_200_OK)
+
             qs = TopicQuestion.objects.filter(topic_id=topic_id).order_by('id')
             total_questions = qs.count()
 
-            import math
             total_pages = math.ceil(total_questions / limit) if total_questions > 0 else 1
 
             start_idx = (page - 1) * limit
@@ -336,7 +350,7 @@ def topic_wise_mcq_api(request):
             questions_page = qs[start_idx:end_idx]
             serializer = TopicQuestionSerializer(questions_page, many=True)
 
-            return Response({
+            res_payload = {
                 "success": True,
                 "questions": serializer.data,
                 "total_questions": total_questions,
@@ -345,32 +359,35 @@ def topic_wise_mcq_api(request):
                 "limit": limit,
                 "has_next": page < total_pages,
                 "has_previous": page > 1
-            }, status=status.HTTP_200_OK)
+            }
+            cache.set(cache_key, res_payload, 300)
+            return Response(res_payload, status=status.HTTP_200_OK)
+
+        cache_key = "topic_mcq_hierarchy_all"
+        cached_res = cache.get(cache_key)
+        if cached_res:
+            return Response(cached_res, status=status.HTTP_200_OK)
 
         exams = TopicExam.objects.all().prefetch_related(
             Prefetch('subjects__topics', queryset=TopicName.objects.defer('bulk_upload_json'))
         )
         serializer = TopicExamLightSerializer(exams, many=True)
-        return Response({
+        res_payload = {
             "success": True,
             "data": serializer.data
-        }, status=status.HTTP_200_OK)
+        }
+        cache.set(cache_key, res_payload, 300)
+        return Response(res_payload, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({
             "success": False,
             "error": str(e)
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# ==========================================================================
-# NEW FEATURE: STUDY MATERIAL SYSTEM ENDPOINT
-# ==========================================================================
+
 @cache_page(60 * 10)
 @api_view(['GET'])
 def study_materials_api(request):
-    """
-    Returns a nested hierarchy of Study Materials:
-    Exam -> Subject -> Documents
-    """
     try:
         exams = StudyMaterialExam.objects.all().prefetch_related('materials_subjects__documents')
         serializer = StudyMaterialExamSerializer(exams, many=True)

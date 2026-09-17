@@ -1,0 +1,19 @@
+# Database
+*.sqlite3
+db.sqlite3
+
+# Environment
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# Media & Static collection
+staticfiles/
+media/

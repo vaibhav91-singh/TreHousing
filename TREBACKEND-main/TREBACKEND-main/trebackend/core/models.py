@@ -23,10 +23,13 @@ class Subject(models.Model):
     description = models.TextField()
     pdf_link = models.FileField(
         upload_to='pdfs/',
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])]
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+        blank=True,
+        null=True
     ) 
-    total_questions = models.IntegerField()
-    total_marks = models.IntegerField()
+    total_questions = models.IntegerField(blank=True, null=True, default=0)
+    total_marks = models.IntegerField(blank=True, null=True, default=0)
+
 
     def __str__(self):
         return self.title
@@ -108,6 +111,16 @@ class Syllabus(models.Model):
 # QUIZ SYSTEM INTEGRATION
 # ==========================================================================
 
+def clean_unicode_str(val):
+    if not val:
+        return ""
+    s = str(val)
+    s = s.replace('→', '->').replace('←', '<-').replace('↔', '<->').replace('⇒', '=>')
+    s = s.replace('’', "'").replace('‘', "'").replace('`', "'")
+    s = s.replace('“', '"').replace('”', '"')
+    s = s.replace('–', '-').replace('—', '-').replace('…', '...')
+    return s.strip()
+
 class Quiz(models.Model):
     category = models.CharField(max_length=100, default="General") 
     
@@ -138,115 +151,121 @@ class Quiz(models.Model):
         super().save(*args, **kwargs)
         if self.bulk_upload_json and self.bulk_upload_json.strip():
             import json
+            import ast
+            raw_json = self.bulk_upload_json.strip()
+            data = None
             try:
-                raw_json = self.bulk_upload_json.strip()
                 data = json.loads(raw_json)
-                if isinstance(data, dict):
-                    data = data.get('questions') or data.get('mcqs') or data.get('data') or data.get('items') or [data]
-                
-                if isinstance(data, list):
-                    parsed_questions = []
+            except Exception:
+                try:
+                    data = ast.literal_eval(raw_json)
+                except Exception:
+                    data = None
+
+            if data:
+                try:
+                    if isinstance(data, dict):
+                        data = data.get('questions') or data.get('mcqs') or data.get('data') or data.get('items') or [data]
                     
-                    for q_item in data:
-                        if not isinstance(q_item, dict):
-                            continue
+                    if isinstance(data, list) and len(data) > 0:
+                        parsed_questions = []
                         
-                        # Question text parsing
-                        q_text = (
-                            q_item.get('text') or 
-                            q_item.get('question_text') or 
-                            q_item.get('question') or 
-                            q_item.get('title') or 
-                            q_item.get('q')
-                        )
-                        if not q_text or not str(q_text).strip():
-                            continue
-                        
-                        q_text = str(q_text).strip()
-                        
-                        # Extract choices / options for this question
-                        raw_choices = q_item.get('choices') or q_item.get('options') or q_item.get('answers')
-                        q_choices_list = []
-                        
-                        # Case A: List of choices/options
-                        if isinstance(raw_choices, list) and len(raw_choices) > 0:
-                            answer_val = q_item.get('answer') or q_item.get('correct_answer') or q_item.get('correct_option') or q_item.get('correct')
+                        for q_item in data:
+                            if not isinstance(q_item, dict):
+                                continue
                             
-                            for idx, c_item in enumerate(raw_choices):
-                                if isinstance(c_item, dict):
-                                    c_text = c_item.get('text') or c_item.get('option') or c_item.get('choice') or c_item.get('val')
-                                    is_corr = bool(
-                                        c_item.get('is_correct') or 
-                                        c_item.get('correct') or 
-                                        c_item.get('isCorrect') or 
-                                        c_item.get('right')
-                                    )
-                                else:
-                                    c_text = str(c_item)
-                                    is_corr = False
-                                    if answer_val is not None:
-                                        if str(answer_val).strip() == c_text.strip():
-                                            is_corr = True
-                                        elif isinstance(answer_val, int) and answer_val == idx:
-                                            is_corr = True
-                                        elif str(answer_val).strip().upper() == chr(65 + idx): # 'A', 'B', 'C', 'D'
-                                            is_corr = True
+                            q_text = (
+                                q_item.get('text') or 
+                                q_item.get('question_text') or 
+                                q_item.get('question') or 
+                                q_item.get('title') or 
+                                q_item.get('q')
+                            )
+                            if not q_text or not str(q_text).strip():
+                                continue
+                            
+                            q_text = clean_unicode_str(q_text)
+                            
+                            raw_choices = q_item.get('choices') or q_item.get('options') or q_item.get('answers')
+                            q_choices_list = []
+                            
+                            if isinstance(raw_choices, list) and len(raw_choices) > 0:
+                                answer_val = q_item.get('answer') or q_item.get('correct_answer') or q_item.get('correct_option') or q_item.get('correct')
                                 
-                                if c_text and str(c_text).strip():
-                                    q_choices_list.append((str(c_text).strip(), is_corr))
-                        # Case B: Direct option_a, option_b, option_c, option_d keys
-                        elif any(k in q_item for k in ['option_a', 'optionA', 'a', 'A']):
-                            opt_keys = [
-                                ('option_a', 'optionA', 'a', 'A'),
-                                ('option_b', 'optionB', 'b', 'B'),
-                                ('option_c', 'optionC', 'c', 'C'),
-                                ('option_d', 'optionD', 'd', 'D'),
-                            ]
-                            correct_marker = str(q_item.get('correct') or q_item.get('correct_option') or q_item.get('answer') or '').strip().upper()
-                            for idx, key_tuple in enumerate(opt_keys):
-                                opt_val = None
-                                for k in key_tuple:
-                                    if k in q_item:
-                                        opt_val = q_item[k]
-                                        break
-                                if opt_val and str(opt_val).strip():
-                                    letter = chr(65 + idx)
-                                    is_corr = (correct_marker == letter) or (correct_marker == str(idx)) or (correct_marker == str(opt_val).strip().upper())
-                                    q_choices_list.append((str(opt_val).strip(), is_corr))
-                        
-                        parsed_questions.append((q_text, q_choices_list))
-
-                    if parsed_questions:
-                        with transaction.atomic():
-                            choices_to_create = []
-                            for q_text, choices_list in parsed_questions:
-                                q_obj = Question.objects.create(quiz=self, text=q_text)
-                                for c_text, is_corr in choices_list:
-                                    choices_to_create.append(
-                                        Choice(
-                                            question_id=q_obj.id,
-                                            text=c_text,
-                                            is_correct=is_corr
+                                for idx, c_item in enumerate(raw_choices):
+                                    if isinstance(c_item, dict):
+                                        c_text = c_item.get('text') or c_item.get('option') or c_item.get('choice') or c_item.get('val')
+                                        is_corr = bool(
+                                            c_item.get('is_correct') or 
+                                            c_item.get('correct') or 
+                                            c_item.get('isCorrect') or 
+                                            c_item.get('right')
                                         )
-                                    )
-                            if choices_to_create:
-                                Choice.objects.bulk_create(choices_to_create, batch_size=1000)
+                                    else:
+                                        c_text = str(c_item)
+                                        is_corr = False
+                                        if answer_val is not None:
+                                            if str(answer_val).strip() == c_text.strip():
+                                                is_corr = True
+                                            elif isinstance(answer_val, int) and answer_val == idx:
+                                                is_corr = True
+                                            elif str(answer_val).strip().upper() == chr(65 + idx):
+                                                is_corr = True
+                                    
+                                    if c_text and str(c_text).strip():
+                                        q_choices_list.append((clean_unicode_str(c_text), is_corr))
+                            elif any(k in q_item for k in ['option_a', 'optionA', 'a', 'A']):
+                                opt_keys = [
+                                    ('option_a', 'optionA', 'a', 'A'),
+                                    ('option_b', 'optionB', 'b', 'B'),
+                                    ('option_c', 'optionC', 'c', 'C'),
+                                    ('option_d', 'optionD', 'd', 'D'),
+                                ]
+                                correct_marker = str(q_item.get('correct') or q_item.get('correct_option') or q_item.get('answer') or '').strip().upper()
+                                for idx, key_tuple in enumerate(opt_keys):
+                                    opt_val = None
+                                    for k in key_tuple:
+                                        if k in q_item:
+                                            opt_val = q_item[k]
+                                            break
+                                    if opt_val and str(opt_val).strip():
+                                        letter = chr(65 + idx)
+                                        is_corr = (correct_marker == letter) or (correct_marker == str(idx)) or (correct_marker == str(opt_val).strip().upper())
+                                        q_choices_list.append((clean_unicode_str(opt_val), is_corr))
+                            
+                            parsed_questions.append((q_text, q_choices_list))
 
-                # Clear the field after successful processing
-                Quiz.objects.filter(id=self.id).update(bulk_upload_json="")
-            except Exception as e:
-                print(f"Error processing Quiz bulk upload JSON: {e}")
+                        if parsed_questions:
+                            with transaction.atomic():
+                                choices_to_create = []
+                                for q_text, choices_list in parsed_questions:
+                                    q_obj = Question.objects.create(quiz=self, text=q_text)
+                                    for c_text, is_corr in choices_list:
+                                        choices_to_create.append(
+                                            Choice(
+                                                question_id=q_obj.id,
+                                                text=c_text,
+                                                is_correct=is_corr
+                                            )
+                                        )
+                                if choices_to_create:
+                                    Choice.objects.bulk_create(choices_to_create, batch_size=1000)
+
+                            Quiz.objects.filter(id=self.id).update(bulk_upload_json="")
+                except Exception as e:
+                    print(f"Error processing Quiz bulk upload JSON: {e}")
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions', db_index=True)
-    text = models.CharField(max_length=500) 
+    text = models.TextField() 
 
     def __str__(self):
         return f"{self.quiz.title} - {self.text[:50]}..."
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices', db_index=True)
-    text = models.CharField(max_length=200) 
+    text = models.TextField() 
     is_correct = models.BooleanField(default=False)
 
     def __str__(self):
@@ -377,68 +396,78 @@ class TopicName(models.Model):
         super().save(*args, **kwargs)
         if self.bulk_upload_json and self.bulk_upload_json.strip():
             import json
+            import ast
+            raw_json = self.bulk_upload_json.strip()
+            data = None
             try:
-                raw_json = self.bulk_upload_json.strip()
                 data = json.loads(raw_json)
-                if isinstance(data, dict):
-                    data = data.get('questions') or data.get('mcqs') or data.get('data') or [data]
-                
-                if isinstance(data, list):
-                    questions_objs = []
-                    for item in data:
-                        if not isinstance(item, dict):
-                            continue
-                        text = item.get('text') or item.get('question_text') or item.get('question') or ''
-                        if not text:
-                            continue
-                        
-                        choices = item.get('choices') or item.get('options') or item.get('answers') or []
-                        
-                        opt_a = opt_b = opt_c = opt_d = ""
-                        correct_opt = 'A'
-                        
-                        if isinstance(choices, list) and len(choices) >= 4:
-                            opt_a = choices[0]['text'] if isinstance(choices[0], dict) else str(choices[0])
-                            opt_b = choices[1]['text'] if isinstance(choices[1], dict) else str(choices[1])
-                            opt_c = choices[2]['text'] if isinstance(choices[2], dict) else str(choices[2])
-                            opt_d = choices[3]['text'] if isinstance(choices[3], dict) else str(choices[3])
+            except Exception:
+                try:
+                    data = ast.literal_eval(raw_json)
+                except Exception:
+                    data = None
+
+            if data:
+                try:
+                    if isinstance(data, dict):
+                        data = data.get('questions') or data.get('mcqs') or data.get('data') or [data]
+                    
+                    if isinstance(data, list) and len(data) > 0:
+                        questions_objs = []
+                        for item in data:
+                            if not isinstance(item, dict):
+                                continue
+                            text = item.get('text') or item.get('question_text') or item.get('question') or ''
+                            if not text:
+                                continue
                             
-                            answer_val = item.get('correct_option') or item.get('answer') or item.get('correct')
-                            for idx, c in enumerate(choices[:4]):
-                                is_c = False
-                                if isinstance(c, dict):
-                                    is_c = bool(c.get('is_correct') or c.get('correct'))
-                                elif answer_val is not None:
-                                    if str(answer_val).strip() == str(c).strip() or str(answer_val).strip().upper() == chr(65 + idx):
-                                        is_c = True
-                                if is_c:
-                                    correct_opt = chr(65 + idx)
-                        elif 'option_a' in item or 'optionA' in item or 'a' in item:
-                            opt_a = item.get('option_a') or item.get('optionA') or item.get('a') or ""
-                            opt_b = item.get('option_b') or item.get('optionB') or item.get('b') or ""
-                            opt_c = item.get('option_c') or item.get('optionC') or item.get('c') or ""
-                            opt_d = item.get('option_d') or item.get('optionD') or item.get('d') or ""
-                            correct_opt = str(item.get('correct_option') or item.get('correct') or item.get('answer') or 'A').strip().upper()
-                            if correct_opt not in ['A', 'B', 'C', 'D']:
-                                correct_opt = 'A'
-                        
-                        if text and opt_a and opt_b:
-                            questions_objs.append(TopicQuestion(
-                                topic=self,
-                                text=text,
-                                option_a=opt_a,
-                                option_b=opt_b,
-                                option_c=opt_c or "-",
-                                option_d=opt_d or "-",
-                                correct_option=correct_opt
-                            ))
-                    if questions_objs:
-                        with transaction.atomic():
-                            TopicQuestion.objects.bulk_create(questions_objs, batch_size=1000)
-                # Clear the field after successful upload
-                TopicName.objects.filter(id=self.id).update(bulk_upload_json="")
-            except Exception as e:
-                print(f"Error processing bulk upload JSON: {e}")
+                            choices = item.get('choices') or item.get('options') or item.get('answers') or []
+                            
+                            opt_a = opt_b = opt_c = opt_d = ""
+                            correct_opt = 'A'
+                            
+                            if isinstance(choices, list) and len(choices) >= 4:
+                                opt_a = choices[0]['text'] if isinstance(choices[0], dict) else str(choices[0])
+                                opt_b = choices[1]['text'] if isinstance(choices[1], dict) else str(choices[1])
+                                opt_c = choices[2]['text'] if isinstance(choices[2], dict) else str(choices[2])
+                                opt_d = choices[3]['text'] if isinstance(choices[3], dict) else str(choices[3])
+                                
+                                answer_val = item.get('correct_option') or item.get('answer') or item.get('correct')
+                                for idx, c in enumerate(choices[:4]):
+                                    is_c = False
+                                    if isinstance(c, dict):
+                                        is_c = bool(c.get('is_correct') or c.get('correct'))
+                                    elif answer_val is not None:
+                                        if str(answer_val).strip() == str(c).strip() or str(answer_val).strip().upper() == chr(65 + idx):
+                                            is_c = True
+                                    if is_c:
+                                        correct_opt = chr(65 + idx)
+                            elif 'option_a' in item or 'optionA' in item or 'a' in item:
+                                opt_a = item.get('option_a') or item.get('optionA') or item.get('a') or ""
+                                opt_b = item.get('option_b') or item.get('optionB') or item.get('b') or ""
+                                opt_c = item.get('option_c') or item.get('optionC') or item.get('c') or ""
+                                opt_d = item.get('option_d') or item.get('optionD') or item.get('d') or ""
+                                correct_opt = str(item.get('correct_option') or item.get('correct') or item.get('answer') or 'A').strip().upper()
+                                if correct_opt not in ['A', 'B', 'C', 'D']:
+                                    correct_opt = 'A'
+                            
+                            if text and opt_a and opt_b:
+                                questions_objs.append(TopicQuestion(
+                                    topic=self,
+                                    text=text,
+                                    option_a=opt_a,
+                                    option_b=opt_b,
+                                    option_c=opt_c or "-",
+                                    option_d=opt_d or "-",
+                                    correct_option=correct_opt
+                                ))
+                        if questions_objs:
+                            with transaction.atomic():
+                                TopicQuestion.objects.bulk_create(questions_objs, batch_size=1000)
+                            # Clear the field ONLY AFTER successful upload
+                            TopicName.objects.filter(id=self.id).update(bulk_upload_json="")
+                except Exception as e:
+                    print(f"Error processing bulk upload JSON: {e}")
 
 
 class TopicQuestion(models.Model):
