@@ -65,25 +65,32 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
   font-family: var(--font-main);
   background-color: var(--bg-color);
   color: var(--text-dark);
-
-  /* Rendering Optimizations */
+  overflow-x: hidden;
+  width: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Custom Premium Scrollbar */
+html {
+  scroll-behavior: smooth !important;
+}
+
+/* Custom Premium Scrollbar for Desktop & Hide on Mobile Scroll Containers */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -92,26 +99,20 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #cbd5e0;
-  /* light gray/muted */
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
-  /* changes to theme color on hover */
 }
 
-html {
-  scroll-behavior: auto !important;
-  overflow-x: hidden;
-  width: 100%;
-}
-
-/* Hardware acceleration for images and general buttery feel */
+/* Hardware acceleration for images & buttery mobile feel */
 img,
 svg {
   transform: translateZ(0);
   will-change: transform;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 #root {
@@ -120,13 +121,15 @@ svg {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
-/* Ensure all route wrappers span full height for sticky footer */
-#root>div {
+#root > div {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 h1,
@@ -148,31 +151,30 @@ a {
   color: var(--primary-dark);
   text-decoration: none;
   transition: var(--transition);
+  -webkit-tap-highlight-color: transparent;
 }
 
 a:hover {
   color: var(--primary);
 }
 
-/* Base Buttons */
-.btn-primary {
-  background-color: var(--primary);
-  color: var(--secondary);
-  font-weight: 600;
-  padding: 10px 20px;
-  border-radius: var(--radius-md);
-  border: none;
-  cursor: pointer;
-  transition: var(--transition);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+/* Base Buttons Touch Responsive */
+.btn-primary,
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-.btn-primary:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+.btn-primary:active,
+button:active,
+.cardDesign:active,
+.pyq-cardDesign:active,
+.govt-job-card:active,
+.hp-card:active,
+.hp-quick-card:active,
+.hp-resource-card:active {
+  transform: scale(0.97) translateZ(0) !important;
+  transition: transform 0.1s ease-out !important;
 }
 
 /* Animations */
@@ -180,7 +182,6 @@ a:hover {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
@@ -191,7 +192,6 @@ a:hover {
     opacity: 0;
     transform: translateY(20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -199,11 +199,11 @@ a:hover {
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
+  animation: fadeIn 0.4s ease-out forwards;
 }
 
 .animate-slide-up {
-  animation: slideUp 0.6s ease-out forwards;
+  animation: slideUp 0.4s ease-out forwards;
 }
 
 .hover-scale {
@@ -228,6 +228,7 @@ a:hover {
   justify-content: center;
   cursor: pointer;
   transition: var(--transition);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .theme-toggle-btn:hover {
@@ -236,7 +237,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   INTERACTIVE CARD SHIMMER & 3D MICRO-GLOW SYSTEM
+   INTERACTIVE CARD SHIMMER & ZERO-LAG 3D GPU GLOW SYSTEM
    ========================================================================== */
 .pyq-cardDesign,
 .cardDesign,
@@ -247,10 +248,12 @@ a:hover {
 .popular-test-card {
   position: relative;
   overflow: hidden !important;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-              box-shadow 0.35s ease,
-              border-color 0.35s ease !important;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease !important;
   will-change: transform, box-shadow;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Light Mode Shimmer Sweep */
@@ -299,39 +302,41 @@ a:hover {
   );
 }
 
-/* Trigger Shimmer Sweep & 3D Glow on Hover */
-.pyq-cardDesign:hover::before,
-.cardDesign:hover::before,
-.govt-job-card:hover::before,
-.hp-card:hover::before,
-.hp-quick-card:hover::before,
-.hp-resource-card:hover::before,
-.popular-test-card:hover::before {
-  left: 200%;
-  transition: left 0.85s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* Trigger Shimmer Sweep on Hover (Desktop Only for touch performance) */
+@media (hover: hover) {
+  .pyq-cardDesign:hover::before,
+  .cardDesign:hover::before,
+  .govt-job-card:hover::before,
+  .hp-card:hover::before,
+  .hp-quick-card:hover::before,
+  .hp-resource-card:hover::before,
+  .popular-test-card:hover::before {
+    left: 200%;
+    transition: left 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-.pyq-cardDesign:hover,
-.cardDesign:hover,
-.govt-job-card:hover,
-.hp-card:hover,
-.hp-quick-card:hover,
-.hp-resource-card:hover,
-.popular-test-card:hover {
-  transform: translateY(-8px) scale(1.018) !important;
-  border-color: var(--primary) !important;
-  box-shadow: 0 16px 36px -6px rgba(255, 179, 0, 0.25),
-              0 0 20px rgba(255, 179, 0, 0.2) !important;
-}
+  .pyq-cardDesign:hover,
+  .cardDesign:hover,
+  .govt-job-card:hover,
+  .hp-card:hover,
+  .hp-quick-card:hover,
+  .hp-resource-card:hover,
+  .popular-test-card:hover {
+    transform: translateY(-6px) scale(1.015) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 16px 32px -6px rgba(255, 179, 0, 0.22),
+                0 0 18px rgba(255, 179, 0, 0.15) !important;
+  }
 
-[data-theme='dark'] .pyq-cardDesign:hover,
-[data-theme='dark'] .cardDesign:hover,
-[data-theme='dark'] .govt-job-card:hover,
-[data-theme='dark'] .hp-card:hover,
-[data-theme='dark'] .hp-quick-card:hover,
-[data-theme='dark'] .hp-resource-card:hover,
-[data-theme='dark'] .popular-test-card:hover {
-  border-color: rgba(255, 179, 0, 0.75) !important;
-  box-shadow: 0 20px 42px -8px rgba(0, 0, 0, 0.7),
-              0 0 25px rgba(255, 179, 0, 0.35) !important;
+  [data-theme='dark'] .pyq-cardDesign:hover,
+  [data-theme='dark'] .cardDesign:hover,
+  [data-theme='dark'] .govt-job-card:hover,
+  [data-theme='dark'] .hp-card:hover,
+  [data-theme='dark'] .hp-quick-card:hover,
+  [data-theme='dark'] .hp-resource-card:hover,
+  [data-theme='dark'] .popular-test-card:hover {
+    border-color: rgba(255, 179, 0, 0.75) !important;
+    box-shadow: 0 18px 38px -8px rgba(0, 0, 0, 0.7),
+                0 0 22px rgba(255, 179, 0, 0.3) !important;
+  }
 }
