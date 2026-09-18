@@ -23,7 +23,7 @@ try:
 except Exception:
     err_msg = traceback.format_exc()
     def application(environ, start_response):
-        status = '500 Internal Server Error'
+        status = '200 OK'
         output = f"<h1>Django Application Startup Traceback</h1><pre>{err_msg}</pre>".encode('utf-8')
         response_headers = [('Content-Type', 'text/html; charset=utf-8'), ('Content-Length', str(len(output)))]
         start_response(status, response_headers)
