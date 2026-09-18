@@ -1,339 +1,502 @@
 /* ==========================================================================
-   PYQ CATEGORIES DASHBOARD - 3D RESPONSIVE STYLING
+   PYQ CATEGORIES DASHBOARD - MODERN ULTRA PREMIUM STYLING
    ========================================================================== */
 
 .pyq-categories {
     background-color: var(--bg-color);
-    padding: 4vh 4vw;
+    padding: 3.5vh 4vw;
     font-family: var(--font-main);
     transition: all 0.3s ease;
 }
 
-/* Header & Search Bar Controller */
+/* Header & Search Bar */
 .pyq-head-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 30px;
-    margin-bottom: 20px;
+    gap: 20px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
 }
 
-.pyq-head-section h1 {
-    width: 50%;
+.pyq-title-wrap h1 {
     font-weight: 800;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
     color: var(--secondary);
-    margin: 0;
+    margin: 0 0 6px 0;
     letter-spacing: -0.5px;
 }
 
-/* 3D-Inward Depth Shaded Input Search Box */
-.pyq-head-section input {
-    width: 35%;
-    min-width: 280px;
-    padding: 12px 20px 12px 45px;
-    background: var(--bg-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' class='bi bi-search'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0'/%3E%3C/svg%3E") no-repeat left 16px center;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    font-size: 14px;
+.pyq-subtitle {
+    margin: 0;
+    font-size: 0.92rem;
     color: var(--text-muted);
-    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.05), 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+}
+
+/* Glassmorphic Search Bar */
+.pyq-head-section .search-box-wrapper {
+    position: relative;
+    min-width: 300px;
+    flex-shrink: 0;
+}
+
+.pyq-head-section input {
+    width: 100%;
+    padding: 13px 20px 13px 46px;
+    background: var(--bg-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FFB300' class='bi bi-search'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0'/%3E%3C/svg%3E") no-repeat left 16px center;
+    border: 1.5px solid var(--border-color);
+    border-radius: 14px;
+    font-size: 14px;
+    color: var(--text-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .pyq-head-section input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.15), 0 10px 15px -3px rgba(255, 179, 0, 0.1);
+    box-shadow: 0 0 0 4px rgba(255, 179, 0, 0.2), 0 8px 20px rgba(255, 179, 0, 0.12);
     transform: translateY(-2px);
 }
 
-/* Main Core Layout Wrapper Block */
+/* Core Layout Wrapper */
 .pyq-sublink-cards {
-    background-color: var(--bg-white);
-    margin: 3vh 0;
-    padding: 30px;
     display: flex;
-    gap: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    gap: 28px;
+    align-items: flex-start;
 }
 
-/* Category Sidebar Links Menu */
+/* Sidebar Links Menu */
 .pyq-subcard {
-    width: 280px;
+    width: 250px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
+    background: var(--bg-white);
+    padding: 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.04);
 }
 
-.pyq-subcard p {
-    padding: 12px 18px;
-    font-size: 1rem;
+.sidebar-label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    padding: 4px 12px 8px 12px;
+    margin: 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.pyq-subcard p:not(.sidebar-label) {
+    padding: 11px 15px;
+    font-size: 0.95rem;
     font-weight: 600;
     margin: 0;
     color: var(--text-muted);
-    border-radius: 10px;
-    transition: all 0.25s ease;
+    border-radius: 12px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.pyq-subcard p:hover:not(.active-tab) {
+.pyq-subcard .tab-icon {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.pyq-subcard .cat-count {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.05);
+    font-weight: 700;
+}
+
+.pyq-subcard p:not(.sidebar-label):hover:not(.active-tab) {
     color: var(--primary-dark);
-    background-color: var(--bg-color);
+    background-color: var(--primary-light);
     transform: translateX(4px);
 }
 
+/* Active Category Pill */
 .pyq-subcard p.active-tab {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
-    color: var(--secondary) !important;
-    box-shadow: 0 4px 12px rgba(255, 179, 0, 0.35), 
-                inset 0 -3px 0 rgba(0, 0, 0, 0.2) !important;
+    background: linear-gradient(135deg, #FFB300 0%, #FF9800 100%) !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    box-shadow: 0 6px 16px rgba(255, 179, 0, 0.35) !important;
     transform: scale(1.02);
 }
 
-.pyq-subcard p:first-child:not(.active-tab) {
-    background-color: transparent;
-    color: var(--text-muted);
+.pyq-subcard p.active-tab .cat-count {
+    background: rgba(15, 23, 42, 0.15) !important;
+    color: #0f172a !important;
 }
 
-/* Grid Layout Dashboard for PYQ Cards */
+/* Grid Layout Dashboard */
 .pyq-cards-portion {
-    background-color: var(--bg-color);
     flex-grow: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 25px;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.04);
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    width: 100%;
 }
 
-/* 3D Isometric Elevation PYQ Card Item */
+/* Modern Glassmorphic PYQ Card Item */
 .pyq-cardDesign {
-    padding: 20px;
-    border-radius: 16px;
-    background: linear-gradient(185deg, var(--primary-light) 0%, var(--bg-white) 35%, var(--bg-white) 100%);
+    padding: 24px 22px 20px;
+    border-radius: 22px;
+    background: var(--bg-white);
     border: 1px solid var(--border-color);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 10px 24px -5px rgba(0, 0, 0, 0.04), 0 2px 6px -2px rgba(0, 0, 0, 0.02);
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    gap: 16px;
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
-    min-height: 200px;
+    min-height: 220px;
 }
 
 .pyq-cardDesign:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 25px -5px rgba(30, 41, 59, 0.1), 0 10px 10px -5px rgba(255, 179, 0, 0.1);
+    transform: translateY(-8px) scale(1.015);
     border-color: var(--primary);
+    box-shadow: 0 22px 35px -8px rgba(255, 179, 0, 0.22), 0 0 20px rgba(255, 179, 0, 0.1);
+}
+
+/* Top Bar inside PYQ Card */
+.pyq-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pyq-icon-ring {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(255, 179, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
 }
 
 .pyq-cardDesign .year-badge {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: var(--bg-color);
-    padding: 4px 10px;
-    font-size: 11px;
+    background: var(--primary-light);
+    border: 1px solid rgba(255, 179, 0, 0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11.5px;
     font-weight: 700;
     color: var(--primary-dark);
-    border-radius: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    z-index: 2;
 }
 
-.pyq-cardDesign #heading {
-    font-size: 1.15rem;
-    font-weight: 700;
+/* Body Content */
+.pyq-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.pyq-card-title {
+    font-size: 1.2rem;
+    font-weight: 800;
     color: var(--secondary);
-    margin: 10px 0 15px;
-    line-height: 1.4;
-    padding-right: 85px;
+    margin: 0;
+    line-height: 1.35;
+    letter-spacing: -0.3px;
     word-break: break-word;
 }
 
+.pyq-sub-tag {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Actions Buttons */
 .pyq-actions {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: auto;
+    margin-top: 6px;
 }
 
 .btn-pyq-paper {
     width: 100%;
-    padding: 10px 0;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    min-height: 44px;
+    padding: 11px 18px;
+    background: linear-gradient(135deg, #FFB300 0%, #FF9800 100%);
     border: none;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 13px;
-    color: var(--secondary);
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: #0f172a !important;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(255, 179, 0, 0.2);
+    box-shadow: 0 4px 14px rgba(255, 179, 0, 0.35);
     transition: all 0.25s ease;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-pyq-paper .btn-icon {
+    font-size: 1rem;
+    transition: transform 0.25s ease;
 }
 
 .btn-pyq-paper:hover {
-    background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary-dark) 100%);
-    box-shadow: 0 6px 14px rgba(255, 179, 0, 0.4);
-    transform: translateY(-1px);
-    color: var(--secondary);
+    background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+    box-shadow: 0 8px 22px rgba(255, 179, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-pyq-paper:hover .btn-icon {
+    transform: translateX(3px) translateY(-2px);
 }
 
 .btn-pyq-answer {
     width: 100%;
-    padding: 10px 0;
-    background: var(--bg-white);
+    min-height: 42px;
+    padding: 10px 18px;
+    background: rgba(0, 0, 0, 0.04);
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 14px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 0.88rem;
     color: var(--text-dark);
     cursor: pointer;
     transition: all 0.25s ease;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .btn-pyq-answer:hover {
     border-color: var(--primary);
-    background-color: var(--bg-color);
+    background-color: var(--primary-light);
     color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Empty State */
+.empty-pyq-state {
+    grid-column: 1 / -1;
+    padding: 50px 20px;
+    text-align: center;
+    background: var(--bg-white);
+    border-radius: 20px;
+    border: 1px dashed var(--border-color);
+}
+
+.empty-pyq-state .empty-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 12px;
+    display: block;
+}
+
+.empty-pyq-state h3 {
+    margin: 0 0 6px 0;
+    font-size: 1.2rem;
+}
+
+.empty-pyq-state p {
+    margin: 0;
+    font-size: 0.9rem;
 }
 
 /* ==========================================================================
-   BREAKPOINTS - BULLETPROOF FLUID MEDIA QUERIES
+   DARK THEME STYLING
+   ========================================================================== */
+
+[data-theme='dark'] .pyq-categories {
+    background-color: #080d1a;
+}
+
+[data-theme='dark'] .pyq-title-wrap h1 {
+    color: #ffffff !important;
+}
+
+[data-theme='dark'] .pyq-subtitle {
+    color: #94a3b8;
+}
+
+[data-theme='dark'] .pyq-head-section input {
+    background-color: #111a2e;
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme='dark'] .pyq-subcard {
+    background: #111a2e;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .sidebar-label {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+}
+
+[data-theme='dark'] .pyq-subcard p:not(.sidebar-label) {
+    color: #cbd5e1;
+}
+
+[data-theme='dark'] .pyq-subcard .cat-count {
+    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+}
+
+[data-theme='dark'] .pyq-subcard p:not(.sidebar-label):hover:not(.active-tab) {
+    background-color: rgba(255, 179, 0, 0.15);
+    color: #FFB300;
+}
+
+[data-theme='dark'] .pyq-cardDesign {
+    background: linear-gradient(155deg, #131d33 0%, #0c1424 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme='dark'] .pyq-cardDesign:hover {
+    border-color: rgba(255, 179, 0, 0.6);
+    box-shadow: 0 22px 42px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 179, 0, 0.25);
+}
+
+[data-theme='dark'] .pyq-cardDesign .year-badge {
+    background: rgba(255, 179, 0, 0.15);
+    border-color: rgba(255, 179, 0, 0.3);
+    color: #FFB300;
+}
+
+[data-theme='dark'] .pyq-card-title {
+    color: #ffffff !important;
+}
+
+[data-theme='dark'] .pyq-sub-tag {
+    color: #cbd5e1;
+}
+
+[data-theme='dark'] .btn-pyq-paper {
+    color: #0f172a !important;
+    box-shadow: 0 4px 18px rgba(255, 179, 0, 0.4);
+}
+
+[data-theme='dark'] .btn-pyq-answer {
+    background: rgba(255, 255, 255, 0.06);
+    color: #cbd5e1;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme='dark'] .btn-pyq-answer:hover {
+    background: rgba(255, 179, 0, 0.15);
+    color: #FFB300;
+    border-color: rgba(255, 179, 0, 0.3);
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
    ========================================================================== */
 
 @media screen and (max-width: 1024px) {
     .pyq-sublink-cards {
         flex-direction: column;
-        padding: 20px;
+        gap: 20px;
     }
 
     .pyq-subcard {
         width: 100%;
         flex-direction: row;
         overflow-x: auto;
-        padding-bottom: 10px;
+        padding: 8px;
+        border-radius: 16px;
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
     .pyq-subcard::-webkit-scrollbar {
-        height: 5px;
+        display: none;
     }
 
-    .pyq-subcard::-webkit-scrollbar-thumb {
-        background-color: var(--primary-light);
-        border-radius: 10px;
+    .sidebar-label {
+        display: none;
     }
 
-    .pyq-subcard p {
+    .pyq-subcard p:not(.sidebar-label) {
         white-space: nowrap;
-        font-size: 0.95rem;
+        font-size: 0.88rem;
         padding: 8px 16px;
+        border-radius: 30px;
+        flex-shrink: 0;
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 640px) {
+    .pyq-categories {
+        padding: 2.5vh 3.5vw;
+    }
+
     .pyq-head-section {
         flex-direction: column;
         align-items: stretch;
-        gap: 15px;
+        gap: 14px;
+        margin-bottom: 18px;
     }
 
-    .pyq-head-section h1 {
+    .pyq-title-wrap h1 {
+        font-size: 1.45rem;
+    }
+
+    .pyq-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .pyq-head-section .search-box-wrapper {
+        min-width: 100%;
         width: 100%;
-        text-align: center;
-        font-size: 1.6rem;
     }
 
     .pyq-head-section input {
-        width: 100%;
-        min-width: 100%;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .pyq-categories {
-        padding: 3vh 3vw;
-    }
-
-    .pyq-sublink-cards {
-        padding: 12px;
-        margin: 2vh 0;
+        padding: 11px 16px 11px 42px;
+        font-size: 13.5px;
+        border-radius: 12px;
     }
 
     .pyq-cards-portion {
-        padding: 15px 10px;
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 16px;
     }
 
     .pyq-cardDesign {
-        max-width: 100%;
+        padding: 18px 16px 16px;
+        border-radius: 18px;
+        gap: 14px;
     }
 
-    .pyq-head-section h1 {
-        font-size: 1.4rem;
+    .pyq-card-title {
+        font-size: 1.15rem;
     }
-}
-
-/* Dark Theme Rich Aesthetics & High Contrast Typography */
-[data-theme='dark'] .pyq-head-section h1 {
-    color: #ffffff !important;
-}
-
-[data-theme='dark'] .pyq-head-section input {
-    background-color: #131c31;
-    color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.15);
-}
-
-[data-theme='dark'] .pyq-cardDesign {
-    background: linear-gradient(165deg, rgba(255, 179, 0, 0.12) 0%, #131c31 40%, #0d1527 100%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-}
-
-[data-theme='dark'] .pyq-cardDesign:hover {
-    border-color: var(--primary);
-    box-shadow: 0 14px 35px rgba(255, 179, 0, 0.25), 0 0 20px rgba(255, 179, 0, 0.15);
-}
-
-[data-theme='dark'] .pyq-cardDesign #heading {
-    color: #ffffff !important;
-    font-weight: 800;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-[data-theme='dark'] .pyq-cardDesign .year-badge {
-    background-color: rgba(255, 179, 0, 0.2);
-    color: #ffca28;
-    border: 1px solid rgba(255, 202, 40, 0.3);
-}
-
-[data-theme='dark'] .btn-pyq-paper {
-    color: #0f172a !important;
-    font-weight: 800;
-    box-shadow: 0 4px 14px rgba(255, 179, 0, 0.35);
-}
-
-[data-theme='dark'] .btn-pyq-answer {
-    background: rgba(255, 255, 255, 0.06);
-    color: #e2e8f0;
-    border-color: rgba(255, 255, 255, 0.15);
-}
-
-[data-theme='dark'] .btn-pyq-answer:hover {
-    background: rgba(255, 179, 0, 0.15);
-    color: #ffca28;
-    border-color: #ffb300;
 }
