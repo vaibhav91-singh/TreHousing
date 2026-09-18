@@ -121,6 +121,38 @@ def clean_unicode_str(val):
     s = s.replace('–', '-').replace('—', '-').replace('…', '...')
     return s.strip()
 
+def safe_parse_json(raw_str):
+    if not raw_str or not str(raw_str).strip():
+        return None
+    raw_str = str(raw_str).strip()
+    import json
+    import ast
+    import re
+
+    try:
+        return json.loads(raw_str)
+    except Exception:
+        pass
+
+    try:
+        fixed_str = re.sub(r'\\([a-zA-Z]+)', r'\\\\\1', raw_str)
+        return json.loads(fixed_str)
+    except Exception:
+        pass
+
+    try:
+        fixed_str2 = re.sub(r'\\(?![/"\\bfnrtu])', r'\\\\', raw_str)
+        return json.loads(fixed_str2)
+    except Exception:
+        pass
+
+    try:
+        return ast.literal_eval(raw_str)
+    except Exception:
+        pass
+
+    return None
+
 class Quiz(models.Model):
     category = models.CharField(max_length=100, default="General") 
     
@@ -150,18 +182,7 @@ class Quiz(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.bulk_upload_json and self.bulk_upload_json.strip():
-            import json
-            import ast
-            raw_json = self.bulk_upload_json.strip()
-            data = None
-            try:
-                data = json.loads(raw_json)
-            except Exception:
-                try:
-                    data = ast.literal_eval(raw_json)
-                except Exception:
-                    data = None
-
+            data = safe_parse_json(self.bulk_upload_json)
             if data:
                 try:
                     if isinstance(data, dict):
@@ -395,18 +416,7 @@ class TopicName(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.bulk_upload_json and self.bulk_upload_json.strip():
-            import json
-            import ast
-            raw_json = self.bulk_upload_json.strip()
-            data = None
-            try:
-                data = json.loads(raw_json)
-            except Exception:
-                try:
-                    data = ast.literal_eval(raw_json)
-                except Exception:
-                    data = None
-
+            data = safe_parse_json(self.bulk_upload_json)
             if data:
                 try:
                     if isinstance(data, dict):
