@@ -5,10 +5,16 @@ import './FooterSec.css';
 
 export default function FooterSec() {
   const navigate = useNavigate();
+  const [openSection, setOpenSection] = React.useState(null);
+
   const redirectHome = () => navigate("/");
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const toggleSection = (sec) => {
+    setOpenSection(prev => prev === sec ? null : sec);
   };
 
   return (
@@ -83,9 +89,12 @@ export default function FooterSec() {
         </div>
         
         {/* Column 1: Navigation */}
-        <div className="hp-footer-links">
-          <h4>Explore Platform</h4>
-          <ul>
+        <div className={`hp-footer-links ${openSection === 'explore' ? 'is-open' : ''}`}>
+          <h4 onClick={() => toggleSection('explore')}>
+            Explore Platform
+            <i className="bi bi-chevron-down mobile-accordion-arrow"></i>
+          </h4>
+          <ul className="footer-links-list">
             <li><Link to="/"><i className="bi bi-chevron-right link-arrow"></i> Home</Link></li>
             <li><Link to="/study-materials"><i className="bi bi-chevron-right link-arrow"></i> Study Materials</Link></li>
             <li><Link to="/testseries"><i className="bi bi-chevron-right link-arrow"></i> Free Test Series</Link></li>
@@ -95,9 +104,12 @@ export default function FooterSec() {
         </div>
 
         {/* Column 2: Solved Papers */}
-        <div className="hp-footer-links">
-          <h4>Solved Papers</h4>
-          <ul>
+        <div className={`hp-footer-links ${openSection === 'pyq' ? 'is-open' : ''}`}>
+          <h4 onClick={() => toggleSection('pyq')}>
+            Solved Papers
+            <i className="bi bi-chevron-down mobile-accordion-arrow"></i>
+          </h4>
+          <ul className="footer-links-list">
             <li><Link to="/PYQ?course_id=1&sub_courses=1"><i className="bi bi-chevron-right link-arrow"></i> BPSC TRE 1.0 Papers</Link></li>
             <li><Link to="/PYQ?course_id=1&sub_courses=2"><i className="bi bi-chevron-right link-arrow"></i> BPSC TRE 2.0 Papers</Link></li>
             <li><Link to="/PYQ?course_id=1&sub_courses=3"><i className="bi bi-chevron-right link-arrow"></i> BPSC TRE 3.0 Papers</Link></li>
@@ -106,9 +118,12 @@ export default function FooterSec() {
         </div>
         
         {/* Column 3: Syllabus & Career */}
-        <div className="hp-footer-links">
-          <h4>Syllabus & Career</h4>
-          <ul>
+        <div className={`hp-footer-links ${openSection === 'syllabus' ? 'is-open' : ''}`}>
+          <h4 onClick={() => toggleSection('syllabus')}>
+            Syllabus & Career
+            <i className="bi bi-chevron-down mobile-accordion-arrow"></i>
+          </h4>
+          <ul className="footer-links-list">
             <li><Link to="/syllabus?course_id=1&subject_id=17"><i className="bi bi-chevron-right link-arrow"></i> BPSC TRE (Primary 1-5)</Link></li>
             <li><Link to="/syllabus?course_id=1&subject_id=16"><i className="bi bi-chevron-right link-arrow"></i> BPSC TRE (Middle 6-8)</Link></li>
             <li><Link to="/syllabus?course_id=1&subject_id=15"><i className="bi bi-chevron-right link-arrow"></i> BPSC TRE (Secondary 9-10)</Link></li>
