@@ -84,12 +84,12 @@ export default function StudyMaterialCategories() {
               className="sm-exam-card"
               onClick={() => { setSelectedExam(exam); setSearchTerm(''); }}
             >
-              <div className="sm-exam-icon">
+              <div className="sm-exam-icon-wrapper">
                 <i className="bi bi-journal-bookmark-fill"></i>
               </div>
               <div className="sm-exam-title">{exam.name}</div>
-              <div style={{color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '10px'}}>
-                {exam.materials_subjects?.length || 0} Subjects
+              <div className="sm-subject-badge">
+                <i className="bi bi-book"></i> {exam.materials_subjects?.length || 0} Subjects
               </div>
             </div>
           ))}
