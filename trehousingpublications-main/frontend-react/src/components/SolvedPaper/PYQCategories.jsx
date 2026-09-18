@@ -13,7 +13,7 @@ const formatPaperTitle = (title) => {
   return trimmed.replace(/\b\w/g, c => c.toUpperCase());
 };
 
-// Smart Auto-Detect PYQ Icon Meta
+// Smart Auto-Detect PYQ Vector Icon Meta
 const getPYQIconMeta = (title = '', subject = '') => {
   const text = `${title} ${subject}`.toLowerCase();
   
@@ -139,36 +139,43 @@ export default function PYQCategories() {
               const iconMeta = getPYQIconMeta(item.title, item.subject_title);
               return (
                 <div className="pyq-cardDesign" key={item.id}>
-                  <div className="pyq-card-top">
+                  <div className="pyq-card-top-bar">
                     <div 
-                      className="pyq-icon-ring"
+                      className="pyq-logo-ring"
                       style={{ 
                         backgroundColor: iconMeta.bg, 
                         borderColor: iconMeta.border 
                       }}
                     >
-                      <i className={`bi ${iconMeta.icon}`} style={{ color: iconMeta.color, fontSize: '1.3rem' }}></i>
+                      <i className={`bi ${iconMeta.icon}`} style={{ color: iconMeta.color, fontSize: '1.4rem' }}></i>
                     </div>
-                    {item.year && <span className="year-badge"><i className="bi bi-calendar-event me-1"></i> Year: {item.year}</span>}
+                    {item.year && (
+                      <span className="pyq-year-pill">
+                        <i className="bi bi-calendar-event me-1"></i> {item.year}
+                      </span>
+                    )}
                   </div>
 
                   <div className="pyq-card-body">
                     <h3 className="pyq-card-title">{formatPaperTitle(item.title)}</h3>
                     {item.subject_title && (
-                      <span className="pyq-sub-tag"><i className="bi bi-tag-fill me-1"></i> {item.subject_title}</span>
+                      <div className="pyq-sub-chip">
+                        <i className="bi bi-tag-fill me-1"></i>
+                        <span>{item.subject_title}</span>
+                      </div>
                     )}
                   </div>
 
-                  <div className="pyq-actions">
+                  <div className="pyq-card-footer">
                     {item.paper_link && (
                       <a 
                         href={item.paper_link} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="btn-pyq-paper"
+                        className="btn-pyq-main"
                       >
                         <span>View Question Paper</span>
-                        <i className="bi bi-box-arrow-up-right btn-icon"></i>
+                        <i className="bi bi-arrow-right-short btn-icon"></i>
                       </a>
                     )}
                     {item.answer_key_link && (
@@ -176,7 +183,7 @@ export default function PYQCategories() {
                         href={item.answer_key_link} 
                         target="_blank" 
                         rel="noopener noreferrer" 
-                        className="btn-pyq-answer"
+                        className="btn-pyq-sub"
                       >
                         <span>Official Answer Key</span>
                         <i className="bi bi-key-fill btn-icon"></i>
