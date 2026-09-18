@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { extractArrayData } from '../../apiConfig.js';
 import SkeletonCard from '../common/SkeletonCard.jsx';
+import JobCard from '../JobVacancy/JobCard.jsx';
 
 export default function ActiveRecruitmentSection() {
   const [jobs, setJobs] = useState([]);
@@ -32,9 +33,11 @@ export default function ActiveRecruitmentSection() {
 
   return (
     <section className="hp-section">
-      <div className="hp-section-title" style={{ justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>Active Recruitment</div>
-        <a href="/jobs" style={{ fontSize: '0.875rem', color: 'var(--hp-primary)', textDecoration: 'none', border: '1px solid rgba(250, 204, 21, 0.3)', padding: '0.25rem 0.75rem', borderRadius: '9999px', backgroundColor: 'rgba(250, 204, 21, 0.1)' }}>Explore All</a>
+      <div className="hp-section-header">
+        <div className="hp-section-title">Active Recruitment</div>
+        <a href="/jobs" className="hp-explore-btn">
+          Explore All <i className="bi bi-arrow-right"></i>
+        </a>
       </div>
 
       {loading ? (
@@ -63,35 +66,9 @@ export default function ActiveRecruitmentSection() {
         <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--hp-text-muted)' }}>No active recruitments at the moment.</div>
       ) : (
         <div className="hp-jobs-grid">
-          {jobs.map((job) => {
-            // Determine badge based on job data or randomly for design
-            const isClosingSoon = new Date(job.last_date).getTime() - new Date().getTime() < 7 * 24 * 60 * 60 * 1000;
-            return (
-              <div key={job.id} className="hp-card">
-                <div className="hp-job-header">
-                  <div className="hp-job-icon"><i className="bi bi-briefcase"></i></div>
-                  {isClosingSoon ? (
-                    <span className="hp-badge hp-badge-closing">Closing Soon</span>
-                  ) : (
-                    <span className="hp-badge hp-badge-new">New Opening</span>
-                  )}
-                </div>
-                <div className="hp-job-title">{job.title}</div>
-                <div className="hp-job-desc">{job.description}</div>
-                <div className="hp-job-footer">
-                  <div className="hp-job-meta">
-                    <div>Last Date</div>
-                    <strong>{job.last_date ? new Date(job.last_date).toLocaleDateString() : 'N/A'}</strong>
-                  </div>
-                  <div className="hp-job-meta" style={{ textAlign: 'center' }}>
-                    <div>Vacancies</div>
-                    <strong>{job.vacancies || 'N/A'}</strong>
-                  </div>
-                  <a href={`/job/${job.id}`} className="hp-btn hp-btn-secondary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>Details</a>
-                </div>
-              </div>
-            );
-          })}
+          {jobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
         </div>
       )}
     </section>
