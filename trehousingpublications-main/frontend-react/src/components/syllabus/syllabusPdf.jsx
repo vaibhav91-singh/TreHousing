@@ -57,7 +57,7 @@ export default function SyllabusPdf() {
 
       // 6. Process the items for viewing and downloading
       const formatted = syllabiList.map((item) => {
-        const rawLink = item.pdf_link || item.file_url || item.api_link || `/api/v1/?course_id=${courseId}&subject_id=${subjectId}&syllabus=${encodeURIComponent(item.filename)}`;
+        const rawLink = item.pdf_link || item.api_link || item.file_url || `/api/v1/?course_id=${courseId}&subject_id=${subjectId}&syllabus=${encodeURIComponent(item.filename)}`;
         
         let viewLink = rawLink;
         let downloadLink = rawLink;

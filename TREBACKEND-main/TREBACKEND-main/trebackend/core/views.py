@@ -72,8 +72,24 @@ def course_api(request):
         try:
             if hasattr(subject.pdf_link, 'path') and os.path.exists(subject.pdf_link.path):
                 file_obj = open(subject.pdf_link.path, 'rb')
-            else:
-                file_obj = subject.pdf_link.open('rb')
+                response = FileResponse(file_obj, content_type='application/pdf')
+                response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
+                return response
+        except Exception:
+            pass
+
+        try:
+            full_media_path = os.path.join(settings.MEDIA_ROOT, subject.pdf_link.name)
+            if os.path.exists(full_media_path):
+                file_obj = open(full_media_path, 'rb')
+                response = FileResponse(file_obj, content_type='application/pdf')
+                response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
+                return response
+        except Exception:
+            pass
+
+        try:
+            file_obj = subject.pdf_link.open('rb')
             response = FileResponse(file_obj, content_type='application/pdf')
             response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
             return response
@@ -136,6 +152,16 @@ def course_api(request):
                         return response
                 except Exception as e:
                     print(f"Error serving by path: {e}")
+
+                try:
+                    full_media_path = os.path.join(settings.MEDIA_ROOT, matched_syllabus.file.name)
+                    if os.path.exists(full_media_path):
+                        file_obj = open(full_media_path, 'rb')
+                        response = FileResponse(file_obj, content_type='application/pdf')
+                        response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
+                        return response
+                except Exception as e:
+                    print(f"Error serving by MEDIA_ROOT join: {e}")
 
                 try:
                     file_obj = matched_syllabus.file.open('rb')
