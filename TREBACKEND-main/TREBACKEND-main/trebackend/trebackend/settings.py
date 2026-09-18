@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+# Use cookie-based sessions (saves DB queries and RAM vs database sessions)
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_HTTPONLY = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.gzip.GZipMiddleware',
@@ -111,7 +115,7 @@ if DB_NAME and DB_USER:
                 'charset': 'utf8mb4',
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             },
-            'CONN_MAX_AGE': 60,
+            'CONN_MAX_AGE': 0,  # Don't keep persistent DB connections (saves RAM on shared hosting)
         }
     }
 elif os.getenv('DATABASE_URL'):
@@ -158,6 +162,9 @@ else:
         "default": {
             "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
             "LOCATION": "unique-snowflake",
+            "OPTIONS": {
+                "MAX_ENTRIES": 500,  # Cap cache entries to prevent unbounded RAM growth
+            }
         }
     }
 
@@ -223,3 +230,32 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# ============================================================
+# RAM OPTIMIZATION FOR SHARED HOSTING
+# ============================================================
+
+# Limit upload size to prevent large file uploads eating RAM
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB max
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024   # 5 MB before writing to disk
+
+# Disable verbose logging in production to save RAM
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'handlers': {
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['null'],
+            'level': 'CRITICAL',
+        },
+        'django.request': {
+            'handlers': ['null'],
+            'level': 'CRITICAL',
+        },
+    },
+}

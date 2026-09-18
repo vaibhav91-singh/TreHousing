@@ -80,6 +80,17 @@ class QuizSerializer(serializers.ModelSerializer):
         model = Quiz
         fields = ['id', 'title', 'description', 'subject', 'questions', 'category', 'duration_minutes', 'display_questions_limit']
 
+# Lightweight serializer for quiz listing (NO questions loaded = massive RAM save)
+class QuizListSerializer(serializers.ModelSerializer):
+    question_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Quiz
+        fields = ['id', 'title', 'description', 'subject', 'category', 'duration_minutes', 'display_questions_limit', 'question_count']
+
+    def get_question_count(self, obj):
+        return obj.questions.count()
+
 
 # ==========================================================================
 # NEW FEATURE: CLOUD-LINKED SOLVED PAPERS SERIALIZER

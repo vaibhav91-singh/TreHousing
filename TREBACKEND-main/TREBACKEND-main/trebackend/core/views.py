@@ -22,7 +22,7 @@ from .models import (
 
 # Serializers Import
 from .serializers import (
-    QuizSerializer, SolvedPaperSerializer, JobVacancySerializer, 
+    QuizSerializer, QuizListSerializer, SolvedPaperSerializer, JobVacancySerializer, 
     RecentUpdateSerializer, TopicExamSerializer, TopicExamLightSerializer,
     TopicQuestionSerializer, StudyMaterialExamSerializer
 )
@@ -363,14 +363,14 @@ def quiz_api(request):
     cached_payload = cache.get(cache_key)
     if not cached_payload:
         if subject_id:
-            quizzes = Quiz.objects.defer('bulk_upload_json').filter(subject_id=subject_id).prefetch_related('questions__choices')
+            quizzes = Quiz.objects.defer('bulk_upload_json').filter(subject_id=subject_id)
         else:
-            quizzes = Quiz.objects.defer('bulk_upload_json').prefetch_related('questions__choices').all()
-        cached_payload = QuizSerializer(quizzes, many=True).data
+            quizzes = Quiz.objects.defer('bulk_upload_json').all()
+        # Use lightweight serializer for listing (don't load all questions into RAM)
+        cached_payload = QuizListSerializer(quizzes, many=True).data
         cache.set(cache_key, cached_payload, 300)
 
-    shuffled_data = shuffle_quiz_data(cached_payload)
-    return Response(shuffled_data)
+    return Response(cached_payload)
 
 
 @cache_page(60 * 5)
