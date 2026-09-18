@@ -9,5 +9,6 @@ django-cors-headers==3.10.1
 Pillow==8.4.0
 whitenoise==6.6.0
 PyMySQL>=1.0.2
+sentry-sdk>=2.0.0
 
 

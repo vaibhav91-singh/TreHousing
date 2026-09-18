@@ -12,9 +12,22 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Sentry Backend Error Tracking Setup
+SENTRY_DSN = os.getenv('SENTRY_DSN', 'https://870cd1d478d592a0f95070471db79a12@o4512107576950784.ingest.us.sentry.io/4512107585470464')
+
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+        send_default_pii=True,
+    )
 
 
 # Quick-start development settings - unsuitable for production
