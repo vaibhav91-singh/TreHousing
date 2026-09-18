@@ -51,6 +51,76 @@
   line-height: 1.6;
 }
 
+/* Job Category Filter Tabs */
+.job-tabs-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.job-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-white);
+  color: var(--text-heading);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.job-tab-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.job-tab-btn.active {
+  background: var(--primary);
+  color: #0f172a;
+  border-color: var(--primary);
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(255, 179, 0, 0.35);
+}
+
+.tab-icon {
+  font-size: 16px;
+}
+
+.tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.08);
+  color: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+  min-width: 20px;
+}
+
+.job-tab-btn.active .tab-badge {
+  background: rgba(15, 23, 42, 0.2);
+  color: #0f172a;
+}
+
+.job-category-block {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Section Headers */
 .section-header {
   display: flex;
@@ -266,4 +336,27 @@
 [data-theme='dark'] .update-icon-wrapper {
   background-color: rgba(255, 255, 255, 0.08);
   color: #ffca28;
+}
+
+[data-theme='dark'] .job-tab-btn {
+  background: #111a2e;
+  color: #e2e8f0;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme='dark'] .job-tab-btn:hover {
+  border-color: #ffca28;
+  color: #ffffff;
+}
+
+[data-theme='dark'] .job-tab-btn.active {
+  background: #ffb300;
+  color: #0f172a;
+  border-color: #ffb300;
+  box-shadow: 0 4px 20px rgba(255, 179, 0, 0.4);
+}
+
+[data-theme='dark'] .job-tab-btn.active .tab-badge {
+  background: rgba(15, 23, 42, 0.25);
+  color: #0f172a;
 }

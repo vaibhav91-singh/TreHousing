@@ -11,6 +11,7 @@ const JobPage = () => {
   const [updates, setUpdates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('ALL'); // 'ALL', 'GOVT', 'PRIVATE'
 
   useEffect(() => {
     let isMounted = true;
@@ -59,6 +60,8 @@ const JobPage = () => {
     return () => { isMounted = false; };
   }, []);
 
+  const totalJobsCount = govtJobs.length + privateJobs.length;
+
   return (
     <div className="job-page-wrapper">
       <div className="job-page-container">
@@ -69,45 +72,82 @@ const JobPage = () => {
             Your personalized gateway to civil services, SSC, central government, and private sector careers.
           </p>
         </div>
+
+        {/* Category Filter Tabs */}
+        <div className="job-tabs-container">
+          <button 
+            className={`job-tab-btn ${activeTab === 'ALL' ? 'active' : ''}`}
+            onClick={() => setActiveTab('ALL')}
+          >
+            <span className="tab-icon">🌐</span> All Jobs
+            <span className="tab-badge">{totalJobsCount}</span>
+          </button>
+          <button 
+            className={`job-tab-btn ${activeTab === 'GOVT' ? 'active' : ''}`}
+            onClick={() => setActiveTab('GOVT')}
+          >
+            <span className="tab-icon">🏛️</span> Government Jobs
+            <span className="tab-badge">{govtJobs.length}</span>
+          </button>
+          <button 
+            className={`job-tab-btn ${activeTab === 'PRIVATE' ? 'active' : ''}`}
+            onClick={() => setActiveTab('PRIVATE')}
+          >
+            <span className="tab-icon">💼</span> Private Jobs
+            <span className="tab-badge">{privateJobs.length}</span>
+          </button>
+        </div>
         
         {/* Government Jobs Section */}
-        <div className="section-header">
-          <div className="section-title-wrapper">
-            <div className="vertical-bar"></div>
-            <h2>Government Jobs</h2>
-          </div>
-        </div>
+        {(activeTab === 'ALL' || activeTab === 'GOVT') && (
+          <div className="job-category-block">
+            <div className="section-header">
+              <div className="section-title-wrapper">
+                <div className="vertical-bar"></div>
+                <h2>Government Jobs</h2>
+              </div>
+            </div>
 
-        {loading ? (
-          <SkeletonCard count={6} />
-        ) : (
-          <div className="job-grid">
-            {govtJobs.length > 0 ? (
-              govtJobs.map((job) => (
-                <JobCard key={job.id} job={job} />
-              ))
+            {loading ? (
+              <SkeletonCard count={6} />
             ) : (
-              <p className="no-jobs">No government job vacancies available at the moment.</p>
+              <div className="job-grid">
+                {govtJobs.length > 0 ? (
+                  govtJobs.map((job) => (
+                    <JobCard key={job.id} job={job} />
+                  ))
+                ) : (
+                  <p className="no-jobs">No government job vacancies available at the moment.</p>
+                )}
+              </div>
             )}
           </div>
         )}
 
-        {/* Private Jobs Section (Conditionally Rendered) */}
-        {privateJobs.length > 0 && (
-          <>
-            <div className="section-header" style={{ marginTop: '40px' }}>
+        {/* Private Jobs Section */}
+        {(activeTab === 'ALL' || activeTab === 'PRIVATE') && (
+          <div className="job-category-block" style={{ marginTop: activeTab === 'ALL' ? '40px' : '0px' }}>
+            <div className="section-header">
               <div className="section-title-wrapper">
-                <div className="vertical-bar" style={{ backgroundColor: '#2b6cb0' }}></div>
+                <div className="vertical-bar" style={{ backgroundColor: '#2563eb' }}></div>
                 <h2>Private Jobs</h2>
               </div>
             </div>
 
-            <div className="job-grid">
-              {privateJobs.map((job) => (
-                <JobCard key={job.id} job={job} />
-              ))}
-            </div>
-          </>
+            {loading ? (
+              <SkeletonCard count={4} />
+            ) : (
+              <div className="job-grid">
+                {privateJobs.length > 0 ? (
+                  privateJobs.map((job) => (
+                    <JobCard key={job.id} job={job} />
+                  ))
+                ) : (
+                  <p className="no-jobs">No private job vacancies available at the moment.</p>
+                )}
+              </div>
+            )}
+          </div>
         )}
 
         {/* Statistics Section */}
