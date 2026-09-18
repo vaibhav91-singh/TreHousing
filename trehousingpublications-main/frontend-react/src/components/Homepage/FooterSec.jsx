@@ -19,22 +19,6 @@ export default function FooterSec() {
 
   return (
     <footer className="hp-footer">
-      {/* Top CTA / Telegram Banner inside Footer */}
-      <div className="hp-footer-banner">
-        <div className="banner-text-group">
-          <div className="banner-badge">
-            <span className="live-pulse-dot"></span> Join 50,000+ Aspirants
-          </div>
-          <h3>Prepare Smarter for UPSC, BPSC & SSC Exams</h3>
-          <p>Get instant updates on latest Sarkari jobs, free mock tests & exclusive study notes.</p>
-        </div>
-        <div className="banner-cta-group">
-          <a href="https://t.me/trehousingpublication" target="_blank" rel="noopener noreferrer" className="btn-telegram-join">
-            <i className="bi bi-telegram"></i> Join Telegram Channel
-          </a>
-        </div>
-      </div>
-
       <div className="hp-footer-content">
         {/* Company Info & Contact */}
         <div className="hp-footer-brand-col">
@@ -130,6 +114,22 @@ export default function FooterSec() {
             <li><Link to="/syllabus?course_id=1&subject_id=14"><i className="bi bi-chevron-right link-arrow"></i> BPSC TRE (Higher 11-12)</Link></li>
             <li><Link to="/performance"><i className="bi bi-chevron-right link-arrow"></i> Result Dashboard</Link></li>
           </ul>
+        </div>
+      </div>
+
+      {/* Bottom CTA / Telegram Banner inside Footer */}
+      <div className="hp-footer-banner">
+        <div className="banner-text-group">
+          <div className="banner-badge">
+            <span className="live-pulse-dot"></span> Join 50,000+ Aspirants
+          </div>
+          <h3>Prepare Smarter for UPSC, BPSC & SSC Exams</h3>
+          <p>Get instant updates on latest Sarkari jobs, free mock tests & exclusive study notes.</p>
+        </div>
+        <div className="banner-cta-group">
+          <a href="https://t.me/trehousingpublication" target="_blank" rel="noopener noreferrer" className="btn-telegram-join">
+            <i className="bi bi-telegram"></i> Join Telegram Channel
+          </a>
         </div>
       </div>
       
