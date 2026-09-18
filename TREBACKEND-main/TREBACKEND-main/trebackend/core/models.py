@@ -417,46 +417,63 @@ class TopicName(models.Model):
                         for item in data:
                             if not isinstance(item, dict):
                                 continue
+                            
                             text = item.get('text') or item.get('question_text') or item.get('question') or ''
-                            if not text:
+                            if not text or not str(text).strip():
                                 continue
                             
+                            text = clean_unicode_str(text)
                             choices = item.get('choices') or item.get('options') or item.get('answers') or []
                             
-                            opt_a = opt_b = opt_c = opt_d = ""
+                            opt_a = opt_b = opt_c = opt_d = "-"
                             correct_opt = 'A'
                             
-                            if isinstance(choices, list) and len(choices) >= 4:
-                                opt_a = choices[0]['text'] if isinstance(choices[0], dict) else str(choices[0])
-                                opt_b = choices[1]['text'] if isinstance(choices[1], dict) else str(choices[1])
-                                opt_c = choices[2]['text'] if isinstance(choices[2], dict) else str(choices[2])
-                                opt_d = choices[3]['text'] if isinstance(choices[3], dict) else str(choices[3])
-                                
+                            if isinstance(choices, list) and len(choices) > 0:
+                                opt_list = []
                                 answer_val = item.get('correct_option') or item.get('answer') or item.get('correct')
-                                for idx, c in enumerate(choices[:4]):
+                                
+                                for idx, c in enumerate(choices):
+                                    c_str = ""
                                     is_c = False
                                     if isinstance(c, dict):
-                                        is_c = bool(c.get('is_correct') or c.get('correct'))
-                                    elif answer_val is not None:
-                                        if str(answer_val).strip() == str(c).strip() or str(answer_val).strip().upper() == chr(65 + idx):
-                                            is_c = True
-                                    if is_c:
-                                        correct_opt = chr(65 + idx)
-                            elif 'option_a' in item or 'optionA' in item or 'a' in item:
-                                opt_a = item.get('option_a') or item.get('optionA') or item.get('a') or ""
-                                opt_b = item.get('option_b') or item.get('optionB') or item.get('b') or ""
-                                opt_c = item.get('option_c') or item.get('optionC') or item.get('c') or ""
-                                opt_d = item.get('option_d') or item.get('optionD') or item.get('d') or ""
+                                        c_str = c.get('text') or c.get('option') or c.get('choice') or c.get('val') or ""
+                                        is_c = bool(c.get('is_correct') or c.get('correct') or c.get('isCorrect'))
+                                    else:
+                                        c_str = str(c)
+                                        if answer_val is not None:
+                                            if str(answer_val).strip() == str(c).strip() or str(answer_val).strip().upper() == chr(65 + idx):
+                                                is_c = True
+                                    
+                                    c_str = clean_unicode_str(c_str)
+                                    if c_str:
+                                        opt_list.append(c_str)
+                                        if is_c and len(opt_list) <= 4:
+                                            correct_opt = chr(65 + (len(opt_list) - 1))
+                                
+                                if len(opt_list) > 0:
+                                    opt_a = opt_list[0]
+                                if len(opt_list) > 1:
+                                    opt_b = opt_list[1]
+                                if len(opt_list) > 2:
+                                    opt_c = opt_list[2]
+                                if len(opt_list) > 3:
+                                    opt_d = opt_list[3]
+
+                            elif any(k in item for k in ['option_a', 'optionA', 'a', 'A']):
+                                opt_a = clean_unicode_str(item.get('option_a') or item.get('optionA') or item.get('a') or "-")
+                                opt_b = clean_unicode_str(item.get('option_b') or item.get('optionB') or item.get('b') or "-")
+                                opt_c = clean_unicode_str(item.get('option_c') or item.get('optionC') or item.get('c') or "-")
+                                opt_d = clean_unicode_str(item.get('option_d') or item.get('optionD') or item.get('d') or "-")
                                 correct_opt = str(item.get('correct_option') or item.get('correct') or item.get('answer') or 'A').strip().upper()
                                 if correct_opt not in ['A', 'B', 'C', 'D']:
                                     correct_opt = 'A'
                             
-                            if text and opt_a and opt_b:
+                            if text:
                                 questions_objs.append(TopicQuestion(
                                     topic=self,
                                     text=text,
-                                    option_a=opt_a,
-                                    option_b=opt_b,
+                                    option_a=opt_a or "-",
+                                    option_b=opt_b or "-",
                                     option_c=opt_c or "-",
                                     option_d=opt_d or "-",
                                     correct_option=correct_opt
@@ -464,8 +481,11 @@ class TopicName(models.Model):
                         if questions_objs:
                             with transaction.atomic():
                                 TopicQuestion.objects.bulk_create(questions_objs, batch_size=1000)
-                            # Clear the field ONLY AFTER successful upload
                             TopicName.objects.filter(id=self.id).update(bulk_upload_json="")
+                            
+                            # Clear RAM cache so frontend immediately shows updated questions!
+                            from django.core.cache import cache
+                            cache.clear()
                 except Exception as e:
                     print(f"Error processing bulk upload JSON: {e}")
 
