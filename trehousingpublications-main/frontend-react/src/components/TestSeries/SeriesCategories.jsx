@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Loader from '../common/Loader.jsx';
 import './SeriesCategories.css';
-import irbLogo from '../../assets/TestSeries/IRB.png';
+import treLogo from '../../assets/trelogo.png';
 import { extractArrayData } from '../../apiConfig.js';
 
 let seriesCache = null;
@@ -119,7 +119,7 @@ export default function SeriesCategories({ onSelectTest }) {
               <div className="cardDesign" key={item.id}>
                 <div className="card-top-bar">
                   <div className="logo-ring">
-                    <img src={item.subject_banner || irbLogo} alt="Logo" loading="lazy" decoding="async" />
+                    <img src={item.subject_banner || treLogo} alt="Logo" loading="lazy" decoding="async" />
                   </div>
                   <div className="views-pill">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="#FFB300" viewBox="0 0 24 24" width="13" height="13">
