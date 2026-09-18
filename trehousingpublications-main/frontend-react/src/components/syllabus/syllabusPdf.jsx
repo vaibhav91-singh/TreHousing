@@ -66,12 +66,13 @@ export default function SyllabusPdf() {
           subject = dashParts.slice(1).join("-").replace(/_/g, " ");
         }
 
-        // Return a clean object with the download link
+        const encodedFile = encodeURIComponent(file);
+
         return {
           subject,
           filename: file,
-          // This link goes back to the backend to actually download the specific file
-          link: `/api/v1/?course_id=${courseId}&subject_id=${subjectId}&syllabus=${file}`,
+          viewLink: `/api/v1/?course_id=${courseId}&subject_id=${subjectId}&syllabus=${encodedFile}`,
+          downloadLink: `/api/v1/?course_id=${courseId}&subject_id=${subjectId}&syllabus=${encodedFile}&download=true`,
         };
       });
 
@@ -105,11 +106,11 @@ export default function SyllabusPdf() {
                 </div>
                 
                 <div className="syllabus-actions">
-                  <a href={pdf.link} target="_blank" rel="noopener noreferrer" className="btn-syllabus-action btn-view-syllabus">
+                  <a href={pdf.viewLink} target="_blank" rel="noopener noreferrer" className="btn-syllabus-action btn-view-syllabus">
                     👁️ View Syllabus PDF
                   </a>
                   
-                  <a href={pdf.link} download target="_blank" rel="noopener noreferrer" className="btn-syllabus-action btn-download-syllabus">
+                  <a href={pdf.downloadLink} download={pdf.filename} target="_blank" rel="noopener noreferrer" className="btn-syllabus-action btn-download-syllabus">
                     📥 Download PDF
                   </a>
                 </div>

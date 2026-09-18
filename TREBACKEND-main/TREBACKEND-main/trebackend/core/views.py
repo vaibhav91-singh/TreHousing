@@ -65,33 +65,65 @@ def course_api(request):
         if not subject.pdf_link:
             return Response({"error": "No PDF available for this subject"}, status=404)
 
+        is_download = request.GET.get('download') == 'true'
+        disp_type = 'attachment' if is_download else 'inline'
+        filename = os.path.basename(subject.pdf_link.name)
+
         try:
-            response = FileResponse(subject.pdf_link.open('rb'), content_type='application/pdf')
-            response['Content-Disposition'] = f'inline; filename="{os.path.basename(subject.pdf_link.name)}"'
+            if hasattr(subject.pdf_link, 'path') and os.path.exists(subject.pdf_link.path):
+                file_obj = open(subject.pdf_link.path, 'rb')
+            else:
+                file_obj = subject.pdf_link.open('rb')
+            response = FileResponse(file_obj, content_type='application/pdf')
+            response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
             return response
         except Exception:
-            if subject.pdf_link:
+            if hasattr(subject.pdf_link, 'url') and subject.pdf_link.url:
                 return redirect(subject.pdf_link.url)
             return Response({"error": "File not found"}, status=404)
 
     if syllabus_list:
         syllabi = Syllabus.objects.filter(subject=subject)
-        data = [os.path.basename(syllabus.file.name) for syllabus in syllabi]
+        data = [os.path.basename(syllabus.file.name) for syllabus in syllabi if syllabus.file]
         return Response({"syllabus_list": data})
 
     if syllabus_name:
+        from urllib.parse import unquote
+        unquoted_name = unquote(syllabus_name)
         syllabus_qs = Syllabus.objects.filter(subject=subject)
-        for syllabus in syllabus_qs:
-            if os.path.basename(syllabus.file.name) == syllabus_name:
-                if syllabus.file:
-                    try:
-                        response = FileResponse(syllabus.file.open('rb'), content_type='application/pdf')
-                        response['Content-Disposition'] = f'inline; filename="{os.path.basename(syllabus.file.name)}"'
-                        return response
-                    except Exception:
-                        return redirect(syllabus.file.url)
-                else:
-                    return Response({"error": "File not found"}, status=404)
+        matched_syllabus = None
+        for s in syllabus_qs:
+            if s.file:
+                b_name = os.path.basename(s.file.name)
+                if b_name == syllabus_name or b_name == unquoted_name:
+                    matched_syllabus = s
+                    break
+
+        if matched_syllabus and matched_syllabus.file:
+            is_download = request.GET.get('download') == 'true'
+            disp_type = 'attachment' if is_download else 'inline'
+            filename = os.path.basename(matched_syllabus.file.name)
+
+            try:
+                if hasattr(matched_syllabus.file, 'path') and os.path.exists(matched_syllabus.file.path):
+                    file_obj = open(matched_syllabus.file.path, 'rb')
+                    response = FileResponse(file_obj, content_type='application/pdf')
+                    response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
+                    return response
+            except Exception as e:
+                print(f"Error serving by path: {e}")
+
+            try:
+                file_obj = matched_syllabus.file.open('rb')
+                response = FileResponse(file_obj, content_type='application/pdf')
+                response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
+                return response
+            except Exception as e:
+                print(f"Error serving by open(): {e}")
+
+            if hasattr(matched_syllabus.file, 'url') and matched_syllabus.file.url:
+                return redirect(matched_syllabus.file.url)
+
         return Response({"error": "Syllabus file not found for this subject"}, status=404)
 
     response_data = {
@@ -187,23 +219,49 @@ def pyq_api(request):
     # Case 3: Serve a specific file
     if course_id and sub_courses_id and subject_id and file_name:
         try:
+            from urllib.parse import unquote
+            unquoted_file = unquote(file_name)
             course = Course.objects.get(id=course_id)
             sub_course = course.sub_courses.get(id=sub_courses_id)
             subject = course.subjects.get(id=subject_id)
-            pyq = subject.pyqs.get(file__icontains=file_name)
+            
+            pyqs = subject.pyqs.all()
+            matched_pyq = None
+            for p in pyqs:
+                if p.file:
+                    b_name = os.path.basename(p.file.name)
+                    if file_name in b_name or unquoted_file in b_name or b_name in file_name:
+                        matched_pyq = p
+                        break
 
-            if pyq.file:
+            if matched_pyq and matched_pyq.file:
+                is_download = request.GET.get('download') == 'true'
+                disp_type = 'attachment' if is_download else 'inline'
+                filename = os.path.basename(matched_pyq.file.name)
+                
                 try:
-                    response = FileResponse(pyq.file.open('rb'), content_type='application/pdf')
-                    response['Content-Disposition'] = f'inline; filename="{os.path.basename(pyq.file.name)}"'
+                    if hasattr(matched_pyq.file, 'path') and os.path.exists(matched_pyq.file.path):
+                        file_obj = open(matched_pyq.file.path, 'rb')
+                        response = FileResponse(file_obj, content_type='application/pdf')
+                        response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
+                        return response
+                except Exception:
+                    pass
+
+                try:
+                    file_obj = matched_pyq.file.open('rb')
+                    response = FileResponse(file_obj, content_type='application/pdf')
+                    response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
                     return response
                 except Exception:
-                    return redirect(pyq.file.url)
+                    if hasattr(matched_pyq.file, 'url') and matched_pyq.file.url:
+                        return redirect(matched_pyq.file.url)
+                    return Response({"error": "File not found"}, status=404)
             else:
                 raise Http404("File not found")
 
-        except (Course.DoesNotExist, Sub_Courses.DoesNotExist, Subject.DoesNotExist, PYQ.DoesNotExist):
-            return JsonResponse({"error": "Invalid course, sub-course, subject, or file name"}, status=404)
+        except (Course.DoesNotExist, Sub_Courses.DoesNotExist, Subject.DoesNotExist):
+            return JsonResponse({"error": "Invalid course, sub-course, or subject ID"}, status=404)
 
     return JsonResponse({"error": "Invalid query parameters"}, status=400)
 
