@@ -84,45 +84,72 @@ def course_api(request):
 
     if syllabus_list:
         syllabi = Syllabus.objects.filter(subject=subject)
-        data = [os.path.basename(syllabus.file.name) for syllabus in syllabi if syllabus.file]
-        return Response({"syllabus_list": data})
+        data = []
+        for s in syllabi:
+            data.append({
+                "id": s.id,
+                "title": s.title or s.filename,
+                "filename": s.filename,
+                "file_url": s.file.url if s.file else None,
+                "pdf_link": s.pdf_link,
+                "api_link": f"/api/v1/?course_id={course_id}&subject_id={subject_id}&syllabus_id={s.id}"
+            })
+        legacy_filenames = [s["filename"] for s in data]
+        return Response({
+            "syllabus_list": legacy_filenames,
+            "syllabi": data
+        })
 
-    if syllabus_name:
+    syllabus_id = request.GET.get('syllabus_id')
+    if syllabus_name or syllabus_id:
         from urllib.parse import unquote
-        unquoted_name = unquote(syllabus_name)
+        unquoted_name = unquote(syllabus_name) if syllabus_name else None
         syllabus_qs = Syllabus.objects.filter(subject=subject)
         matched_syllabus = None
         for s in syllabus_qs:
+            if syllabus_id and str(s.id) == str(syllabus_id):
+                matched_syllabus = s
+                break
             if s.file:
                 b_name = os.path.basename(s.file.name)
                 if b_name == syllabus_name or b_name == unquoted_name:
                     matched_syllabus = s
                     break
+            if s.title and (s.title == syllabus_name or s.title == unquoted_name):
+                matched_syllabus = s
+                break
 
-        if matched_syllabus and matched_syllabus.file:
-            is_download = request.GET.get('download') == 'true'
-            disp_type = 'attachment' if is_download else 'inline'
-            filename = os.path.basename(matched_syllabus.file.name)
+        if matched_syllabus:
+            if matched_syllabus.pdf_link and not matched_syllabus.file:
+                return redirect(matched_syllabus.pdf_link)
 
-            try:
-                if hasattr(matched_syllabus.file, 'path') and os.path.exists(matched_syllabus.file.path):
-                    file_obj = open(matched_syllabus.file.path, 'rb')
+            if matched_syllabus.file:
+                is_download = request.GET.get('download') == 'true'
+                disp_type = 'attachment' if is_download else 'inline'
+                filename = os.path.basename(matched_syllabus.file.name)
+
+                try:
+                    if hasattr(matched_syllabus.file, 'path') and os.path.exists(matched_syllabus.file.path):
+                        file_obj = open(matched_syllabus.file.path, 'rb')
+                        response = FileResponse(file_obj, content_type='application/pdf')
+                        response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
+                        return response
+                except Exception as e:
+                    print(f"Error serving by path: {e}")
+
+                try:
+                    file_obj = matched_syllabus.file.open('rb')
                     response = FileResponse(file_obj, content_type='application/pdf')
                     response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
                     return response
-            except Exception as e:
-                print(f"Error serving by path: {e}")
+                except Exception as e:
+                    print(f"Error serving by open(): {e}")
 
-            try:
-                file_obj = matched_syllabus.file.open('rb')
-                response = FileResponse(file_obj, content_type='application/pdf')
-                response['Content-Disposition'] = f'{disp_type}; filename="{filename}"'
-                return response
-            except Exception as e:
-                print(f"Error serving by open(): {e}")
+                if hasattr(matched_syllabus.file, 'url') and matched_syllabus.file.url:
+                    return redirect(matched_syllabus.file.url)
 
-            if hasattr(matched_syllabus.file, 'url') and matched_syllabus.file.url:
-                return redirect(matched_syllabus.file.url)
+            if matched_syllabus.pdf_link:
+                return redirect(matched_syllabus.pdf_link)
 
         return Response({"error": "Syllabus file not found for this subject"}, status=404)
 

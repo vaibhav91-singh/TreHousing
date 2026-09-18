@@ -15,6 +15,13 @@ from .models import StudyMaterialExam, StudyMaterialSubject, StudyMaterialDocume
 class SyllabusInline(admin.TabularInline):
     model = Syllabus
     extra = 1
+    fields = ('title', 'pdf_link', 'file')
+
+@admin.register(Syllabus)
+class SyllabusAdmin(admin.ModelAdmin):
+    list_display = ('title', 'subject', 'pdf_link', 'file')
+    search_fields = ('title', 'subject__title')
+    list_filter = ('subject',)
 
 class PYQInline(admin.TabularInline):
     model = PYQ

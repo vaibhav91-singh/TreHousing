@@ -92,17 +92,31 @@ class PYQ(models.Model):
     
 class Syllabus(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name="syllabus_files", db_index=True)
+    title = models.CharField(max_length=255, blank=True, null=True, help_text="e.g. BPSC TRE 4.0 Syllabus PDF")
     file = models.FileField(
         upload_to="syllabus/",
-        validators=[FileExtensionValidator(allowed_extensions=['pdf'])]
+        validators=[FileExtensionValidator(allowed_extensions=['pdf'])],
+        blank=True,
+        null=True
+    )
+    pdf_link = models.URLField(
+        max_length=1000, 
+        blank=True, 
+        null=True, 
+        help_text="Paste Google Drive link or Cloud PDF link here"
     )
 
     def __str__(self):
-        return f"{self.subject.title} - {os.path.basename(self.file.name)}"
+        name = self.title or (os.path.basename(self.file.name) if self.file else self.pdf_link or "Syllabus")
+        return f"{self.subject.title} - {name}"
     
     @property
     def filename(self):
-        return os.path.basename(self.file.name)
+        if self.title:
+            return self.title
+        if self.file:
+            return os.path.basename(self.file.name)
+        return "Syllabus Document.pdf"
     
     class Meta:
         verbose_name_plural = "Syllabus"

@@ -46,37 +46,42 @@ export default function SyllabusPdf() {
       );
       const data = await res.json();
 
-      // 5. Check if the response contains a valid 'syllabus_list' array
-      if (!data.syllabus_list || !Array.isArray(data.syllabus_list)) {
+      // 5. Check if the response contains valid syllabus data
+      const syllabiList = data.syllabi || (Array.isArray(data.syllabus_list) ? data.syllabus_list.map(f => ({ filename: f })) : []);
+
+      if (!syllabiList || syllabiList.length === 0) {
         setError("No syllabus PDF found.");
         setPdfContent([]);
         return;
       }
 
-      // 6. Process the file names to make them look nice for the user
-      const formatted = data.syllabus_list.map((file) => {
-        let subject = "Unknown";
+      // 6. Process the items for viewing and downloading
+      const formatted = syllabiList.map((item) => {
+        const rawLink = item.pdf_link || item.file_url || item.api_link || `/api/v1/?course_id=${courseId}&subject_id=${subjectId}&syllabus=${encodeURIComponent(item.filename)}`;
         
-        // Remove the file extension (e.g., '.pdf')
-        const nameWithoutExtension = file.replace(/\.[^/.]+$/, "");
-        
-        // Try to guess the subject name by splitting the filename by dashes
-        const dashParts = nameWithoutExtension.split("-");
-        if (dashParts.length > 1) {
-          subject = dashParts.slice(1).join("-").replace(/_/g, " ");
+        let viewLink = rawLink;
+        let downloadLink = rawLink;
+
+        // Smart Google Drive Link converter
+        const driveRegex = /(?:file\/d\/|id=)([a-zA-Z0-9_-]+)/;
+        const match = rawLink.match(driveRegex);
+
+        if (match && match[1]) {
+          const fileId = match[1];
+          viewLink = `https://drive.google.com/file/d/${fileId}/preview`;
+          downloadLink = `https://drive.google.com/uc?export=download&id=${fileId}`;
+        } else if (!rawLink.startsWith("http")) {
+          downloadLink = rawLink.includes("?") ? `${rawLink}&download=true` : `${rawLink}?download=true`;
         }
 
-        const encodedFile = encodeURIComponent(file);
-
         return {
-          subject,
-          filename: file,
-          viewLink: `/api/v1/?course_id=${courseId}&subject_id=${subjectId}&syllabus=${encodedFile}`,
-          downloadLink: `/api/v1/?course_id=${courseId}&subject_id=${subjectId}&syllabus=${encodedFile}&download=true`,
+          filename: item.title || item.filename,
+          viewLink,
+          downloadLink,
         };
       });
 
-      // 7. Update our component state with the formatted data so React can render the table
+      // 7. Update state with formatted items
       setPdfContent(formatted);
       if (!formatted.length) setError("No syllabus PDF found.");
       
