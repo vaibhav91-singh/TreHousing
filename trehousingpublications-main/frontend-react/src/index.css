@@ -4,16 +4,12 @@
   --primary-hover: #FFC107;
   --primary-dark: #FF9800;
   --primary-light: #FFF8E1;
-  /* Warm sunny golden tint */
 
   --secondary: #1E293B;
-  /* Dark Slate for contrast */
   --secondary-hover: #334155;
 
   --bg-color: #F7F5EE;
-  /* Premium Warm Ivory / Cream Paper tone for soft reading */
   --bg-white: #FFFFFF;
-  /* Pure crisp white cards that float with warm depth */
 
   --text-dark: #0f172a;
   --text-muted: #64748b;
@@ -21,7 +17,6 @@
   --text-heading: var(--secondary);
 
   --border-color: #E6E2D8;
-  /* Soft warm border accent */
   --shadow-sm: 0 2px 5px rgba(30, 41, 59, 0.04);
   --shadow-md: 0 6px 18px -2px rgba(30, 41, 59, 0.06), 0 2px 6px -1px rgba(30, 41, 59, 0.04);
   --shadow-lg: 0 12px 28px -4px rgba(30, 41, 59, 0.08), 0 4px 8px -2px rgba(30, 41, 59, 0.04);
@@ -38,24 +33,17 @@
 
 [data-theme='dark'] {
   --bg-color: #080d1a;
-  /* Deep rich midnight space background */
   --bg-white: #111a2e;
-  /* Rich dark container blue */
   --primary-light: rgba(255, 179, 0, 0.18);
 
   --secondary: #ffffff;
-  /* Crisp white for headings and high-contrast titles */
   --secondary-hover: #e2e8f0;
 
   --text-dark: #f8fafc;
-  /* Bright crisp text */
   --text-muted: #cbd5e1;
-  /* Clear silver gray */
   --text-heading: #ffffff;
-  /* Pure white headings */
 
   --border-color: rgba(255, 255, 255, 0.12);
-  /* Glassmorphic glowing border */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.6);
@@ -66,26 +54,28 @@
 *::after {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent !important;
-  touch-action: manipulation;
 }
 
-html, body {
+html {
+  overflow-x: hidden;
+  width: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
   margin: 0;
   padding: 0;
   font-family: var(--font-main);
   background-color: var(--bg-color);
   color: var(--text-dark);
-  overflow-x: hidden;
   width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: none;
-}
-
-html {
-  scroll-behavior: smooth !important;
 }
 
 /* Custom Scrollbar */
@@ -107,13 +97,11 @@ html {
   background: var(--primary);
 }
 
-/* Hardware acceleration for images & buttery mobile feel */
+/* Hardware acceleration for images */
 img,
 svg {
   transform: translateZ(0);
-  will-change: transform;
   -webkit-user-drag: none;
-  user-select: none;
 }
 
 #root {
@@ -122,8 +110,6 @@ svg {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  animation: appPageEnter 0.25s ease-out forwards;
 }
 
 #root > div {
@@ -131,18 +117,6 @@ svg {
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  overflow-x: hidden;
-}
-
-@keyframes appPageEnter {
-  from {
-    opacity: 0.9;
-    transform: translateY(4px) translateZ(0);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) translateZ(0);
-  }
 }
 
 h1,
@@ -171,44 +145,27 @@ a:hover {
   color: var(--primary);
 }
 
-/* Native Mobile App Touch Response (No Web Delays or Highlight Boxes) */
+/* Tap Highlight Removal for Interactive Elements */
 button,
 .btn-primary,
-.cardDesign,
-.pyq-cardDesign,
-.govt-job-card,
-.hp-card,
-.hp-quick-card,
-.hp-resource-card,
-.subcard p,
+.btn-view,
+.btn-pyq-main,
+.btn-pyq-sub,
 .nav-link-anchor,
-.chip,
-.views-pill,
-.year-badge,
 .sidebar-item,
 .grid-cell {
   -webkit-tap-highlight-color: transparent !important;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
-/* Tactile Native App Touch Click Feedback */
-a:active,
+/* Tactile Click Feedback for Buttons Only (No Card Transform to avoid gesture lock) */
 button:active,
 .btn-primary:active,
-.cardDesign:active,
-.pyq-cardDesign:active,
-.govt-job-card:active,
-.hp-card:active,
-.hp-quick-card:active,
-.hp-resource-card:active,
-.subcard p:active,
-.sidebar-item:active,
-.grid-cell:active {
-  transform: scale(0.96) translateZ(0) !important;
-  opacity: 0.92 !important;
-  transition: transform 0.08s cubic-bezier(0, 0, 0.2, 1) !important;
+.btn-view:active,
+.btn-pyq-main:active,
+.btn-pyq-sub:active {
+  transform: scale(0.97);
+  opacity: 0.95;
+  transition: transform 0.08s ease-out;
 }
 
 /* Animations */
@@ -224,11 +181,11 @@ button:active,
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(16px) translateZ(0);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) translateZ(0);
+    transform: translateY(0);
   }
 }
 
@@ -271,7 +228,7 @@ button:active,
 }
 
 /* ==========================================================================
-   INTERACTIVE CARD SHIMMER & ZERO-LAG 3D GPU GLOW SYSTEM
+   INTERACTIVE CARD SHIMMER SYSTEM
    ========================================================================== */
 .pyq-cardDesign,
 .cardDesign,
@@ -282,13 +239,9 @@ button:active,
 .popular-test-card {
   position: relative;
   overflow: hidden !important;
-  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+  transition: transform 0.25s ease,
               box-shadow 0.25s ease,
               border-color 0.25s ease !important;
-  will-change: transform, box-shadow;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  contain: layout style;
 }
 
 /* Light Mode Shimmer Sweep */
@@ -337,7 +290,7 @@ button:active,
   );
 }
 
-/* Trigger Shimmer Sweep on Hover (Desktop Only for zero mobile lag) */
+/* Trigger Shimmer Sweep on Hover (Desktop Only) */
 @media (hover: hover) {
   .pyq-cardDesign:hover::before,
   .cardDesign:hover::before,
