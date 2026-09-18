@@ -33,7 +33,7 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
 
-  --transition: all 0.3s ease;
+  --transition: all 0.25s ease;
 }
 
 [data-theme='dark'] {
@@ -65,7 +65,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent !important;
   touch-action: manipulation;
 }
 
@@ -81,13 +81,14 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
 }
 
 html {
   scroll-behavior: smooth !important;
 }
 
-/* Custom Premium Scrollbar for Desktop & Hide on Mobile Scroll Containers */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -122,6 +123,7 @@ svg {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  animation: appPageEnter 0.25s ease-out forwards;
 }
 
 #root > div {
@@ -130,6 +132,17 @@ svg {
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
+}
+
+@keyframes appPageEnter {
+  from {
+    opacity: 0.9;
+    transform: translateY(4px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
 }
 
 h1,
@@ -151,30 +164,51 @@ a {
   color: var(--primary-dark);
   text-decoration: none;
   transition: var(--transition);
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 a:hover {
   color: var(--primary);
 }
 
-/* Base Buttons Touch Responsive */
+/* Native Mobile App Touch Response (No Web Delays or Highlight Boxes) */
+button,
 .btn-primary,
-button {
-  -webkit-tap-highlight-color: transparent;
+.cardDesign,
+.pyq-cardDesign,
+.govt-job-card,
+.hp-card,
+.hp-quick-card,
+.hp-resource-card,
+.subcard p,
+.nav-link-anchor,
+.chip,
+.views-pill,
+.year-badge,
+.sidebar-item,
+.grid-cell {
+  -webkit-tap-highlight-color: transparent !important;
   touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.btn-primary:active,
+/* Tactile Native App Touch Click Feedback */
+a:active,
 button:active,
+.btn-primary:active,
 .cardDesign:active,
 .pyq-cardDesign:active,
 .govt-job-card:active,
 .hp-card:active,
 .hp-quick-card:active,
-.hp-resource-card:active {
-  transform: scale(0.97) translateZ(0) !important;
-  transition: transform 0.1s ease-out !important;
+.hp-resource-card:active,
+.subcard p:active,
+.sidebar-item:active,
+.grid-cell:active {
+  transform: scale(0.96) translateZ(0) !important;
+  opacity: 0.92 !important;
+  transition: transform 0.08s cubic-bezier(0, 0, 0.2, 1) !important;
 }
 
 /* Animations */
@@ -190,20 +224,20 @@ button:active,
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px) translateZ(0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
 .animate-slide-up {
-  animation: slideUp 0.4s ease-out forwards;
+  animation: slideUp 0.35s ease-out forwards;
 }
 
 .hover-scale {
@@ -211,7 +245,7 @@ button:active,
 }
 
 .hover-scale:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 /* Theme Toggle Button */
@@ -228,7 +262,7 @@ button:active,
   justify-content: center;
   cursor: pointer;
   transition: var(--transition);
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 .theme-toggle-btn:hover {
@@ -248,12 +282,13 @@ button:active,
 .popular-test-card {
   position: relative;
   overflow: hidden !important;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-              box-shadow 0.3s ease,
-              border-color 0.3s ease !important;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.25s ease,
+              border-color 0.25s ease !important;
   will-change: transform, box-shadow;
   transform: translateZ(0);
   backface-visibility: hidden;
+  contain: layout style;
 }
 
 /* Light Mode Shimmer Sweep */
@@ -302,7 +337,7 @@ button:active,
   );
 }
 
-/* Trigger Shimmer Sweep on Hover (Desktop Only for touch performance) */
+/* Trigger Shimmer Sweep on Hover (Desktop Only for zero mobile lag) */
 @media (hover: hover) {
   .pyq-cardDesign:hover::before,
   .cardDesign:hover::before,
