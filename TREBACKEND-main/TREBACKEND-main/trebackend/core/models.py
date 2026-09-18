@@ -507,9 +507,11 @@ class TopicName(models.Model):
                                 TopicQuestion.objects.bulk_create(questions_objs, batch_size=1000)
                             TopicName.objects.filter(id=self.id).update(bulk_upload_json="")
                             
-                            # Clear RAM cache so frontend immediately shows updated questions!
+                            # Clear specific topic caches (not entire cache!)
                             from django.core.cache import cache
-                            cache.clear()
+                            cache.delete("topic_mcq_hierarchy_all")
+                            for page in range(1, 20):
+                                cache.delete(f"topic_mcq_{self.id}_p{page}_l30")
                 except Exception as e:
                     print(f"Error processing bulk upload JSON: {e}")
 
