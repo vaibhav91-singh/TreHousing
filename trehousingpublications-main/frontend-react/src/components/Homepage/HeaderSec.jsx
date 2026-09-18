@@ -134,6 +134,14 @@ export default function HeaderSec() {
     }
   };
 
+  const toggleSubDropdown = (subIndex) => {
+    if (activeSubDropdown === subIndex) {
+      setActiveSubDropdown(null);
+    } else {
+      setActiveSubDropdown(subIndex);
+    }
+  };
+
   const handleItemClick = (courseId, subjectId) => {
     if (!courseId) return;
     const activeItem = menuItems[activeDropdown];
@@ -151,7 +159,6 @@ export default function HeaderSec() {
 
   return (
     <div className="header-container">
-     
       <nav className="navbar-main">
         <div className="logo" onClick={() => { navigate("/"); closeMenu(); }}>
           <img src={logo} alt="Logo" decoding="async" />
@@ -197,28 +204,36 @@ export default function HeaderSec() {
                         <div
                           key={subIndex}
                           className={`sidebar-item ${activeSubDropdown === subIndex ? 'active' : ''}`}
-                          onMouseEnter={() => setActiveSubDropdown(subIndex)}
+                          onMouseEnter={() => {
+                            // On desktop mouseenter, activate
+                            if (window.innerWidth > 820) {
+                              setActiveSubDropdown(subIndex);
+                            }
+                          }}
+                          onClick={() => toggleSubDropdown(subIndex)}
                         >
                           {subItem.name}
-                          <i className="bi bi-chevron-right"></i>
+                          <i className={`bi ${activeSubDropdown === subIndex ? 'bi-chevron-up' : 'bi-chevron-right'}`}></i>
                         </div>
                       ))}
                     </div>
 
-                    <div className="mega-grid">
-                      {item.submenu[activeSubDropdown]?.submenu?.map((subSubItem, subSubIndex) => (
-                        <div
-                          key={subSubIndex}
-                          className="grid-cell"
-                          onClick={() => handleItemClick(item.submenu[activeSubDropdown].courseId, subSubItem.id)}
-                        >
-                          {subSubItem.name}
-                        </div>
-                      ))}
-                      {(!item.submenu[activeSubDropdown]?.submenu || item.submenu[activeSubDropdown]?.submenu.length === 0) && (
-                        <div className="mega-menu-empty">No exams available found for this stream.</div>
-                      )}
-                    </div>
+                    {activeSubDropdown !== null && item.submenu[activeSubDropdown] && (
+                      <div className="mega-grid">
+                        {item.submenu[activeSubDropdown]?.submenu?.map((subSubItem, subSubIndex) => (
+                          <div
+                            key={subSubIndex}
+                            className="grid-cell"
+                            onClick={() => handleItemClick(item.submenu[activeSubDropdown].courseId, subSubItem.id)}
+                          >
+                            {subSubItem.name}
+                          </div>
+                        ))}
+                        {(!item.submenu[activeSubDropdown]?.submenu || item.submenu[activeSubDropdown]?.submenu.length === 0) && (
+                          <div className="mega-menu-empty">No exams available found for this stream.</div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </li>
