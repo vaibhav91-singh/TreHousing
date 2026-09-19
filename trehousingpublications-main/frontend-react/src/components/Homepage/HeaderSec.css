@@ -109,22 +109,34 @@ nav.navbar-main {
 
 /* --- Left Sidebar Area --- */
 .mega-sidebar {
-  width: 25%;
+  width: 28%;
   background-color: var(--bg-color);
   border-right: 1px solid var(--border-color);
   overflow-y: auto;
-  padding: 12px 0;
+  padding: 10px 0;
+  height: 100%;
+  max-height: 520px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 /* Elegant sleek scrollbars for the sidebar/grid */
 .mega-sidebar::-webkit-scrollbar,
 .mega-grid::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
+}
+.mega-sidebar::-webkit-scrollbar-track,
+.mega-grid::-webkit-scrollbar-track {
+  background: transparent;
 }
 .mega-sidebar::-webkit-scrollbar-thumb,
 .mega-grid::-webkit-scrollbar-thumb {
-  background-color: #cbd5e0;
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+}
+.mega-sidebar::-webkit-scrollbar-thumb:hover,
+.mega-grid::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .sidebar-item {
@@ -463,6 +475,17 @@ nav.navbar-main {
 [data-theme='dark'] .mega-sidebar {
   background-color: #0b1120;
   border-right-color: rgba(255, 255, 255, 0.1);
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+[data-theme='dark'] .mega-sidebar::-webkit-scrollbar-thumb,
+[data-theme='dark'] .mega-grid::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme='dark'] .mega-sidebar::-webkit-scrollbar-thumb:hover,
+[data-theme='dark'] .mega-grid::-webkit-scrollbar-thumb:hover {
+  background-color: #ffb300;
 }
 
 [data-theme='dark'] .sidebar-item {
