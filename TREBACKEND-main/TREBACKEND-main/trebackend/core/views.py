@@ -393,13 +393,15 @@ def get_solved_papers(request):
 def job_list_create(request):
     if request.method == 'GET':
         cached_data = cache.get('active_jobs_list')
-        if cached_data is not None:
+        if isinstance(cached_data, list) and len(cached_data) > 0:
             return Response(cached_data)
 
         jobs = JobVacancy.objects.filter(status=True) 
         serializer = JobVacancySerializer(jobs, many=True)
-        cache.set('active_jobs_list', serializer.data, 300)
-        return Response(serializer.data)
+        data = serializer.data or []
+        if data:
+            cache.set('active_jobs_list', data, 300)
+        return Response(data)
     
     elif request.method == 'POST':
         serializer = JobVacancySerializer(data=request.data)
