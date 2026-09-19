@@ -354,10 +354,10 @@ def quiz_api(request):
                 cached_payload = QuizSerializer(quiz).data
                 cache.set(cache_key, cached_payload, 300)
             except Quiz.DoesNotExist:
-                return Response({"error": "Quiz not found"}, status=404)
+                return JsonResponse({"error": "Quiz not found"}, status=404)
         
         shuffled_data = shuffle_quiz_data(cached_payload)
-        return Response(shuffled_data)
+        return JsonResponse(shuffled_data)
 
     cache_key = f"quiz_api_list_sub_{subject_id}" if subject_id else "quiz_api_list_all"
     cached_payload = cache.get(cache_key)
@@ -370,7 +370,7 @@ def quiz_api(request):
         cached_payload = QuizListSerializer(quizzes, many=True).data
         cache.set(cache_key, cached_payload, 300)
 
-    return Response(cached_payload)
+    return JsonResponse(cached_payload, safe=False)
 
 
 @cache_page(60 * 5)
@@ -384,9 +384,9 @@ def get_solved_papers(request):
             papers = papers.filter(subject_id=subject_id)
             
         serializer = SolvedPaperSerializer(papers, many=True)
-        return Response({"success": True, "data": serializer.data}, status=status.HTTP_200_OK)
+        return JsonResponse({"success": True, "data": serializer.data})
     except Exception as e:
-        return Response({"success": False, "error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return JsonResponse({"success": False, "error": str(e)}, status=500)
 
 
 @api_view(['GET', 'POST'])
@@ -394,29 +394,29 @@ def job_list_create(request):
     if request.method == 'GET':
         cached_data = cache.get('active_jobs_list')
         if isinstance(cached_data, list) and len(cached_data) > 0:
-            return Response(cached_data)
+            return JsonResponse(cached_data, safe=False)
 
         jobs = JobVacancy.objects.filter(status=True) 
         serializer = JobVacancySerializer(jobs, many=True)
         data = serializer.data or []
         if data:
             cache.set('active_jobs_list', data, 300)
-        return Response(data)
+        return JsonResponse(data, safe=False)
     
     elif request.method == 'POST':
         serializer = JobVacancySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             cache.delete('active_jobs_list')
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
 
 
 @api_view(['GET'])
 def job_detail_api(request, pk):
     job = get_object_or_404(JobVacancy, pk=pk)
     serializer = JobVacancySerializer(job)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data)
 
 
 @cache_page(60 * 5)
@@ -424,7 +424,7 @@ def job_detail_api(request, pk):
 def recent_updates_list(request):
     updates = RecentUpdate.objects.all()[:10]
     serializer = RecentUpdateSerializer(updates, many=True)
-    return Response(serializer.data)
+    return JsonResponse(serializer.data, safe=False)
 
 
 @api_view(['GET'])
@@ -450,7 +450,7 @@ def topic_wise_mcq_api(request):
             cache_key = f"topic_mcq_{topic_id}_p{page}_l{limit}"
             cached_res = cache.get(cache_key)
             if cached_res:
-                return Response(cached_res, status=status.HTTP_200_OK)
+                return JsonResponse(cached_res)
 
             qs = TopicQuestion.objects.filter(topic_id=topic_id).order_by('id')
             total_questions = qs.count()
@@ -474,12 +474,12 @@ def topic_wise_mcq_api(request):
                 "has_previous": page > 1
             }
             cache.set(cache_key, res_payload, 300)
-            return Response(res_payload, status=status.HTTP_200_OK)
+            return JsonResponse(res_payload)
 
         cache_key = "topic_mcq_hierarchy_all"
         cached_res = cache.get(cache_key)
         if cached_res:
-            return Response(cached_res, status=status.HTTP_200_OK)
+            return JsonResponse(cached_res)
 
         exams = TopicExam.objects.all().prefetch_related(
             Prefetch('subjects__topics', queryset=TopicName.objects.defer('bulk_upload_json'))
@@ -490,12 +490,12 @@ def topic_wise_mcq_api(request):
             "data": serializer.data
         }
         cache.set(cache_key, res_payload, 300)
-        return Response(res_payload, status=status.HTTP_200_OK)
+        return JsonResponse(res_payload)
     except Exception as e:
-        return Response({
+        return JsonResponse({
             "success": False,
             "error": str(e)
-        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        }, status=500)
 
 
 @cache_page(60 * 10)
