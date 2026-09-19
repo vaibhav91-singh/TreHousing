@@ -510,8 +510,9 @@ class TopicName(models.Model):
                             # Clear specific topic caches (not entire cache!)
                             from django.core.cache import cache
                             cache.delete("topic_mcq_hierarchy_all")
-                            for page in range(1, 20):
-                                cache.delete(f"topic_mcq_{self.id}_p{page}_l30")
+                            for page in range(1, 50):
+                                for limit in [10, 20, 30, 50, 100]:
+                                    cache.delete(f"topic_mcq_{self.id}_p{page}_l{limit}")
                 except Exception as e:
                     print(f"Error processing bulk upload JSON: {e}")
 

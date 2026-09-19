@@ -136,14 +136,16 @@ export default function TopicWiseCategories() {
 
     const cacheKey = `${topic.id}_page_${pageNum}`;
 
-    // Check in-memory cache for 0ms instant loading
+    // Check in-memory cache for 0ms instant loading (only if questions exist)
     if (topicQuestionsCache[cacheKey]) {
       const cached = topicQuestionsCache[cacheKey];
-      setTopicQuestions(cached.questions);
-      setTotalPages(cached.total_pages);
-      setTotalQuestions(cached.total_questions);
-      setCurrentPage(cached.current_page);
-      return;
+      if (cached.questions && cached.questions.length > 0) {
+        setTopicQuestions(cached.questions);
+        setTotalPages(cached.total_pages);
+        setTotalQuestions(cached.total_questions);
+        setCurrentPage(cached.current_page);
+        return;
+      }
     }
 
     const controller = new AbortController();

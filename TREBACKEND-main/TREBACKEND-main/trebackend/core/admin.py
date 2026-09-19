@@ -292,6 +292,17 @@ class TopicSubjectAdmin(admin.ModelAdmin):
     list_filter = ('exam',)
     search_fields = ('name', 'exam__name')
 
+@admin.register(TopicQuestion)
+class TopicQuestionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'topic', 'text_truncated', 'correct_option')
+    list_filter = ('topic__subject__exam', 'topic__subject', 'topic')
+    search_fields = ('text', 'option_a', 'option_b', 'option_c', 'option_d', 'explanation')
+    raw_id_fields = ('topic',)
+
+    def text_truncated(self, obj):
+        return obj.text[:60] + '...' if len(obj.text) > 60 else obj.text
+    text_truncated.short_description = 'Question Text'
+
 @admin.register(TopicExam)
 class TopicExamAdmin(admin.ModelAdmin):
     list_display = ('name',)

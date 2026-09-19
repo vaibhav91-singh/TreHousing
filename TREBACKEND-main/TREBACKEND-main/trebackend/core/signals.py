@@ -59,14 +59,16 @@ def invalidate_topic_cache(sender, instance=None, **kwargs):
     """Clear only topic-wise MCQ cache keys."""
     try:
         cache.delete("topic_mcq_hierarchy_all")
-        # Clear specific topic question caches if possible
-        if instance and hasattr(instance, 'topic_id'):
-            # Clear first few pages of this topic
-            for page in range(1, 20):
-                cache.delete(f"topic_mcq_{instance.topic_id}_p{page}_l30")
-        elif instance and hasattr(instance, 'id') and sender == TopicName:
-            for page in range(1, 20):
-                cache.delete(f"topic_mcq_{instance.id}_p{page}_l30")
+        topic_id = None
+        if sender == TopicQuestion and instance:
+            topic_id = getattr(instance, 'topic_id', None)
+        elif sender == TopicName and instance:
+            topic_id = getattr(instance, 'id', None)
+
+        if topic_id:
+            for page in range(1, 50):
+                for limit in [10, 20, 30, 50, 100]:
+                    cache.delete(f"topic_mcq_{topic_id}_p{page}_l{limit}")
     except Exception:
         pass
 
