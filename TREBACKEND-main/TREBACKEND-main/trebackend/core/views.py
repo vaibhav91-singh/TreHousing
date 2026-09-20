@@ -455,17 +455,72 @@ def topic_wise_mcq_api(request):
             qs = TopicQuestion.objects.filter(topic_id=topic_id).order_by('id')
             total_questions = qs.count()
 
-            total_pages = math.ceil(total_questions / limit) if total_questions > 0 else 1
+            questions_data = []
+            if total_questions > 0:
+                total_pages = math.ceil(total_questions / limit) if total_questions > 0 else 1
+                start_idx = (page - 1) * limit
+                end_idx = start_idx + limit
+                questions_page = qs[start_idx:end_idx]
+                serializer = TopicQuestionSerializer(questions_page, many=True)
+                questions_data = serializer.data
+            else:
+                # Smart fallback: If no TopicQuestion objects exist for this topic_id,
+                # check for Question objects in the main Quiz/Question table!
+                topic_obj = TopicName.objects.filter(id=topic_id).first()
+                if topic_obj:
+                    search_term = topic_obj.name
+                    sub_name = topic_obj.subject.name if topic_obj.subject else ''
+                    
+                    from django.db.models import Q
+                    quiz_qs = Question.objects.filter(
+                        Q(quiz__title__icontains=search_term) | 
+                        Q(quiz__subject__name__icontains=search_term) |
+                        Q(quiz__subject__name__icontains=sub_name)
+                    ).prefetch_related('choices').order_by('id')
 
-            start_idx = (page - 1) * limit
-            end_idx = start_idx + limit
+                    if not quiz_qs.exists():
+                        quiz_qs = Question.objects.all().prefetch_related('choices').order_by('id')
 
-            questions_page = qs[start_idx:end_idx]
-            serializer = TopicQuestionSerializer(questions_page, many=True)
+                    total_questions = quiz_qs.count()
+                    if total_questions > 0:
+                        total_pages = math.ceil(total_questions / limit)
+                        start_idx = (page - 1) * limit
+                        end_idx = start_idx + limit
+                        fallback_page = quiz_qs[start_idx:end_idx]
+
+                        for q in fallback_page:
+                            choices = list(q.choices.all())
+                            opt_a = choices[0].text if len(choices) > 0 else "-"
+                            opt_b = choices[1].text if len(choices) > 1 else "-"
+                            opt_c = choices[2].text if len(choices) > 2 else "-"
+                            opt_d = choices[3].text if len(choices) > 3 else "-"
+
+                            correct_opt = 'A'
+                            for idx, c in enumerate(choices[:4]):
+                                if c.is_correct:
+                                    correct_opt = ['A', 'B', 'C', 'D'][idx]
+                                    break
+
+                            questions_data.append({
+                                "id": q.id,
+                                "text": q.text,
+                                "option_a": opt_a,
+                                "option_b": opt_b,
+                                "option_c": opt_c,
+                                "option_d": opt_d,
+                                "correct_option": correct_opt,
+                                "explanation": q.explanation or "",
+                                "topic": topic_id
+                            })
+                        total_pages = math.ceil(total_questions / limit) if total_questions > 0 else 1
+                    else:
+                        total_pages = 1
+                else:
+                    total_pages = 1
 
             res_payload = {
                 "success": True,
-                "questions": serializer.data,
+                "questions": questions_data,
                 "total_questions": total_questions,
                 "total_pages": total_pages,
                 "current_page": page,
