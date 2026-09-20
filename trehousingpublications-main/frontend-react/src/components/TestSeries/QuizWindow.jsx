@@ -28,31 +28,37 @@ const QuizWindow = ({ subject, onBack }) => {
 
   useEffect(() => {
     let isMounted = true;
+    setLoading(true);
     fetch('/api/v1/quiz/')
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         if (!isMounted) return;
         const list = extractArrayData(data);
-        const matchedQuiz = list.find(q => q.title === subject) || list[0];
-        if (matchedQuiz) {
-          setQuizDetails(matchedQuiz);
-          // Set timer from admin defined duration_minutes or dynamic fallback
-          const totalSecs = (matchedQuiz.duration_minutes && matchedQuiz.duration_minutes > 0)
-            ? (matchedQuiz.duration_minutes * 60)
-            : Math.max(600, (matchedQuiz.questions?.length || 10) * 90);
-          setTotalTimeLeft(totalSecs);
-          
-          // Restore cached progress if any
-          const savedProgress = localStorage.getItem(`quiz_progress_${matchedQuiz.id}`);
-          if (savedProgress) {
-            try {
-              const parsed = JSON.parse(savedProgress);
-              setUserAnswers(parsed.userAnswers || {});
-              setReviewFlags(parsed.reviewFlags || {});
-              setVisitedMap(parsed.visitedMap || {});
-            } catch (e) {
-              console.error("Error restoring quiz progress", e);
+        const matched = list.find(q => q.title === subject) || list[0];
+        if (matched && matched.id) {
+          try {
+            const detailRes = await fetch(`/api/v1/quiz/?quiz_id=${matched.id}`);
+            const detailData = await detailRes.json();
+            if (!isMounted) return;
+            setQuizDetails(detailData);
+            
+            const totalSecs = (detailData.duration_minutes && detailData.duration_minutes > 0)
+              ? (detailData.duration_minutes * 60)
+              : Math.max(600, (detailData.questions?.length || 10) * 90);
+            setTotalTimeLeft(totalSecs);
+            
+            const savedProgress = localStorage.getItem(`quiz_progress_${detailData.id}`);
+            if (savedProgress) {
+              try {
+                const parsed = JSON.parse(savedProgress);
+                setUserAnswers(parsed.userAnswers || {});
+                setReviewFlags(parsed.reviewFlags || {});
+                setVisitedMap(parsed.visitedMap || {});
+              } catch (e) {}
             }
+          } catch (err) {
+            console.error("Error fetching quiz detail:", err);
+            setQuizDetails(matched);
           }
         }
         setLoading(false);
