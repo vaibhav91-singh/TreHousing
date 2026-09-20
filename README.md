@@ -333,3 +333,108 @@ WhiteNoise is configured to serve static assets efficiently in production.
 
 This software is developed for **TRE Housing Publications**.  
 All rights reserved © 2026.
+
+
+<div align="center">
+
+# 🎓 TRE Housing Publications 
+### Full Stack EdTech Platform
+
+[![React](https://img.shields.io/badge/Frontend-React_19-blue.svg?style=for-the-badge&logo=react)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Bundler-Vite_8-646CFF.svg?style=for-the-badge&logo=vite)](https://vitejs.dev/)
+[![Django](https://img.shields.io/badge/Backend-Django_3.2-092E20.svg?style=for-the-badge&logo=django)](https://www.djangoproject.com/)
+[![Django REST Framework](https://img.shields.io/badge/API-DRF_3.13-red.svg?style=for-the-badge&logo=django)](https://www.django-rest-framework.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](#license)
+
+<p align="center">
+  <a href="#-executive-overview"><b>Overview</b></a> •
+  <a href="#-team-contributors"><b>Contributors</b></a> •
+  <a href="#-key-features"><b>Features</b></a> •
+  <a href="#-technology-stack"><b>Tech Stack</b></a> •
+  <a href="#-local-development-setup"><b>Setup Guide</b></a>
+</p>
+
+</div>
+
+---
+
+## 👥 Team Contributors
+
+Ye repository hamare two core team members dwara manage aur push ki gayi hai:
+
+<p align="center">
+  <!-- Pehle Member ki GitHub Profile yaha dalein -->
+  <a href="https://github.com/ENTER_FIRST_MEMBER_USERNAME_HERE">
+    <img src="https://img.shields.io/badge/👑_Frontend_Lead-GitHub_Profile-blue?style=for-the-badge&logo=github&logoColor=white" alt="Frontend Lead">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Dusre Member ki GitHub Profile yaha dalein -->
+  <a href="https://github.com/ENTER_SECOND_MEMBER_USERNAME_HERE">
+    <img src="https://img.shields.io/badge/⚡_Backend_&_DevOps-GitHub_Profile-green?style=for-the-badge&logo=github&logoColor=white" alt="Backend Lead">
+  </a>
+</p>
+
+| Team Member | Role & Key Responsibilities |
+| :--- | :--- |
+| **👤 Member 1 (Frontend)** | • Designed & built React 19 UI views & components<br>• Integrated TanStack React Query v5 & Axios<br>• Setup Lenis Smooth Scroll & Bootstrap 5 styling |
+| **👤 Member 2 (Backend)** | • Architected Django REST API & Database Models<br>• Built Automated Bulk JSON MCQ Upload Engine<br>• Handled Cloud Storage & Production Pipeline |
+
+---
+
+## 📌 Executive Overview
+
+**TRE Housing Publications** connects competitive exam aspirants (BPSC TRE, Bihar STET, UPSC, SSC, State PCS) with curated study materials, topic-wise practice MCQs, full-length test series, previous year solved question papers (PYQs), official syllabus breakdowns, and real-time job vacancy notifications.
+
+---
+
+## ✨ Key Features
+
+### 🎓 Student Features
+* **📚 Course & Syllabus Explorer:** Detailed breakdown of exam patterns, subjects, topic distribution, and downloadable PDFs.
+* **📄 PYQ & Solved Papers Vault:** Access categorized past question papers and answer keys hosted on secure cloud storage.
+* **⏱️ Full-Length Test Series:** Interactive mock exam environment with timed tests, auto-scoring, and immediate feedback.
+* **🧠 Topic-Wise MCQ Practice Engine:** Hierarchy-based practice with detailed explanations.
+* **📖 Study Materials Library:** Organised 3-level document repository for rapid revision.
+* **💼 Career & Exam Job Hub:** Filterable Job Vacancies dashboard showing eligibility, fee, apply dates, and direct links.
+* **🔔 Live Job Notifications:** Real-time job vacancy notification listener with popup toast alerts.
+
+### 🛡️ Admin & Operational Capabilities
+* **⚡ Automated Bulk JSON MCQ Upload:** Upload hundreds of questions and choices instantly inside Django Admin.
+* **🗂️ Multi-Tier Data Management:** Structured hierarchical data management for courses, quizzes, and documents.
+* **☁️ Cloud Link Storage:** Native support for external document links (AWS S3 / Google Drive).
+
+---
+
+## 🛠️ Technology Stack
+
+### Frontend (React Ecosystem)
+* **Core:** React 19, React Router DOM v7 | **Build Tool:** Vite 8
+* **State & Data:** TanStack React Query v5, Axios
+* **UI & Styling:** Bootstrap 5, Bootstrap Icons, Vanilla CSS
+* **FX:** Anime.js, Lenis Scroll, React Hot Toast
+
+### Backend (Django Ecosystem)
+* **Framework:** Django 3.2.25 | **API Engine:** DRF 3.13.1
+* **Database:** SQLite (Dev) / PostgreSQL (Production)
+* **Utilities:** WhiteNoise, Pillow, Django CORS Headers
+
+---
+
+## 📡 REST API Endpoints
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/v1/` | `GET` | Fetch courses and subjects |
+| `/api/v2/` | `GET` | Fetch sub-courses and categorized PYQs |
+| `/api/v1/quiz/` | `GET` | Fetch mock tests with questions & options |
+| `/api/v1/topic-wise-mcq/` | `GET` | Fetch topic-wise exams and practice MCQs |
+| `/api/job/` | `GET / POST` | List active job vacancies / Create job |
+
+---
+
+## ⚙️ Environment Configuration
+
+### Frontend (`frontend-react/.env`)
+```env
+VITE_API_BASE_URL=[https://backend.trehousingpublications.com](https://backend.trehousingpublications.com)
+VITE_DEV_BACKEND_URL=[http://127.0.0.1:8000](http://127.0.0.1:8000)
