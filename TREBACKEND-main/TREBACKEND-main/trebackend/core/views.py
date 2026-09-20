@@ -426,7 +426,6 @@ def recent_updates_list(request):
     serializer = RecentUpdateSerializer(updates, many=True)
     return JsonResponse(serializer.data, safe=False)
 
-
 @api_view(['GET'])
 def topic_wise_mcq_api(request):
     try:

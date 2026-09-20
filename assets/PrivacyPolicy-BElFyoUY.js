@@ -1,15 +1,4 @@
-import React from 'react';
-import HeaderSec from "../components/Homepage/HeaderSec.jsx";
-import FooterSec from "../components/Homepage/FooterSec.jsx";
-import SEO from "../components/SEO.jsx";
-import './PrivacyPolicy.css';
-
-export default function PrivacyPolicy() {
-  const policySections = [
-
-    {
-      title: "INTRODUCTION",
-      content: `
+import{d as e,r as t}from"./index.esm-DOAIPz_3.js";import{n,r,t as i}from"./SEO-mmWGSpaK.js";e();var a=t();function o(){return(0,a.jsxs)(a.Fragment,{children:[(0,a.jsx)(i,{title:`Privacy Policy | TRE Housing Publications`,description:`Privacy policy and data protection policies of TRE Housing Publications educational platform.`}),(0,a.jsx)(r,{}),(0,a.jsxs)(`div`,{className:`privacy-container`,children:[(0,a.jsx)(`h1`,{className:`privacy-title`,children:`Privacy Notice`}),[{title:`INTRODUCTION`,content:`
         <p class="privacy-text">This Privacy Notice for TRE HOUSING PUBLICATION PVT LTD (doing business as TRE PUBLICATION) ('we', 'us', or 'our'), describes how and why we might access, collect, store, use, and/or share ('process') your personal information when you use our services ('Services'), including when you:	</p>
         <ul class="privacy-list">
           <li>Visit our website at trehousingpublication.com, or any website of ours that links to this Privacy Notice</li>
@@ -17,11 +6,7 @@ export default function PrivacyPolicy() {
           <li>Engage with us in other related ways, including any sales, marketing, or events</li>
         </ul>
         <p class="privacy-text">Questions or concerns? Reading this Privacy Notice will help you understand your privacy rights and choices. We are responsible for making decisions about how your personal information is processed. If you do not agree with our policies and practices, please do not use our Services.	</p>
-      `,
-    },
-    {
-      title: "SUMMARY OF KEY POINTS",
-      content: `
+      `},{title:`SUMMARY OF KEY POINTS`,content:`
         <p class="privacy-text">This summary provides key points from our Privacy Notice, but you can find out more details about any of these topics by clicking the link following each key point or by using our table of contents below to find the section you are looking for.	<br><br>
         What personal information do we process? When you visit, use, or navigate our Services, we may process personal information depending on how you interact with us and the Services, the choices you make, and the products and features you use.<br><br>
         Do we process any sensitive personal information? We do not process sensitive personal information.<br><br>
@@ -29,20 +14,12 @@ export default function PrivacyPolicy() {
         How do we process your information? We process your information to provide, improve, and administer our Services, communicate with you, for security and fraud prevention, and to comply with law.<br><br>
         In what situations and with which parties do we share personal information? We may share information in specific situations and with specific third parties.
       </p>
-      `,
-    },
-    {
-      title: "How do we keep your information safe?",
-      content: `
+      `},{title:`How do we keep your information safe?`,content:`
         <p class="privacy-text">We have adequate organisational and technical processes and procedures in place to protect your personal information. However, no electronic transmission over the internet or information storage technology can be guaranteed to be 100% secure, so we cannot promise or guarantee that hackers, cybercriminals, or other unauthorised third parties will not be able to defeat our security.<br><br>
         What are your rights? Depending on where you are located geographically, the applicable privacy law may mean you have certain rights regarding your personal information.<br><br>
         How do you exercise your rights? The easiest way to exercise your rights is by submitting a data subject access request, or by contacting us. We will consider and act upon any request in accordance with applicable data protection laws.
       </p>
-      `,
-    },
-    {
-      title: "Table of Contents",
-      content: `
+      `},{title:`Table of Contents`,content:`
         <ol class="privacy-toc-list">
           <li> WHAT INFORMATION DO WE COLLECT?</li>
           <li> HOW DO WE PROCESS YOUR INFORMATION?</li>
@@ -58,28 +35,4 @@ export default function PrivacyPolicy() {
           <li> HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</li>
           <li> HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</li>
         </ol>
-      `,
-    },
-  ];
-
-  return (
-    <>
-      <SEO 
-        title="Privacy Policy | TRE Housing Publications"
-        description="Privacy policy and data protection policies of TRE Housing Publications educational platform."
-      />
-      <HeaderSec />
-
-      <div className="privacy-container">
-        <h1 className="privacy-title">Privacy Notice</h1>
-        {policySections.map((section, index) => (
-          <section key={index} className="privacy-section">
-            <h2 className="privacy-section-title">{section.title}</h2>
-            <div className="privacy-section-content" dangerouslySetInnerHTML={{ __html: section.content }}></div>
-          </section>
-        ))}
-      </div>
-      <FooterSec />
-    </>
-  );
-}
+      `}].map((e,t)=>(0,a.jsxs)(`section`,{className:`privacy-section`,children:[(0,a.jsx)(`h2`,{className:`privacy-section-title`,children:e.title}),(0,a.jsx)(`div`,{className:`privacy-section-content`,dangerouslySetInnerHTML:{__html:e.content}})]},t))]}),(0,a.jsx)(n,{})]})}export{o as default};

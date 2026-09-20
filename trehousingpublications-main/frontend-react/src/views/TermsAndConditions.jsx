@@ -1,12 +1,18 @@
 import React from 'react';
 import HeaderSec from "../components/Homepage/HeaderSec.jsx";
 import FooterSec from "../components/Homepage/FooterSec.jsx";
+import SEO from "../components/SEO.jsx";
 import './TermsAndConditions.css';
 
 export default function TermsAndConditions() {
   return (
     <>
+      <SEO 
+        title="Terms and Conditions | TRE Housing Publications"
+        description="Terms and Conditions for using TRE Housing Publications portal, test series, and study materials."
+      />
       <HeaderSec />
+
       <div className="terms-container">
         <h1 className="sup-heading">Terms and Conditions</h1>
 

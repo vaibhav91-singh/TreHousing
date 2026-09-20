@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yourwebsite.com/sitemap.xml
+# Host & Sitemap
+Host: https://trehousingpublications.com
+Sitemap: https://trehousingpublications.com/sitemap.xml
+
