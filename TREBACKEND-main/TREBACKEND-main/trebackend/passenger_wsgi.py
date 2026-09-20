@@ -19,11 +19,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'trebackend.settings'
 
 try:
     from django.core.wsgi import get_wsgi_application
-    _application = get_wsgi_application()
-    
-    def application(environ, start_response):
-        return _application(environ, start_response)
-
+    application = get_wsgi_application()
 except Exception:
     err_msg = traceback.format_exc()
     log_file = os.path.join(cwd, 'passenger_startup_error.log')
