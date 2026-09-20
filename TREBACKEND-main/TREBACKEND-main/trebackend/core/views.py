@@ -449,7 +449,7 @@ def topic_wise_mcq_api(request):
 
             cache_key = f"topic_mcq_{topic_id}_p{page}_l{limit}"
             cached_res = cache.get(cache_key)
-            if cached_res:
+            if cached_res and isinstance(cached_res, dict) and cached_res.get("questions") and len(cached_res["questions"]) > 0:
                 return JsonResponse(cached_res)
 
             qs = TopicQuestion.objects.filter(topic_id=topic_id).order_by('id')
