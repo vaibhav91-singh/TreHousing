@@ -51,7 +51,27 @@ INSTALLED_APPS = [
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 SESSION_COOKIE_HTTPONLY = True
 
+class ErrorLoggingMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        return self.get_response(request)
+
+    def process_exception(self, request, exception):
+        import traceback
+        try:
+            log_path = os.path.join(settings.BASE_DIR, 'django_error.log')
+            with open(log_path, 'a') as f:
+                f.write(f"--- Exception at {request.path} ---\n")
+                f.write(traceback.format_exc())
+                f.write("\n\n")
+        except Exception:
+            pass
+        return None
+
 MIDDLEWARE = [
+    'trebackend.settings.ErrorLoggingMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',

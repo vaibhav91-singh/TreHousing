@@ -19,14 +19,23 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'trebackend.settings'
 
 try:
     from django.core.wsgi import get_wsgi_application
-    application = get_wsgi_application()
+    _application = get_wsgi_application()
+    
+    def application(environ, start_response):
+        return _application(environ, start_response)
+
 except Exception:
     err_msg = traceback.format_exc()
+    log_file = os.path.join(cwd, 'passenger_startup_error.log')
+    try:
+        with open(log_file, 'a') as f:
+            f.write(err_msg + "\n\n")
+    except Exception:
+        pass
+
     def application(environ, start_response):
         status = '500 Internal Server Error'
         output = f"<h1>Django Application Startup Traceback</h1><pre>{err_msg}</pre>".encode('utf-8')
         response_headers = [('Content-Type', 'text/html; charset=utf-8'), ('Content-Length', str(len(output)))]
         start_response(status, response_headers)
         return [output]
-
-
