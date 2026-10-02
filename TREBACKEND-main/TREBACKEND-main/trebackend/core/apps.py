@@ -7,7 +7,11 @@ class CoreConfig(AppConfig):
 
     def ready(self):
         try:
-            import core.signals  # noqa
+            from . import signals  # noqa
         except ImportError:
-            pass
+            try:
+                import core.signals  # noqa
+            except ImportError:
+                pass
+
 

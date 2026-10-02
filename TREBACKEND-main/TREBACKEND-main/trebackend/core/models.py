@@ -400,6 +400,16 @@ class TopicExam(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete("topic_mcq_hierarchy_all")
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete("topic_mcq_hierarchy_all")
+
 class TopicSubject(models.Model):
     exam = models.ForeignKey(TopicExam, on_delete=models.CASCADE, related_name='subjects', db_index=True)
     name = models.CharField(max_length=200, help_text='e.g., History, Geography')
@@ -410,6 +420,16 @@ class TopicSubject(models.Model):
         
     def __str__(self):
         return f'{self.exam.name} - {self.name}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete("topic_mcq_hierarchy_all")
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete("topic_mcq_hierarchy_all")
 
 class TopicName(models.Model):
     subject = models.ForeignKey(TopicSubject, on_delete=models.CASCADE, related_name='topics', db_index=True)
@@ -429,6 +449,8 @@ class TopicName(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete("topic_mcq_hierarchy_all")
         if self.bulk_upload_json and self.bulk_upload_json.strip():
             data = safe_parse_json(self.bulk_upload_json)
             if data:
@@ -507,14 +529,22 @@ class TopicName(models.Model):
                                 TopicQuestion.objects.bulk_create(questions_objs, batch_size=1000)
                             TopicName.objects.filter(id=self.id).update(bulk_upload_json="")
                             
-                            # Clear specific topic caches (not entire cache!)
-                            from django.core.cache import cache
-                            cache.delete("topic_mcq_hierarchy_all")
+                            # Clear specific topic caches
                             for page in range(1, 50):
                                 for limit in [10, 20, 30, 50, 100]:
                                     cache.delete(f"topic_mcq_{self.id}_p{page}_l{limit}")
                 except Exception as e:
                     print(f"Error processing bulk upload JSON: {e}")
+
+    def delete(self, *args, **kwargs):
+        topic_id = self.id
+        super().delete(*args, **kwargs)
+        from django.core.cache import cache
+        cache.delete("topic_mcq_hierarchy_all")
+        if topic_id:
+            for page in range(1, 50):
+                for limit in [10, 20, 30, 50, 100]:
+                    cache.delete(f"topic_mcq_{topic_id}_p{page}_l{limit}")
 
 
 class TopicQuestion(models.Model):
@@ -543,6 +573,24 @@ class TopicQuestion(models.Model):
         
     def __str__(self):
         return f'[{self.topic.name}] {self.text[:50]}...'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from django.core.cache import cache
+        if self.topic_id:
+            for page in range(1, 50):
+                for limit in [10, 20, 30, 50, 100]:
+                    cache.delete(f"topic_mcq_{self.topic_id}_p{page}_l{limit}")
+
+    def delete(self, *args, **kwargs):
+        topic_id = self.topic_id
+        super().delete(*args, **kwargs)
+        from django.core.cache import cache
+        if topic_id:
+            for page in range(1, 50):
+                for limit in [10, 20, 30, 50, 100]:
+                    cache.delete(f"topic_mcq_{topic_id}_p{page}_l{limit}")
+
 
 # ==========================================================================
 # STUDY MATERIAL SYSTEM

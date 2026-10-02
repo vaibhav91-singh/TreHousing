@@ -40,12 +40,7 @@ export default function TopicWiseCategories() {
   });
 
   useEffect(() => {
-    if (categoryHierarchyCache) {
-      setData(categoryHierarchyCache);
-      setLoading(false);
-      return;
-    }
-    fetch(`/api/v1/topic-wise-mcq/`)
+    fetch(`/api/v1/topic-wise-mcq/?_t=${Date.now()}`)
       .then(res => res.json())
       .then(resData => {
         const extracted = extractArrayData(resData);
@@ -55,6 +50,9 @@ export default function TopicWiseCategories() {
       })
       .catch(err => {
         console.error("Error fetching topic wise MCQs:", err);
+        if (categoryHierarchyCache) {
+          setData(categoryHierarchyCache);
+        }
         setLoading(false);
       });
   }, []);
@@ -78,11 +76,13 @@ export default function TopicWiseCategories() {
   }, [searchTerm]);
 
   const handleSearch = (items, key = 'name') => {
+    if (!items || !Array.isArray(items)) return [];
     if (!debouncedSearchTerm) return items;
     return items.filter(item => 
-      item[key].toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+      item && item[key] && item[key].toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     );
   };
+
 
   const resetSelection = (level) => {
     if (abortControllerRef.current) {

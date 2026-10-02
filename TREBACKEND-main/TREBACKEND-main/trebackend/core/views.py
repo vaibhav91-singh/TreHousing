@@ -531,9 +531,11 @@ def topic_wise_mcq_api(request):
             return JsonResponse(res_payload)
 
         cache_key = "topic_mcq_hierarchy_all"
-        cached_res = cache.get(cache_key)
-        if cached_res:
-            return JsonResponse(cached_res)
+        no_cache = request.GET.get('nocache') == 'true' or request.GET.get('_t') is not None
+        if not no_cache:
+            cached_res = cache.get(cache_key)
+            if cached_res:
+                return JsonResponse(cached_res)
 
         exams = TopicExam.objects.all().prefetch_related(
             Prefetch('subjects__topics', queryset=TopicName.objects.defer('bulk_upload_json'))
@@ -545,6 +547,7 @@ def topic_wise_mcq_api(request):
         }
         cache.set(cache_key, res_payload, 300)
         return JsonResponse(res_payload)
+
     except Exception as e:
         return JsonResponse({
             "success": False,
