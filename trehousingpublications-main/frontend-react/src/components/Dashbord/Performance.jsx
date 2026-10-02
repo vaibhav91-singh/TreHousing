@@ -127,126 +127,174 @@ const Performance = () => {
 
   return (
     <div className="performance-container">
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px', marginBottom: '25px' }}>
-        <h2 style={{ margin: 0 }}>Your Performance Dashboard</h2>
+      {/* Hero Header */}
+      <div className="performance-hero-header">
+        <div className="hero-text-content">
+          <span className="performance-hero-badge">
+            <i className="bi bi-graph-up-arrow"></i> ANALYTICS DASHBOARD
+          </span>
+          <h1 className="performance-hero-title">Your Performance Dashboard</h1>
+          <p className="performance-hero-subtitle">
+            Track your mock test accuracy, subject strengths, and progress analytics in real time
+          </p>
+        </div>
 
         {/* Data Backup Controls */}
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button onClick={handleExportData} className="btn-export" title="Backup your performance history to JSON file">
-            📤 Backup (JSON)
+        <div className="performance-actions">
+          <button onClick={handleExportData} className="btn-export-pill" title="Backup your performance history to JSON file">
+            <i className="bi bi-download"></i> Export Backup
           </button>
-          <label className="btn-import" title="Restore performance history from JSON backup">
-            📥 Import
+          <label className="btn-import-pill" title="Restore performance history from JSON backup">
+            <i className="bi bi-upload"></i> Import Backup
             <input type="file" accept=".json" onChange={handleImportData} style={{ display: 'none' }} />
           </label>
         </div>
       </div>
 
-      {/* Top Metric Cards */}
-      <div className="stats-cards">
-        <div className="card">
-          <h4>Tests Taken</h4>
-          <h2>{totalTests}</h2>
+      {/* Top KPI Metric Cards */}
+      <div className="stats-cards-grid">
+        <div className="kpi-card card-tests">
+          <div className="kpi-icon-avatar avatar-tests">
+            <i className="bi bi-journal-check"></i>
+          </div>
+          <div className="kpi-info">
+            <span className="kpi-label">Tests Taken</span>
+            <h2 className="kpi-value">{totalTests}</h2>
+            <span className="kpi-subtext">Completed attempts</span>
+          </div>
         </div>
 
-        <div className="card">
-          <h4>Average Score</h4>
-          <h2>{avgPercentage}%</h2>
+        <div className="kpi-card card-avg">
+          <div className="kpi-icon-avatar avatar-avg">
+            <i className="bi bi-percent"></i>
+          </div>
+          <div className="kpi-info">
+            <span className="kpi-label">Average Score</span>
+            <h2 className="kpi-value">{avgPercentage}%</h2>
+            <span className="kpi-subtext">Across all tests</span>
+          </div>
         </div>
 
-        <div className="card">
-          <h4>Overall Accuracy</h4>
-          <h2>{accuracy}%</h2>
+        <div className="kpi-card card-accuracy">
+          <div className="kpi-icon-avatar avatar-accuracy">
+            <i className="bi bi-bullseye"></i>
+          </div>
+          <div className="kpi-info">
+            <span className="kpi-label">Overall Accuracy</span>
+            <h2 className="kpi-value">{accuracy}%</h2>
+            <span className="kpi-subtext">Precision rate</span>
+          </div>
         </div>
 
-        <div className="card">
-          <h4>Best Score</h4>
-          <h2>{bestScore}%</h2>
+        <div className="kpi-card card-best">
+          <div className="kpi-icon-avatar avatar-best">
+            <i className="bi bi-trophy-fill"></i>
+          </div>
+          <div className="kpi-info">
+            <span className="kpi-label">Best Score</span>
+            <h2 className="kpi-value">{bestScore}%</h2>
+            <span className="kpi-subtext">Peak performance</span>
+          </div>
         </div>
       </div>
 
-      {/* Performance Index */}
-      <div className="analytics-card">
-        <h3>Performance Index</h3>
-        <div className="performance-grid">
-          <div className="metric-box">
-            <span>Overall Grade</span>
-            <strong>{grade}</strong>
+      {/* Analytics Grid Section */}
+      <div className="analytics-grid-wrapper">
+        {/* Performance Index & Grade */}
+        <div className="analytics-card grade-analytics-card">
+          <div className="card-header-row">
+            <h3><i className="bi bi-award"></i> Performance Index</h3>
           </div>
+          <div className="performance-grid">
+            <div className="grade-box">
+              <span className="grade-label">Overall Grade</span>
+              <div className={`grade-badge grade-${grade.replace('+', '-plus').toLowerCase()}`}>
+                {grade}
+              </div>
+            </div>
 
-          <div className="metric-box">
-            <span>Overall Improvement</span>
-            <strong
-              className={
-                Number(improvement) >= 0
-                  ? "positive"
-                  : "negative"
-              }
-            >
-              {improvement >= 0 ? `+${improvement}%` : `${improvement}%`}
-            </strong>
+            <div className="improvement-box">
+              <span className="grade-label">Overall Improvement</span>
+              <div className={`improvement-badge ${Number(improvement) >= 0 ? "positive" : "negative"}`}>
+                <i className={`bi ${Number(improvement) >= 0 ? "bi-arrow-up-right-circle-fill" : "bi-arrow-down-right-circle-fill"}`}></i>
+                {improvement >= 0 ? `+${improvement}%` : `${improvement}%`}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Accuracy Meter */}
-      <div className="analytics-card">
-        <h3>Accuracy Rate</h3>
-        <div className="progress-wrapper">
-          <div className="progress-bar">
-            <div
-              className="progress-fill"
-              style={{
-                width: `${accuracy}%`,
-              }}
-            />
+        {/* Accuracy Progress Meter */}
+        <div className="analytics-card accuracy-analytics-card">
+          <div className="card-header-row">
+            <h3><i className="bi bi-speedometer2"></i> Accuracy Rate</h3>
+            <span className="accuracy-val-chip">{accuracy}%</span>
           </div>
-          <span>{accuracy}%</span>
+          <div className="progress-wrapper">
+            <div className="progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${accuracy}%` }}
+              />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Subject Wise Performance Breakdown */}
-      <div className="analytics-card">
-        <h3>Subject Wise Analysis</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px', marginTop: '15px' }}>
+      <div className="analytics-card subject-analytics-card">
+        <div className="card-header-row">
+          <h3><i className="bi bi-layers"></i> Subject Wise Analysis</h3>
+        </div>
+        <div className="subject-stats-grid">
           {subjectStats.map((sub, i) => (
-            <div key={i} className="metric-box" style={{ textAlign: 'left', padding: '16px' }}>
-              <span style={{ fontWeight: 700, color: 'var(--text-dark)', fontSize: '1rem' }}>{sub.title}</span>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '0.9rem' }}>
-                <span>Tests: <strong>{sub.count}</strong></span>
-                <span>Accuracy: <strong style={{ color: Number(sub.accuracy) >= 70 ? '#16a34a' : '#d97706' }}>{sub.accuracy}%</strong></span>
+            <div key={i} className="subject-metric-card">
+              <div className="sub-card-header">
+                <span className="sub-title">{sub.title}</span>
+                <span className={`sub-acc-tag ${Number(sub.accuracy) >= 70 ? 'tag-high' : 'tag-low'}`}>
+                  {sub.accuracy}%
+                </span>
+              </div>
+              <div className="sub-card-footer">
+                <span><i className="bi bi-journals"></i> {sub.count} Tests</span>
+                <div className="sub-mini-progress">
+                  <div className="sub-mini-fill" style={{ width: `${sub.accuracy}%` }}></div>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Trend */}
-      <div className="analytics-card">
-        <h3>Recent Performance Trend</h3>
-        <div className="trend-bars">
+      {/* Trend Bar Chart */}
+      <div className="analytics-card trend-analytics-card">
+        <div className="card-header-row">
+          <h3><i className="bi bi-bar-chart-steps"></i> Recent Performance Trend</h3>
+        </div>
+        <div className="trend-bars-container">
           {history.slice(0, 10).reverse().map((item, index) => {
             const percent = item.total > 0 ? ((item.score / item.total) * 100).toFixed(1) : 0;
             return (
-              <div key={index} className="trend-item" title={`${item.title}: ${percent}%`}>
-                <div
-                  className="trend-bar"
-                  style={{
-                    height: `${Math.max(10, percent)}%`,
-                  }}
-                />
-                <span>T{index + 1}</span>
+              <div key={index} className="trend-item-column" title={`${item.title}: ${percent}%`}>
+                <span className="trend-val">{percent}%</span>
+                <div className="trend-bar-wrapper">
+                  <div
+                    className="trend-bar-fill"
+                    style={{ height: `${Math.max(12, percent)}%` }}
+                  />
+                </div>
+                <span className="trend-label">T{index + 1}</span>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* AI Insight */}
-      <div className="analytics-card">
-        <h3>Performance Insight</h3>
-        <p>
+      {/* AI Performance Insight */}
+      <div className="analytics-card insight-analytics-card">
+        <div className="insight-title">
+          <i className="bi bi-lightbulb-fill"></i> Performance Insight & Advice
+        </div>
+        <p className="insight-body">
           {Number(improvement) > 10
             ? "🌟 Excellent progress! Your recent performance shows strong positive growth. Keep taking tests regularly to maintain momentum."
             : Number(improvement) >= 0
@@ -256,43 +304,48 @@ const Performance = () => {
       </div>
 
       {/* History Table */}
-      <div className="table-wrapper">
-        <table className="history-table">
-          <thead>
-            <tr>
-              <th>Test Title</th>
-              <th>Score</th>
-              <th>Percentage</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {history.map((item, index) => {
-              const pct = item.total > 0 ? ((item.score / item.total) * 100).toFixed(1) : 0;
-              return (
-                <tr key={index}>
-                  <td><strong>{item.title}</strong></td>
-                  <td>{item.score} / {item.total}</td>
-                  <td>
-                    <span style={{ color: Number(pct) >= 70 ? '#16a34a' : '#dc2626', fontWeight: 700 }}>
-                      {pct}%
-                    </span>
-                  </td>
-                  <td>{item.date}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <div className="analytics-card table-analytics-card">
+        <div className="card-header-row">
+          <h3><i className="bi bi-clock-history"></i> Test Attempt History</h3>
+        </div>
+        <div className="table-wrapper">
+          <table className="history-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Test Title</th>
+                <th>Score</th>
+                <th>Percentage</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {history.map((item, index) => {
+                const pct = item.total > 0 ? ((item.score / item.total) * 100).toFixed(1) : 0;
+                return (
+                  <tr key={index}>
+                    <td>#{index + 1}</td>
+                    <td><strong>{item.title}</strong></td>
+                    <td>{item.score} / {item.total}</td>
+                    <td>
+                      <span className={`pct-badge ${Number(pct) >= 70 ? 'pct-high' : 'pct-low'}`}>
+                        {pct}%
+                      </span>
+                    </td>
+                    <td>{item.date}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <button
-        className="btn-clear"
-        onClick={clearHistory}
-      >
-        Clear History
-      </button>
-
+      <div className="performance-footer-actions">
+        <button className="btn-clear-history" onClick={clearHistory}>
+          <i className="bi bi-trash3-fill"></i> Clear History
+        </button>
+      </div>
     </div>
   );
 };

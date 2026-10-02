@@ -45,9 +45,9 @@ function renderFormattedMath(text) {
 export default function TopicWiseCategories() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const [selectedExam, setSelectedExam] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [selectedTopic, setSelectedTopic] = useState(null);
@@ -116,7 +116,7 @@ export default function TopicWiseCategories() {
   const handleSearch = (items, key = 'name') => {
     if (!items || !Array.isArray(items)) return [];
     if (!debouncedSearchTerm) return items;
-    return items.filter(item => 
+    return items.filter(item =>
       item && item[key] && item[key].toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     );
   };
@@ -137,18 +137,18 @@ export default function TopicWiseCategories() {
       setSelectedTopic(null);
       setTopicQuestions([]);
       setSearchTerm('');
-      try { sessionStorage.removeItem('topic_mcq_active_session'); } catch (e) {}
+      try { sessionStorage.removeItem('topic_mcq_active_session'); } catch (e) { }
     } else if (level === 'subject') {
       setSelectedSubject(null);
       setSelectedTopic(null);
       setTopicQuestions([]);
       setSearchTerm('');
-      try { sessionStorage.removeItem('topic_mcq_active_session'); } catch (e) {}
+      try { sessionStorage.removeItem('topic_mcq_active_session'); } catch (e) { }
     } else if (level === 'topic') {
       setSelectedTopic(null);
       setTopicQuestions([]);
       setSearchTerm('');
-      try { sessionStorage.removeItem('topic_mcq_active_session'); } catch (e) {}
+      try { sessionStorage.removeItem('topic_mcq_active_session'); } catch (e) { }
     }
   };
 
@@ -170,7 +170,7 @@ export default function TopicWiseCategories() {
         topic: topic,
         page: pageNum
       }));
-    } catch (e) {}
+    } catch (e) { }
 
     const cacheKey = `${topic.id}_page_${pageNum}`;
 
@@ -237,14 +237,14 @@ export default function TopicWiseCategories() {
           current_page: 1
         };
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   const triggerHapticFeedback = () => {
     if (typeof window !== 'undefined' && 'navigator' in window && typeof window.navigator.vibrate === 'function') {
       try {
         window.navigator.vibrate(20);
-      } catch (e) {}
+      } catch (e) { }
     }
   };
 
@@ -274,12 +274,12 @@ export default function TopicWiseCategories() {
           <span className="topic-hero-badge"><i className="bi bi-lightning-charge-fill"></i> TOPIC-WISE MCQS</span>
           <h1 className="topic-hero-title">Select Exam Category</h1>
           <p className="topic-hero-subtitle">Choose an exam to practice subject-wise & chapter-wise objective questions with solutions</p>
-          
+
           <div className="topic-search-wrapper">
             <i className="bi bi-search search-icon"></i>
-            <input 
-              type="text" 
-              placeholder="Search exams (e.g. GATE, BPSC, SSC)..." 
+            <input
+              type="text"
+              placeholder="Search exams (e.g. GATE, BPSC, SSC)..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -288,8 +288,8 @@ export default function TopicWiseCategories() {
 
         <div className="topic-grid">
           {filteredExams.map((exam, index) => (
-            <div 
-              key={exam.id} 
+            <div
+              key={exam.id}
               className="topic-card exam-card"
               onClick={() => { setSelectedExam(exam); setSearchTerm(''); }}
             >
@@ -339,9 +339,9 @@ export default function TopicWiseCategories() {
 
           <div className="topic-search-wrapper">
             <i className="bi bi-search search-icon"></i>
-            <input 
-              type="text" 
-              placeholder={`Search subjects in ${selectedExam.name}...`} 
+            <input
+              type="text"
+              placeholder={`Search subjects in ${selectedExam.name}...`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -350,8 +350,8 @@ export default function TopicWiseCategories() {
 
         <div className="topic-grid">
           {filteredSubjects.map((sub, index) => (
-            <div 
-              key={sub.id} 
+            <div
+              key={sub.id}
               className="topic-card subject-card"
               onClick={() => { setSelectedSubject(sub); setSearchTerm(''); }}
             >
@@ -403,9 +403,9 @@ export default function TopicWiseCategories() {
 
           <div className="topic-search-wrapper">
             <i className="bi bi-search search-icon"></i>
-            <input 
-              type="text" 
-              placeholder={`Search topics in ${selectedSubject.name}...`} 
+            <input
+              type="text"
+              placeholder={`Search topics in ${selectedSubject.name}...`}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -414,8 +414,8 @@ export default function TopicWiseCategories() {
 
         <div className="topic-grid">
           {filteredTopics.map((topic, index) => (
-            <div 
-              key={topic.id} 
+            <div
+              key={topic.id}
               className="topic-card topic-card-item"
               onMouseEnter={() => prefetchTopic(topic)}
               onClick={() => handleTopicClick(topic, 1)}
@@ -476,7 +476,7 @@ export default function TopicWiseCategories() {
         {questions.map((q, index) => {
           const answered = answers[q.id];
           const qNum = (currentPage - 1) * LIMIT + index + 1;
-          
+
           return (
             <div key={q.id} className="mcq-question-card">
               <div className="mcq-question-header">
@@ -491,7 +491,7 @@ export default function TopicWiseCategories() {
                 {['A', 'B', 'C', 'D'].map(opt => {
                   const optText = q[`option_${opt.toLowerCase()}`];
                   let optClass = "mcq-option";
-                  
+
                   if (answered) {
                     optClass += " answered-option";
                     if (opt === q.correct_option) optClass += " correct";
@@ -499,8 +499,8 @@ export default function TopicWiseCategories() {
                   }
 
                   return (
-                    <div 
-                      key={opt} 
+                    <div
+                      key={opt}
                       className={optClass}
                       onClick={() => handleOptionSelect(q.id, opt)}
                       style={{ pointerEvents: answered ? 'none' : 'auto' }}
@@ -546,7 +546,7 @@ export default function TopicWiseCategories() {
               Showing {(currentPage - 1) * LIMIT + 1}-{Math.min(currentPage * LIMIT, totalQuestions)} of {totalQuestions} Questions
             </div>
             <div className="pagination-buttons">
-              <button 
+              <button
                 className="pagination-btn"
                 disabled={currentPage <= 1}
                 onClick={() => {
@@ -570,7 +570,7 @@ export default function TopicWiseCategories() {
                 </button>
               ))}
 
-              <button 
+              <button
                 className="pagination-btn"
                 disabled={currentPage >= totalPages}
                 onClick={() => {

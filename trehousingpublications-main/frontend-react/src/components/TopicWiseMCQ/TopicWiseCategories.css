@@ -152,7 +152,7 @@
     box-shadow: 0 0 0 4px rgba(255, 184, 0, 0.18), inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.topic-search-wrapper input:focus + .search-icon {
+.topic-search-wrapper input:focus+.search-icon {
     color: #ffb800;
 }
 
