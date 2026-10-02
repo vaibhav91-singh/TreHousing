@@ -40,7 +40,12 @@ export default function TopicWiseCategories() {
   });
 
   useEffect(() => {
-    fetch(`/api/v1/topic-wise-mcq/?_t=${Date.now()}`)
+    if (categoryHierarchyCache) {
+      setData(categoryHierarchyCache);
+      setLoading(false);
+      return;
+    }
+    fetch(`/api/v1/topic-wise-mcq/`)
       .then(res => res.json())
       .then(resData => {
         const extracted = extractArrayData(resData);
@@ -50,12 +55,10 @@ export default function TopicWiseCategories() {
       })
       .catch(err => {
         console.error("Error fetching topic wise MCQs:", err);
-        if (categoryHierarchyCache) {
-          setData(categoryHierarchyCache);
-        }
         setLoading(false);
       });
   }, []);
+
 
   // Cleanup pending request on unmount
   useEffect(() => {
