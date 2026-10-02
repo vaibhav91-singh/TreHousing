@@ -235,29 +235,50 @@ export default function TopicWiseCategories() {
     const filteredExams = handleSearch(data);
     return (
       <div className="topic-wise-container">
-        <div className="topic-header">
-          <h1>Select Exam</h1>
-          <input 
-            type="text" 
-            placeholder="Search exams..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="topic-hero-header">
+          <span className="topic-hero-badge"><i className="bi bi-lightning-charge-fill"></i> TOPIC-WISE MCQS</span>
+          <h1 className="topic-hero-title">Select Exam Category</h1>
+          <p className="topic-hero-subtitle">Choose an exam to practice subject-wise & chapter-wise objective questions with solutions</p>
+          
+          <div className="topic-search-wrapper">
+            <i className="bi bi-search search-icon"></i>
+            <input 
+              type="text" 
+              placeholder="Search exams (e.g. GATE, BPSC, SSC)..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
-        <div className="topic-layout">
-          <div className="topic-main">
-            {filteredExams.map(exam => (
-              <div 
-                key={exam.id} 
-                className="topic-list-item"
-                onClick={() => { setSelectedExam(exam); setSearchTerm(''); }}
-              >
-                <span>{exam.name}</span>
+
+        <div className="topic-grid">
+          {filteredExams.map((exam, index) => (
+            <div 
+              key={exam.id} 
+              className="topic-card exam-card"
+              onClick={() => { setSelectedExam(exam); setSearchTerm(''); }}
+            >
+              <div className="card-icon-avatar exam-avatar">
+                <i className="bi bi-award-fill"></i>
+              </div>
+              <div className="card-content">
+                <h3 className="card-title">{exam.name}</h3>
+                <span className="card-meta-pill">
+                  <i className="bi bi-journals"></i> {exam.subjects?.length || 0} Subjects
+                </span>
+              </div>
+              <div className="card-arrow">
                 <i className="bi bi-chevron-right"></i>
               </div>
-            ))}
-            {filteredExams.length === 0 && <div>No exams found.</div>}
-          </div>
+            </div>
+          ))}
+
+          {filteredExams.length === 0 && (
+            <div className="topic-empty-state">
+              <i className="bi bi-folder-x"></i>
+              <p>No exams found matching "{searchTerm}"</p>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -269,33 +290,57 @@ export default function TopicWiseCategories() {
     return (
       <div className="topic-wise-container">
         <div className="topic-breadcrumbs">
-          <span onClick={() => resetSelection('exam')}>All Exams</span>
-          <i className="bi bi-chevron-right"></i>
+          <span onClick={() => resetSelection('exam')}>
+            <i className="bi bi-grid-fill"></i> All Exams
+          </span>
+          <i className="bi bi-chevron-right separator"></i>
           <span className="active">{selectedExam.name}</span>
         </div>
-        <div className="topic-header">
-          <h1>Select Subject</h1>
-          <input 
-            type="text" 
-            placeholder="Search subjects..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+
+        <div className="topic-hero-header">
+          <span className="topic-hero-badge"><i className="bi bi-award"></i> {selectedExam.name}</span>
+          <h1 className="topic-hero-title">Select Subject</h1>
+          <p className="topic-hero-subtitle">Pick a subject to explore topic-wise practice sets & MCQs</p>
+
+          <div className="topic-search-wrapper">
+            <i className="bi bi-search search-icon"></i>
+            <input 
+              type="text" 
+              placeholder={`Search subjects in ${selectedExam.name}...`} 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
-        <div className="topic-layout">
-          <div className="topic-main">
-            {filteredSubjects.map(sub => (
-              <div 
-                key={sub.id} 
-                className="topic-list-item"
-                onClick={() => { setSelectedSubject(sub); setSearchTerm(''); }}
-              >
-                <span>{sub.name}</span>
+
+        <div className="topic-grid">
+          {filteredSubjects.map((sub, index) => (
+            <div 
+              key={sub.id} 
+              className="topic-card subject-card"
+              onClick={() => { setSelectedSubject(sub); setSearchTerm(''); }}
+            >
+              <div className="card-icon-avatar subject-avatar">
+                <i className="bi bi-book-half"></i>
+              </div>
+              <div className="card-content">
+                <h3 className="card-title">{sub.name}</h3>
+                <span className="card-meta-pill">
+                  <i className="bi bi-layers-half"></i> {sub.topics?.length || 0} Topics
+                </span>
+              </div>
+              <div className="card-arrow">
                 <i className="bi bi-chevron-right"></i>
               </div>
-            ))}
-            {filteredSubjects.length === 0 && <div>No subjects found.</div>}
-          </div>
+            </div>
+          ))}
+
+          {filteredSubjects.length === 0 && (
+            <div className="topic-empty-state">
+              <i className="bi bi-folder-x"></i>
+              <p>No subjects found for "{searchTerm}"</p>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -307,36 +352,60 @@ export default function TopicWiseCategories() {
     return (
       <div className="topic-wise-container">
         <div className="topic-breadcrumbs">
-          <span onClick={() => resetSelection('exam')}>All Exams</span>
-          <i className="bi bi-chevron-right"></i>
+          <span onClick={() => resetSelection('exam')}>
+            <i className="bi bi-grid-fill"></i> All Exams
+          </span>
+          <i className="bi bi-chevron-right separator"></i>
           <span onClick={() => resetSelection('subject')}>{selectedExam.name}</span>
-          <i className="bi bi-chevron-right"></i>
+          <i className="bi bi-chevron-right separator"></i>
           <span className="active">{selectedSubject.name}</span>
         </div>
-        <div className="topic-header">
-          <h1>Select Topic</h1>
-          <input 
-            type="text" 
-            placeholder="Search topics..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <div className="topic-layout">
-          <div className="topic-main">
-            {filteredTopics.map(topic => (
-              <div 
-                key={topic.id} 
-                className="topic-list-item"
-                onMouseEnter={() => prefetchTopic(topic)}
-                onClick={() => handleTopicClick(topic, 1)}
-              >
-                <span>{topic.name}</span>
-                <i className="bi bi-chevron-right"></i>
-              </div>
-            ))}
-            {filteredTopics.length === 0 && <div>No topics found.</div>}
+
+        <div className="topic-hero-header">
+          <span className="topic-hero-badge"><i className="bi bi-book-half"></i> {selectedSubject.name}</span>
+          <h1 className="topic-hero-title">Select Topic</h1>
+          <p className="topic-hero-subtitle">Select a topic to start practicing MCQs with detailed explanations</p>
+
+          <div className="topic-search-wrapper">
+            <i className="bi bi-search search-icon"></i>
+            <input 
+              type="text" 
+              placeholder={`Search topics in ${selectedSubject.name}...`} 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
+        </div>
+
+        <div className="topic-grid">
+          {filteredTopics.map((topic, index) => (
+            <div 
+              key={topic.id} 
+              className="topic-card topic-card-item"
+              onMouseEnter={() => prefetchTopic(topic)}
+              onClick={() => handleTopicClick(topic, 1)}
+            >
+              <div className="card-icon-avatar topic-avatar">
+                <i className="bi bi-file-earmark-text-fill"></i>
+              </div>
+              <div className="card-content">
+                <h3 className="card-title">{topic.name}</h3>
+                <span className="card-action-tag">
+                  Practice Set <i className="bi bi-arrow-right-short"></i>
+                </span>
+              </div>
+              <div className="card-arrow">
+                <i className="bi bi-play-circle-fill"></i>
+              </div>
+            </div>
+          ))}
+
+          {filteredTopics.length === 0 && (
+            <div className="topic-empty-state">
+              <i className="bi bi-journal-x"></i>
+              <p>No topics available yet for this subject.</p>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -348,109 +417,139 @@ export default function TopicWiseCategories() {
   return (
     <div className="topic-wise-container">
       <div className="topic-breadcrumbs">
-        <span onClick={() => resetSelection('exam')}>All Exams</span>
-        <i className="bi bi-chevron-right"></i>
+        <span onClick={() => resetSelection('exam')}>
+          <i className="bi bi-grid-fill"></i> All Exams
+        </span>
+        <i className="bi bi-chevron-right separator"></i>
         <span onClick={() => resetSelection('subject')}>{selectedExam.name}</span>
-        <i className="bi bi-chevron-right"></i>
+        <i className="bi bi-chevron-right separator"></i>
         <span onClick={() => resetSelection('topic')}>{selectedSubject.name}</span>
-        <i className="bi bi-chevron-right"></i>
+        <i className="bi bi-chevron-right separator"></i>
         <span className="active">{selectedTopic.name}</span>
       </div>
-      
-      <div className="topic-header">
-        <h1>{selectedTopic.name} MCQs</h1>
-      </div>
-      
-      <div className="topic-layout">
-        <div className="topic-main">
-          {questions.map((q, index) => {
-            const answered = answers[q.id];
-            const qNum = (currentPage - 1) * LIMIT + index + 1;
-            
-            return (
-              <div key={q.id} className="mcq-question-card">
-                <div className="mcq-question-text">
-                  Q{qNum}. {q.text}
-                </div>
-                <div className="mcq-options">
-                  {['A', 'B', 'C', 'D'].map(opt => {
-                    const optText = q[`option_${opt.toLowerCase()}`];
-                    let optClass = "mcq-option";
-                    
-                    if (answered) {
-                      optClass += " answered-option";
-                      if (opt === q.correct_option) optClass += " correct";
-                      else if (opt === answered) optClass += " incorrect";
-                    }
 
-                    return (
-                      <div 
-                        key={opt} 
-                        className={optClass}
-                        onClick={() => handleOptionSelect(q.id, opt)}
-                        style={{ pointerEvents: answered ? 'none' : 'auto' }}
-                      >
-                        {opt}. {optText}
-                      </div>
-                    );
-                  })}
-                </div>
-                {answered && q.explanation && (
-                  <div className="mcq-explanation">
-                    <strong>Explanation:</strong> {q.explanation}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-          {questions.length === 0 && <div>No questions added yet for this topic.</div>}
-
-          {/* Pagination Controls */}
-          {totalPages > 1 && (
-            <div className="topic-pagination">
-              <div className="pagination-info">
-                Showing {(currentPage - 1) * LIMIT + 1}-{Math.min(currentPage * LIMIT, totalQuestions)} of {totalQuestions} Questions
-              </div>
-              <div className="pagination-buttons">
-                <button 
-                  className="pagination-btn"
-                  disabled={currentPage <= 1}
-                  onClick={() => {
-                    handleTopicClick(selectedTopic, currentPage - 1);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <i className="bi bi-chevron-left"></i> Previous
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(pNum => (
-                  <button
-                    key={pNum}
-                    className={`pagination-btn ${pNum === currentPage ? 'active' : ''}`}
-                    onClick={() => {
-                      handleTopicClick(selectedTopic, pNum);
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                  >
-                    {pNum}
-                  </button>
-                ))}
-
-                <button 
-                  className="pagination-btn"
-                  disabled={currentPage >= totalPages}
-                  onClick={() => {
-                    handleTopicClick(selectedTopic, currentPage + 1);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  Next <i className="bi bi-chevron-right"></i>
-                </button>
-              </div>
-            </div>
-          )}
+      <div className="topic-hero-header questions-hero">
+        <span className="topic-hero-badge"><i className="bi bi-check2-square"></i> PRACTICE MODE</span>
+        <h1 className="topic-hero-title">{selectedTopic.name}</h1>
+        <div className="questions-stats-bar">
+          <span><i className="bi bi-question-circle-fill"></i> {totalQuestions} Questions</span>
+          <span><i className="bi bi-file-text"></i> Page {currentPage} of {totalPages}</span>
         </div>
+      </div>
+
+      <div className="topic-questions-wrapper">
+        {questions.map((q, index) => {
+          const answered = answers[q.id];
+          const qNum = (currentPage - 1) * LIMIT + index + 1;
+          
+          return (
+            <div key={q.id} className="mcq-question-card">
+              <div className="mcq-question-header">
+                <span className="q-badge">Question {qNum}</span>
+              </div>
+
+              <div className="mcq-question-text">
+                {q.text}
+              </div>
+
+              <div className="mcq-options">
+                {['A', 'B', 'C', 'D'].map(opt => {
+                  const optText = q[`option_${opt.toLowerCase()}`];
+                  let optClass = "mcq-option";
+                  
+                  if (answered) {
+                    optClass += " answered-option";
+                    if (opt === q.correct_option) optClass += " correct";
+                    else if (opt === answered) optClass += " incorrect";
+                  }
+
+                  return (
+                    <div 
+                      key={opt} 
+                      className={optClass}
+                      onClick={() => handleOptionSelect(q.id, opt)}
+                      style={{ pointerEvents: answered ? 'none' : 'auto' }}
+                    >
+                      <span className="option-letter">{opt}</span>
+                      <span className="option-text">{optText}</span>
+                      {answered && opt === q.correct_option && (
+                        <i className="bi bi-check-circle-fill opt-icon-correct"></i>
+                      )}
+                      {answered && opt === answered && opt !== q.correct_option && (
+                        <i className="bi bi-x-circle-fill opt-icon-incorrect"></i>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {answered && q.explanation && (
+                <div className="mcq-explanation">
+                  <div className="explanation-title">
+                    <i className="bi bi-lightbulb-fill"></i> Solution & Explanation
+                  </div>
+                  <div className="explanation-body">
+                    {q.explanation}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {questions.length === 0 && (
+          <div className="topic-empty-state">
+            <i className="bi bi-question-square"></i>
+            <p>No questions added yet for this topic.</p>
+          </div>
+        )}
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="topic-pagination">
+            <div className="pagination-info">
+              Showing {(currentPage - 1) * LIMIT + 1}-{Math.min(currentPage * LIMIT, totalQuestions)} of {totalQuestions} Questions
+            </div>
+            <div className="pagination-buttons">
+              <button 
+                className="pagination-btn"
+                disabled={currentPage <= 1}
+                onClick={() => {
+                  handleTopicClick(selectedTopic, currentPage - 1);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                <i className="bi bi-chevron-left"></i> Previous
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(pNum => (
+                <button
+                  key={pNum}
+                  className={`pagination-btn ${pNum === currentPage ? 'active' : ''}`}
+                  onClick={() => {
+                    handleTopicClick(selectedTopic, pNum);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  {pNum}
+                </button>
+              ))}
+
+              <button 
+                className="pagination-btn"
+                disabled={currentPage >= totalPages}
+                onClick={() => {
+                  handleTopicClick(selectedTopic, currentPage + 1);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              >
+                Next <i className="bi bi-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
