@@ -1,5 +1,5 @@
 # 🎓 TRE Housing Publications - Full Stack EdTech Platform
-
+#  visit https://trehousingpublications.com/
 [![React](https://img.shields.io/badge/Frontend-React_19-blue.svg?style=flat-square&logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Bundler-Vite_8-646CFF.svg?style=flat-square&logo=vite)](https://vitejs.dev/)
 [![Django](https://img.shields.io/badge/Backend-Django_3.2-092E20.svg?style=flat-square&logo=django)](https://www.djangoproject.com/)
