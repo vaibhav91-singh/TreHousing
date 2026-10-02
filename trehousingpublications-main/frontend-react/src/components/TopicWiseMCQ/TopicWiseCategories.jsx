@@ -7,6 +7,41 @@ import { extractArrayData } from '../../apiConfig.js';
 const topicQuestionsCache = {};
 let categoryHierarchyCache = null;
 
+function renderFormattedMath(text) {
+  if (!text || typeof text !== 'string') return text;
+  if (!text.includes('$') && !text.includes('\\')) return text;
+
+  let formatted = text
+    .replace(/\\times/g, '×')
+    .replace(/\\div/g, '÷')
+    .replace(/\\pm/g, '±')
+    .replace(/\\infty/g, '∞')
+    .replace(/\\alpha/g, 'α')
+    .replace(/\\beta/g, 'β')
+    .replace(/\\gamma/g, 'γ')
+    .replace(/\\theta/g, 'θ')
+    .replace(/\\pi/g, 'π')
+    .replace(/\\lambda/g, 'λ')
+    .replace(/\\delta/g, 'δ')
+    .replace(/\\sum/g, '∑')
+    .replace(/\\int/g, '∫')
+    .replace(/\\neq/g, '≠')
+    .replace(/\\le/g, '≤')
+    .replace(/\\ge/g, '≥')
+    .replace(/\\approx/g, '≈')
+    .replace(/\\det/g, 'det')
+    .replace(/\^2/g, '²')
+    .replace(/\^3/g, '³')
+    .replace(/\^4/g, '⁴')
+    .replace(/\^n/g, 'ⁿ')
+    .replace(/\^0/g, '⁰')
+    .replace(/\^1/g, '¹');
+
+  formatted = formatted.replace(/\$(.*?)\$/g, '$1');
+
+  return formatted;
+}
+
 export default function TopicWiseCategories() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -449,7 +484,7 @@ export default function TopicWiseCategories() {
               </div>
 
               <div className="mcq-question-text">
-                {q.text}
+                {renderFormattedMath(q.text)}
               </div>
 
               <div className="mcq-options">
@@ -471,7 +506,7 @@ export default function TopicWiseCategories() {
                       style={{ pointerEvents: answered ? 'none' : 'auto' }}
                     >
                       <span className="option-letter">{opt}</span>
-                      <span className="option-text">{optText}</span>
+                      <span className="option-text">{renderFormattedMath(optText)}</span>
                       {answered && opt === q.correct_option && (
                         <i className="bi bi-check-circle-fill opt-icon-correct"></i>
                       )}
@@ -489,7 +524,7 @@ export default function TopicWiseCategories() {
                     <i className="bi bi-lightbulb-fill"></i> Solution & Explanation
                   </div>
                   <div className="explanation-body">
-                    {q.explanation}
+                    {renderFormattedMath(q.explanation)}
                   </div>
                 </div>
               )}

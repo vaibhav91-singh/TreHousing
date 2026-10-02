@@ -1,9 +1,11 @@
 /* Topic-Wise MCQ Modern UI Styles */
 
 .topic-wise-container {
-    max-width: 1280px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 3vh 2.5vw 6vh;
+    padding: 2.5vh 3vw 6vh;
+    box-sizing: border-box;
     font-family: var(--font-main, 'Inter', -apple-system, sans-serif);
     transition: all 0.3s ease;
     min-height: 82vh;
